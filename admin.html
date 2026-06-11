@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel Console — Apna Typing Master Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" style="max-width: 750px;">
+        <div class="topbar">
+            <h2 style="color: #e74c3c;">⚙️ Central Admin Control</h2>
+            <a href="index.html" class="btn btn-s">← Exit Console</a>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.01); padding: 25px; border: 1px solid var(--border); border-radius: 10px;">
+            <h3 style="color: var(--accent); margin-bottom: 20px;">Add New Paragraph Node</h3>
+            
+            <div class="control-group" style="margin-bottom: 20px;">
+                <label>Target Language Pool</label>
+                <select id="ad-lang">
+                    <option value="english">English Pool</option>
+                    <option value="mangal">Hindi Mangal Pool</option>
+                    <option value="krutidev">Hindi KrutiDev Pool</option>
+                </select>
+            </div>
+            <div class="control-group" style="margin-bottom: 20px;">
+                <label>Text Content Body</label>
+                <textarea id="ad-text" rows="5" class="input-area" style="margin-bottom:0;" placeholder="यहाँ नया टाइपिंग पैसेज पेस्ट करें..."></textarea>
+            </div>
+            
+            <button class="btn btn-p" id="btn-admin-save" style="width: 100%;">Save & Push to Cloud Server</button>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
