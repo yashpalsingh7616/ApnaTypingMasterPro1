@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Portal — Apna Typing Master Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <h2 id="portal-title">Apna TypingMasterPro Engine</h2>
+            <a href="dashboard.html" class="btn btn-s">← Change Settings</a>
+        </div>
+
+        <div class="dashboard">
+            <div class="stat-box"><div class="stat-label">Timer Remaining</div><div class="stat-val" id="tmr">00:00</div></div>
+            <div class="stat-box"><div class="stat-label">Live Gross WPM</div><div class="stat-val" id="wpm">0</div></div>
+            <div class="stat-box"><div class="stat-label">Total Errors</div><div class="stat-val" id="mis">0</div></div>
+        </div>
+
+        <div class="text-display" id="td">पैसेज लोड हो रहा है...</div>
+        <textarea class="input-area" id="it" placeholder="टाइपिंग टेस्ट शुरू करने के लिए कीबोर्ड इनपुट देना शुरू करें..." rows="4"></textarea>
+
+        <div class="btn-group">
+            <button class="btn btn-s" onclick="location.reload();" style="background:#3a3a52;">RESET TEST</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="result-modal">
+        <div class="modal-card">
+            <h2 style="color: var(--accent); text-align: center; margin-bottom: 20px;">📝 Performance Scorecard</h2>
+            <div class="result-grid">
+                <div class="res-item"><div class="res-lbl">Gross Speed</div><div class="res-val" id="res-gross">0 WPM</div></div>
+                <div class="res-item"><div class="res-lbl">Net Speed</div><div class="res-val" id="res-net">0 WPM</div></div>
+                <div class="res-item"><div class="res-lbl">Accuracy</div><div class="res-val" id="res-acc">100%</div></div>
+                <div class="res-item"><div class="res-lbl">Total Mistakes</div><div class="res-val" id="res-errors">0</div></div>
+            </div>
+            <button class="btn btn-s" onclick="document.getElementById('result-modal').style.display='none';" style="width:100%; margin-top:20px; background:#e74c3c; color:#fff;">CLOSE REPORT</button>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
