@@ -5,13 +5,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    databaseURL: "YOUR_DATABASE_URL", 
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAnW7etN6Z3VTjot5KjpmG6JeDlkOBJbE4",
+  authDomain: "apna-typing-master-pro.firebaseapp.com",
+  projectId: "apna-typing-master-pro",
+  storageBucket: "apna-typing-master-pro.firebasestorage.app",
+  messagingSenderId: "256116678227",
+  appId: "1:256116678227:web:544898c8211226c69370a6",
+  measurementId: "G-DR7LY8Z642"
 };
 
 const app = initializeApp(firebaseConfig);
