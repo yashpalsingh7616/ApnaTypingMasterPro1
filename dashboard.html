@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Dashboard — Apna Typing Master Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <h2>Candidate Dashboard</h2>
+            <a href="index.html" class="btn btn-s">← Back Home</a>
+        </div>
+        
+        <div class="controls-grid">
+            <div class="control-group">
+                <label>Language (फॉन्ट भाषा)</label>
+                <select id="language">
+                    <option value="english">English (Standard)</option>
+                    <option value="mangal">Hindi Mangal (Unicode)</option>
+                    <option value="krutidev">Hindi KrutiDev (010)</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Exam Niyom (Mode)</label>
+                <select id="exam-mode">
+                    <option value="standard">Standard Practice Mode</option>
+                    <option value="upsssc">UPSSSC Junior Asst (Strict)</option>
+                    <option value="ssc">SSC CHSL/CGL (7% Error Cap)</option>
+                    <option value="rrb">RRB NTPC (10x Extra Penalty)</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Timer Limit</label>
+                <select id="timer-select">
+                    <option value="60">1 Minute</option>
+                    <option value="300">5 Minutes</option>
+                    <option value="600">10 Minutes</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Backspace Lock</label>
+                <select id="backspace-toggle">
+                    <option value="enabled">Allowed (चालू)</option>
+                    <option value="disabled">Locked (बंद - Exam Rule)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="btn-group" style="margin-top: 20px;">
+            <button onclick="startCustomPractice()" class="btn btn-p" style="width: 100%; max-width: 400px;">👉 OPEN PRACTICE EXAM PORTAL</button>
+            <a href="live-test.html" class="btn btn-s">⏰ GO TO LIVE DAILY SCHEDULED TEST</a>
+        </div>
+    </div>
+
+    <script>
+        function startCustomPractice() {
+            // सेटिंग्स को लोकल स्टोरेज में सेव करके टेस्ट पेज पर रीडायरेक्ट करना
+            localStorage.setItem('cfg_lang', document.getElementById('language').value);
+            localStorage.setItem('cfg_mode', document.getElementById('exam-mode').value);
+            localStorage.setItem('cfg_time', document.getElementById('timer-select').value);
+            localStorage.setItem('cfg_back', document.getElementById('backspace-toggle').value);
+            window.location.href = 'typing.html';
+        }
+    </script>
+</body>
+</html>
