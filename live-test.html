@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Scheduled Test — Apna Typing Master Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" style="max-width: 750px;">
+        <div class="topbar">
+            <h2>Live Exam Arena</h2>
+            <a href="dashboard.html" class="btn btn-s">← Dashboard</a>
+        </div>
+        <p style="color: var(--muted); margin-bottom: 30px; line-height: 1.8;">
+            यह लाइव टेस्ट शेड्यूल एरिया है। क्लाउड सर्वर द्वारा आज का निर्धारित किया गया एक्सक्लूसिव पेपर परीक्षा नियमों के तहत आपके सामने प्रस्तुत किया जाएगा। तैयारी सुनिश्चित होने पर ही असेसमेंट शुरू करें।
+        </p>
+        <div style="text-align: center;">
+            <button onclick="startLiveExam()" class="btn btn-p" style="padding: 16px 50px;">Start Live Assessment Now</button>
+        </div>
+    </div>
+
+    <script>
+        function startLiveExam() {
+            localStorage.setItem('cfg_isLive', 'true');
+            window.location.href = 'typing.html';
+        }
+    </script>
+</body>
+</html>
