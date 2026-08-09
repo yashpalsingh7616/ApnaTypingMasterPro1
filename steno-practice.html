@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shorthand Practice — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1a3a6b;
+    --navy-dark:#122a4f;
+    --paper:#ffffff;
+    --bg:#eef1f6;
+    --border:#c9d2e0;
+    --accent:#1a3a6b;
+    --good:#1f7a4d;
+    --bad:#b3261e;
+    --warn-bg:#fff6e5;
+    --warn-border:#e0a83a;
+    --text:#1c2430;
+    --muted:#5c6b85;
+    --radius:6px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI','Noto Sans',Arial,sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:Georgia,'Times New Roman',serif; margin:0 0 .4em 0; color:var(--navy-dark);}
+  .mono{font-family:'Consolas','Courier New',monospace;}
+  #app{max-width:980px;margin:0 auto;padding:0 0 60px;}
+
+  /* Official header strip — mimics a government exam portal banner */
+  .tapeband{
+    height:54px;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--navy-dark) 100%);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:700;letter-spacing:.4px;font-size:.95rem;
+    margin-bottom:24px;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+  }
+  .tapeband::before{content:'🏛 Apna Typing Master Pro — Official Stenography Test Portal';}
+
+  #app > .screen{padding:0 20px;}
+
+  .screen{display:none;}
+  .screen.active{display:block; animation:fadein .2s ease;}
+  @keyframes fadein{from{opacity:0;} to{opacity:1;}}
+
+  .back{
+    background:none;border:none;color:var(--muted);font-family:inherit;
+    cursor:pointer;margin-bottom:16px;font-size:.85rem;padding:0;font-weight:600;
+  }
+  .back:hover{color:var(--navy); text-decoration:underline;}
+
+  .dash-card{
+    background:var(--paper);
+    border:1px solid var(--border);
+    border-top:4px solid var(--navy);
+    border-radius:var(--radius);
+    padding:32px 30px;
+    box-shadow:0 1px 6px rgba(20,40,80,.08);
+  }
+  .dash-card h1{font-size:1.6rem;}
+  .dash-lines{margin:18px 0 26px;padding:16px 18px;background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:4px;}
+  .dash-lines .warn-title{font-size:.85rem;color:#6b5410;font-weight:700;margin-bottom:6px;}
+  .dash-lines ul{margin:0;padding-left:20px;}
+  .dash-lines li{font-size:.85rem;color:#6b5410;padding:2px 0;}
+
+  .btn-primary{
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    font-family:inherit;
+    font-weight:700;
+    padding:12px 24px;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:.9rem;
+    letter-spacing:.2px;
+    transition:background .15s ease;
+  }
+  .btn-primary:hover{background:var(--navy-dark);}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-secondary{
+    background:#fff;
+    color:var(--navy);
+    border:1.5px solid var(--navy);
+    font-family:inherit;
+    font-weight:600;
+    padding:11px 20px;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:.85rem;
+  }
+  .btn-secondary:hover{background:#eef2fa;}
+
+  .tag{
+    font-family:inherit;
+    font-size:.68rem;
+    font-weight:700;
+    color:#fff;
+    background:var(--navy);
+    padding:3px 8px;
+    border-radius:3px;
+    margin-left:8px;
+  }
+
+  .lang-block{
+    background:var(--paper);
+    border:1px solid var(--border);
+    border-left:4px solid var(--navy);
+    border-radius:var(--radius);
+    padding:20px 22px;
+    margin-bottom:16px;
+    box-shadow:0 1px 4px rgba(20,40,80,.06);
+  }
+  .lang-block h3{color:var(--text); font-size:1rem; font-family:inherit; font-weight:700;}
+  .speed-row{display:flex; gap:12px; margin-top:14px;}
+  .speed-btn{
+    flex:1;
+    background:#f4f6fb;
+    border:1.5px solid var(--border);
+    color:var(--navy-dark);
+    font-family:inherit;
+    font-weight:700;
+    padding:14px;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:.9rem;
+  }
+  .speed-btn:hover{border-color:var(--navy); background:#eaf0fb;}
+
+  .practice-grid{display:grid; grid-template-columns:240px 1fr; gap:18px; margin-top:6px;}
+  @media (max-width:680px){.practice-grid{grid-template-columns:1fr;}}
+
+  .audio-list{
+    background:var(--paper);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    height:fit-content;
+  }
+  .audio-list h4{color:var(--navy-dark); font-size:.8rem; text-transform:uppercase; letter-spacing:.8px; font-weight:700; border-bottom:2px solid var(--navy); padding-bottom:8px;}
+  #audio-list-ul{list-style:none; margin:12px 0 0; padding:0;}
+  #audio-list-ul li{
+    padding:10px 12px;
+    border-radius:4px;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.85rem;
+    color:var(--text);
+    margin-bottom:4px;
+    border:1px solid transparent;
+  }
+  #audio-list-ul li:hover{background:#f0f3fa; border-color:var(--border);}
+  #audio-list-ul li.selected{background:var(--navy); color:#fff; font-weight:700;}
+
+  .practice-main{display:flex; flex-direction:column; gap:16px;}
+  .hidden{display:none !important;}
+
+  .tape{
+    background:var(--paper);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  #current-audio-name{font-family:inherit; font-weight:700; color:var(--navy-dark); font-size:.92rem;}
+  #play-status{font-family:inherit; color:var(--muted); font-size:.82rem;}
+
+  .timer-row{
+    display:flex; justify-content:space-between; align-items:center;
+    background:var(--navy-dark); border-radius:var(--radius); padding:14px 18px;
+  }
+  .timer-row .mono{color:#dbe4f5;font-size:.85rem;}
+  #timer-display{color:#ffd76b; font-size:1.25rem; font-weight:700; font-family:'Consolas',monospace;}
+
+  textarea#typing-area{
+    width:100%;
+    min-height:180px;
+    background:#fffdf6;
+    color:var(--text);
+    border:1.5px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    font-family:inherit;
+    font-size:1rem;
+    line-height:1.7;
+    resize:vertical;
+  }
+  textarea#typing-area:disabled{opacity:.55; background:#f2f2ee;}
+  textarea#typing-area:focus{outline:2px solid var(--navy);}
+
+  .result-stats{display:flex; gap:14px; flex-wrap:wrap; margin:18px 0 22px;}
+  .stat{
+    background:var(--paper); border:1px solid var(--border); border-top:3px solid var(--navy); border-radius:var(--radius);
+    padding:14px 20px; min-width:120px;
+  }
+  .stat b{display:block; font-family:'Consolas',monospace; font-size:1.5rem; color:var(--navy-dark);}
+  .stat span{font-size:.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; font-weight:700;}
+
+  .result-analysis{
+    background:#fffdf6;
+    color:var(--text);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:22px;
+    font-family:inherit;
+    line-height:2.1;
+    font-size:1rem;
+    margin-bottom:22px;
+  }
+  .w-correct{color:var(--good); font-weight:700;}
+  .w-wrong{color:var(--bad); font-weight:700; text-decoration:underline wavy var(--bad);}
+  .w-missing{color:#9a8f6e; font-style:italic;}
+
+  .actions-row{display:flex; gap:12px; flex-wrap:wrap;}
+
+  :focus-visible{outline:2px solid var(--navy); outline-offset:2px;}
+  @media (prefers-reduced-motion:reduce){ .screen.active{animation:none;} }
+
+  /* ── Result popup (mirrors the typing-test "Performance Dashboard" popup,
+     with the same option-toggles pattern, in the navy official theme) ── */
+  .steno-result-overlay{position:fixed;inset:0;background:#fff;z-index:6000;display:none;flex-direction:column;overflow-y:auto;font-family:inherit;color:var(--text);}
+  .steno-result-overlay.open{display:flex;}
+  .steno-result-body{max-width:980px;margin:0 auto;padding:26px 24px 60px;width:100%;box-sizing:border-box;}
+  .steno-result-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:16px;flex-wrap:wrap;}
+  .steno-result-avatar{width:52px;height:52px;border-radius:8px;background:var(--navy-dark);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;flex-shrink:0;}
+  .steno-result-title{font-family:Georgia,serif;font-size:24px;color:var(--navy-dark);text-align:center;flex:1;}
+  .steno-opt-row{display:flex;flex-wrap:wrap;gap:22px;margin:14px 0 4px;padding:14px 16px;background:#f4f6fb;border:1px solid var(--border);border-radius:6px;}
+  .steno-opt{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--muted);font-weight:600;}
+  .steno-switch{position:relative;width:38px;height:21px;flex-shrink:0;}
+  .steno-switch input{opacity:0;width:0;height:0;}
+  .steno-switch span{position:absolute;inset:0;background:#ccc;border-radius:20px;transition:.2s;cursor:pointer;}
+  .steno-switch span:before{content:'';position:absolute;width:16px;height:16px;left:2.5px;top:2.5px;background:#fff;border-radius:50%;transition:.2s;}
+  .steno-switch input:checked+span{background:var(--navy);}
+  .steno-switch input:checked+span:before{transform:translateX(17px);}
+  .steno-meta-row{display:flex;flex-wrap:wrap;gap:34px;margin:16px 0 6px;}
+  .steno-meta-row div{font-size:13px;color:var(--text);}
+  .steno-meta-row div b{font-weight:700;color:var(--navy-dark);}
+  .steno-cards-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0;}
+  @media(max-width:760px){.steno-cards-grid{grid-template-columns:repeat(2,1fr);}}
+  .steno-card{border:1px solid var(--border);border-top:3px solid var(--navy);border-radius:6px;padding:13px 15px;background:var(--paper);}
+  .steno-card .sc-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;font-weight:700;}
+  .steno-card .sc-val{font-family:'Consolas',monospace;font-size:20px;color:var(--navy-dark);margin-top:4px;font-weight:700;}
+  .steno-result-footer{display:flex;justify-content:flex-end;gap:12px;margin-top:26px;}
+  .exam-std-btn{padding:8px 16px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--navy-dark);font-size:12px;font-weight:700;cursor:pointer;}
+  .exam-std-btn:hover{border-color:var(--navy);}
+  .exam-std-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="tapeband"></div>
+
+  <!-- SCREEN 1: DASHBOARD -->
+  <section id="screen-dashboard" class="screen active">
+    <a href="candidate.html" class="back" style="display:inline-block;">← Apna Typing Master Dashboard</a>
+    <div class="dash-card">
+      <h1>Stenography Test — Candidate Dashboard</h1>
+      <div class="dash-lines">
+        <div class="warn-title">⚠ महत्वपूर्ण निर्देश / IMPORTANT INSTRUCTIONS</div>
+        <ul>
+          <li>डिक्टेशन ऑडियो केवल <b>एक बार</b> चलेगी — दोबारा नहीं चलाई जा सकती (जैसा वास्तविक परीक्षा में होता है)।</li>
+          <li>ऑडियो समाप्त होने के बाद ही ट्रांसक्रिप्शन बॉक्स खुलेगा और टाइमर शुरू होगा।</li>
+          <li>समय समाप्त होने पर उत्तर स्वतः जमा (auto-submit) हो जाएगा।</li>
+          <li>परिणाम तुरंत — शब्द-दर-शब्द मिलान (word-by-word matching) के आधार पर — दिखाया जाएगा।</li>
+        </ul>
+      </div>
+      <button id="btn-open-shorthand" class="btn-primary">Shorthand Test <span class="tag">प्रारंभ करें</span></button>
+    </div>
+  </section>
+
+  <!-- SCREEN 2: LANGUAGE + SPEED SELECT -->
+  <section id="screen-select" class="screen">
+    <button class="back" data-target="screen-dashboard">← Dashboard</button>
+    <h2>Shorthand चुनें</h2>
+
+    <div class="lang-block">
+      <h3>1. Hindi Shorthand</h3>
+      <div class="speed-row">
+        <button class="speed-btn" data-lang="hi" data-wpm="80">80 WPM</button>
+        <button class="speed-btn" data-lang="hi" data-wpm="100">100 WPM</button>
+      </div>
+    </div>
+
+    <div class="lang-block">
+      <h3>2. English Shorthand</h3>
+      <div class="speed-row">
+        <button class="speed-btn" data-lang="en" data-wpm="80">80 WPM</button>
+        <button class="speed-btn" data-lang="en" data-wpm="100">100 WPM</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: AUDIO LIST + PLAYER + TYPING -->
+  <section id="screen-practice" class="screen">
+    <button class="back" data-target="screen-select">← Back</button>
+    <h2 id="practice-title">English Shorthand · 80 WPM</h2>
+
+    <div class="practice-grid">
+      <aside class="audio-list">
+        <h4>List of Audio</h4>
+        <ul id="audio-list-ul"></ul>
+      </aside>
+
+      <div class="practice-main">
+        <div id="current-audio-box" class="tape hidden">
+          <span id="current-audio-name">—</span>
+          <button id="btn-play" class="btn-secondary">▶ Play Audio</button>
+          <span id="play-status"></span>
+        </div>
+
+        <div id="typing-box" class="hidden">
+          <div class="timer-row">
+            <span class="mono">Time left: <b id="timer-display">00:00</b></span>
+            <button id="btn-start-type" class="btn-primary">Start Type</button>
+          </div>
+          <br>
+          <textarea id="typing-area" placeholder="ऑडियो पूरी सुनने के बाद यहाँ टाइप करना शुरू करें..." disabled></textarea>
+          <br><br>
+          <button id="btn-submit" class="btn-primary hidden">Submit</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- (SCREEN 4 removed — result now shown as a popup overlay, see #stenoResultOverlay below) -->
+</div>
+
+<!-- STENO RESULT POPUP — mirrors the typing-test "Performance Dashboard" popup:
+     one popup, with toggle "options" the candidate can flip themselves to see
+     different views of the same result, instead of separate static screens. -->
+<div class="steno-result-overlay" id="stenoResultOverlay">
+  <div class="steno-result-body">
+    <div class="steno-result-hdr">
+      <div class="steno-result-avatar" id="srAvatar">ST</div>
+      <div class="steno-result-title">Stenography Test — Result</div>
+      <div id="result-badge" style="padding:8px 16px;border-radius:4px;font-weight:700;font-size:.85rem;white-space:nowrap;"></div>
+    </div>
+
+    <div class="steno-meta-row">
+      <div><b>Category:</b> <span id="srCategory">—</span></div>
+      <div><b>Passage:</b> <span id="srPassageTitle">—</span></div>
+      <div><b>Date:</b> <span id="srDate">—</span></div>
+    </div>
+
+    <div class="steno-opt-row" style="flex-direction:column;align-items:flex-start;">
+      <div style="font-size:12px;font-weight:700;color:var(--navy-dark);margin-bottom:8px;">📐 Exam Standard चुनें — result उसी परीक्षा के rules के हिसाब से recalculate होगा</div>
+      <div id="examStandardPills" style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="exam-std-btn active" data-std="general" onclick="setExamStandard('general')">General Accuracy</button>
+        <button class="exam-std-btn" data-std="ssc" onclick="setExamStandard('ssc')">SSC Steno</button>
+        <button class="exam-std-btn" data-std="ahc" onclick="setExamStandard('ahc')">Allahabad High Court</button>
+        <button class="exam-std-btn" data-std="upsssc" onclick="setExamStandard('upsssc')">UPSSSC Steno</button>
+      </div>
+      <div id="examStandardNote" style="font-size:11.5px;color:var(--muted);margin-top:8px;"></div>
+    </div>
+
+    <div class="steno-opt-row">
+      <label class="steno-opt">
+        <span class="steno-switch"><input type="checkbox" id="optShowComparison" checked onchange="toggleResultOption()"><span></span></span>
+        शब्द-दर-शब्द तुलना दिखाएं (Word-by-word comparison)
+      </label>
+      <label class="steno-opt">
+        <span class="steno-switch"><input type="checkbox" id="optSpeedBasis" checked onchange="toggleResultOption()"><span></span></span>
+        Speed: <span id="speedBasisLabel">Time Taken के आधार पर</span> (toggle: Time Allotted)
+      </label>
+    </div>
+
+    <div class="steno-cards-grid">
+      <div class="steno-card"><div class="sc-lbl">Accuracy</div><div class="sc-val" id="stat-accuracy">0%</div></div>
+      <div class="steno-card"><div class="sc-lbl">WPM Achieved</div><div class="sc-val" id="stat-wpm">0</div></div>
+      <div class="steno-card"><div class="sc-lbl" id="stat-fullmistake-lbl">Correct Words</div><div class="sc-val" id="stat-correct">0</div></div>
+      <div class="steno-card"><div class="sc-lbl" id="stat-wrong-lbl">Wrong Words</div><div class="sc-val" id="stat-wrong">0</div></div>
+      <div class="steno-card" id="cardHalfMistake" style="display:none;"><div class="sc-lbl">Half Mistakes</div><div class="sc-val" id="stat-half">0</div></div>
+      <div class="steno-card"><div class="sc-lbl">Missed Words</div><div class="sc-val" id="stat-missed">0</div></div>
+      <div class="steno-card" id="cardErrorPct" style="display:none;"><div class="sc-lbl">Error %</div><div class="sc-val" id="stat-errorpct">0%</div></div>
+      <div class="steno-card"><div class="sc-lbl">Words Typed</div><div class="sc-val" id="stat-words">0</div></div>
+      <div class="steno-card"><div class="sc-lbl">Time Used</div><div class="sc-val" id="stat-time">0s</div></div>
+      <div class="steno-card"><div class="sc-lbl">Time Allotted</div><div class="sc-val" id="stat-time-limit">0s</div></div>
+      <div class="steno-card" id="cardExamResult" style="display:none;grid-column:span 2;"><div class="sc-lbl">Exam Result</div><div class="sc-val" id="stat-examresult">—</div></div>
+    </div>
+
+    <div id="comparisonBlock">
+      <div style="font-size:.8rem;color:var(--muted);margin-bottom:10px;">
+        <span class="w-correct" style="margin-right:14px;">■ सही (Correct)</span>
+        <span class="w-wrong" style="margin-right:14px;">■ गलत (Wrong)</span>
+        <span class="w-missing">■ छूटा हुआ (Missed)</span>
+      </div>
+      <div id="result-text" class="result-analysis"></div>
+    </div>
+
+    <div style="font-size:.75rem;color:var(--muted);margin:6px 0 22px;">ℹ️ अलग-अलग परीक्षाओं (SSC / High Court / अन्य) में accuracy की न्यूनतम आवश्यकता अलग-अलग होती है — कृपया अपनी संबंधित परीक्षा की आधिकारिक cutoff से तुलना करें।</div>
+
+    <div class="steno-result-footer">
+      <button id="btn-retry" class="btn-secondary">फिर कोशिश करें</button>
+      <button id="btn-next-level" class="btn-primary hidden">Next: 100 WPM →</button>
+      <button id="btn-home" class="btn-secondary">Dashboard</button>
+    </div>
+  </div>
+</div>
+
+<script src="firebase-config.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+  window.__stenoFirebaseData = {};
+  let resolveLoaded;
+  window.__stenoFirebaseLoaded = new Promise(res=>{ resolveLoaded = res; });
+
+  try{
+    const cfg = window.FIREBASE_CONFIG;
+    if(!cfg) throw new Error('firebase-config.js load nahi hua');
+    const app = initializeApp(cfg);
+    const db = getDatabase(app);
+    let firstLoad = true;
+    onValue(ref(db, 'stenoPassages'), (snap)=>{
+      window.__stenoFirebaseData = snap.exists() ? snap.val() : {};
+      if(firstLoad){ firstLoad = false; resolveLoaded(window.__stenoFirebaseData); }
+    }, ()=>{ if(firstLoad){ firstLoad = false; resolveLoaded({}); } });
+  } catch(e){
+    console.error('Steno Firebase load error:', e);
+    resolveLoaded({});
+  }
+</script>
+
+<script>
+/* ---------------- default fallback passage text (used only until admin uploads real content) ---------------- */
+// Real content (audio + matching text) is managed from the website's own Admin Panel
+// (🎙 Steno Audio tab) and lives in Firebase — so every visitor sees the same content.
+// These defaults are just a safety net for slots the admin hasn't filled in yet.
+const CATEGORIES = ['hi-80', 'hi-100', 'en-80', 'en-100'];
+
+const defaultPassages = {
+  'hi-80': [
+    { title: "पत्र 1 — कार्यालय सूचना", text: "सभी कर्मचारियों को सूचित किया जाता है कि अगले सोमवार से कार्यालय समय प्रातः नौ बजे से सायं छह बजे तक रहेगा। कृपया समय पर उपस्थित रहें।" },
+    { title: "पत्र 2 — ग्राहक अनुरोध", text: "आपके पत्र के लिए धन्यवाद। हमें खेद है कि आपका आदेश समय पर नहीं पहुंचा। हम शीघ्र ही नया माल भेज रहे हैं।" },
+    { title: "पत्र 3 — बैठक सूचना", text: "अगली बैठक शुक्रवार को दोपहर तीन बजे सभागार में आयोजित की जाएगी। सभी विभागों के प्रतिनिधि अपनी रिपोर्ट साथ लाएं।" },
+    { title: "पत्र 4 — आदेश स्वीकृति", text: "आपका आदेश प्राप्त हो गया है और उसे स्वीकृत कर दिया गया है। माल अगले सप्ताह के भीतर भेज दिया जाएगा।" },
+    { title: "पत्र 5 — छुट्टी आवेदन", text: "मैं अगले सोमवार से बुधवार तक व्यक्तिगत कारणों से अवकाश पर रहना चाहता हूं। कृपया मेरे आवेदन को स्वीकृत करें।" }
+  ],
+  'hi-100': [
+    { title: "पत्र 1 — कार्यालय सूचना (तेज़)", text: "सभी कर्मचारियों को सूचित किया जाता है कि अगले सोमवार से कार्यालय समय प्रातः नौ बजे से सायं छह बजे तक रहेगा। कृपया समय पर उपस्थित रहें और अपने विभाग प्रमुख को साप्ताहिक रिपोर्ट अवश्य सौंपें।" },
+    { title: "पत्र 2 — ग्राहक अनुरोध (तेज़)", text: "आपके पत्र के लिए धन्यवाद। हमें खेद है कि आपका आदेश समय पर नहीं पहुंचा। हम शीघ्र ही नया माल भेज रहे हैं और भविष्य में देरी न हो इसका पूरा ध्यान रखा जाएगा।" },
+    { title: "पत्र 3 — बैठक सूचना (तेज़)", text: "अगली बैठक शुक्रवार को दोपहर तीन बजे सभागार में आयोजित की जाएगी। सभी विभागों के प्रतिनिधियों से अनुरोध है कि वे अपनी मासिक प्रगति रिपोर्ट साथ लेकर आएं।" },
+    { title: "पत्र 4 — आदेश स्वीकृति (तेज़)", text: "आपका आदेश प्राप्त हो गया है और उसे स्वीकृत कर दिया गया है। माल अगले सप्ताह के भीतर आपके पते पर भेज दिया जाएगा। भुगतान की रसीद साथ संलग्न है।" },
+    { title: "पत्र 5 — छुट्टी आवेदन (तेज़)", text: "मैं अगले सोमवार से बुधवार तक व्यक्तिगत कारणों से अवकाश पर रहना चाहता हूं। कृपया मेरे आवेदन को स्वीकृत करें, मैं अपना कार्य समय से पहले पूरा कर दूंगा।" }
+  ],
+  'en-80': [
+    { title: "Letter 1 — Office Notice", text: "All staff members are informed that from next Monday, office hours will be from nine to six. Kindly report on time." },
+    { title: "Letter 2 — Customer Request", text: "Thank you for your letter. We regret that your order did not reach you on time. We are dispatching the fresh consignment." },
+    { title: "Letter 3 — Meeting Notice", text: "The next meeting will be held on Friday afternoon at three o'clock. All representatives should bring their reports." },
+    { title: "Letter 4 — Order Confirmation", text: "Your order has been received and confirmed. The goods will be dispatched within the next week." },
+    { title: "Letter 5 — Leave Application", text: "I would like to remain on leave from Monday to Wednesday due to personal reasons. Kindly approve my application." }
+  ],
+  'en-100': [
+    { title: "Letter 1 — Office Notice (fast)", text: "All staff members are informed that from next Monday, office hours will be from nine in the morning until six in the evening. Kindly report on time and submit your weekly report to your department head." },
+    { title: "Letter 2 — Customer Request (fast)", text: "Thank you for your letter. We regret that your order did not reach you on time. We are dispatching the fresh consignment immediately and will ensure such delays do not occur in future." },
+    { title: "Letter 3 — Meeting Notice (fast)", text: "The next meeting will be held on Friday afternoon at three o'clock in the main hall. All department representatives are requested to bring their monthly progress reports along with them." },
+    { title: "Letter 4 — Order Confirmation (fast)", text: "Your order has been received and duly confirmed. The goods will be dispatched to your address within the next week. A copy of the payment receipt is enclosed herewith for your records." },
+    { title: "Letter 5 — Leave Application (fast)", text: "I would like to remain on leave from next Monday to Wednesday due to personal reasons. Kindly approve my application, and I shall complete my pending work well before the deadline." }
+  ]
+};
+
+/* ---------------- state ---------------- */
+let state = {
+  lang: 'en',
+  wpm: 80,
+  selectedKey: null,   // Firebase push key (or 'default:N' for fallback samples) of the chosen passage
+  timeLimitSeconds: 0,
+  remainingSeconds: 0,
+  timerHandle: null,
+  typingStartedAt: null,
+  currentPassageText: ''
+};
+let currentList = [];   // the list of passages currently shown for this category
+
+function currentCategory(){ return `${state.lang}-${state.wpm}`; }
+
+/* ---------------- navigation ---------------- */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+document.querySelectorAll('[data-target]').forEach(btn=>{
+  btn.addEventListener('click', ()=> showScreen(btn.dataset.target));
+});
+document.getElementById('btn-open-shorthand').addEventListener('click', ()=> showScreen('screen-select'));
+document.getElementById('btn-home').addEventListener('click', ()=>{
+  document.getElementById('stenoResultOverlay').classList.remove('open');
+  showScreen('screen-dashboard');
+});
+
+/* ---------------- speed selection -> open practice screen ---------------- */
+document.querySelectorAll('.speed-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    state.lang = btn.dataset.lang;
+    state.wpm = parseInt(btn.dataset.wpm, 10);
+    openPractice();
+  });
+});
+
+async function openPractice(){
+  const langLabel = state.lang === 'hi' ? 'Hindi Shorthand' : 'English Shorthand';
+  document.getElementById('practice-title').textContent = `${langLabel} · ${state.wpm} WPM`;
+  const category = currentCategory();
+
+  await window.__stenoFirebaseLoaded; // wait for at least the first Firebase snapshot
+
+  const fbCat = (window.__stenoFirebaseData || {})[category] || {};
+  let list = Object.keys(fbCat)
+    .map((k, i)=>({
+      key: k,
+      title: (fbCat[k].title && fbCat[k].title.trim()) ? fbCat[k].title.trim() : ('Audio ' + (i + 1)),
+      text: fbCat[k].text || '',
+      audioURL: fbCat[k].audioURL || null,
+      createdAt: fbCat[k].createdAt || 0
+    }))
+    .sort((a, b)=> a.createdAt - b.createdAt);
+
+  // if admin hasn't added any real content yet for this category, show sample defaults
+  if(list.length === 0){
+    list = defaultPassages[category].map((p, i)=>({ key: 'default:' + i, title: p.title, text: p.text, audioURL: null }));
+  }
+  currentList = list;
+
+  const ul = document.getElementById('audio-list-ul');
+  ul.innerHTML = '';
+  list.forEach((entry, i)=>{
+    const li = document.createElement('li');
+    li.textContent = entry.title || ('Audio ' + (i + 1));
+    li.dataset.key = entry.key;
+    li.addEventListener('click', ()=> selectAudio(entry.key));
+    ul.appendChild(li);
+  });
+
+  // reset panels
+  document.getElementById('current-audio-box').classList.add('hidden');
+  document.getElementById('typing-box').classList.add('hidden');
+  state.selectedKey = null;
+  showScreen('screen-practice');
+}
+
+function selectAudio(key){
+  state.selectedKey = key;
+  document.querySelectorAll('#audio-list-ul li').forEach(li=>{
+    li.classList.toggle('selected', li.dataset.key === key);
+  });
+  const entry = currentList.find(e=> e.key === key);
+  document.getElementById('current-audio-name').textContent = entry ? entry.title : '—';
+  document.getElementById('play-status').textContent = '';
+  document.getElementById('current-audio-box').classList.remove('hidden');
+  const playBtn = document.getElementById('btn-play');
+  playBtn.disabled = false;
+  playBtn.textContent = '▶ Play Audio';
+
+  // reset typing box for the newly chosen audio
+  document.getElementById('typing-box').classList.add('hidden');
+  const ta = document.getElementById('typing-area');
+  ta.value = '';
+  ta.disabled = true;
+  document.getElementById('btn-start-type').disabled = false;
+  document.getElementById('btn-submit').classList.add('hidden');
+  stopTimer();
+}
+
+/* ---------------- audio playback: Firebase-uploaded audio first, TTS as fallback ---------------- */
+document.getElementById('btn-play').addEventListener('click', playCurrentAudio);
+
+let currentAudioEl = null;
+
+async function playCurrentAudio(){
+  const status = document.getElementById('play-status');
+  if(!state.selectedKey){
+    status.textContent = 'पहले बाईं तरफ की List of Audio में से कोई audio चुनें।';
+    return;
+  }
+  const entry = currentList.find(e=> e.key === state.selectedKey);
+  if(!entry){ status.textContent = 'Passage नहीं मिला।'; return; }
+  const btn = document.getElementById('btn-play');
+
+  btn.disabled = true;
+  status.textContent = 'लोड हो रहा है...';
+
+  state.currentPassageText = entry.text;
+  document.getElementById('current-audio-name').textContent = entry.title;
+
+  if(currentAudioEl){ currentAudioEl.pause(); currentAudioEl = null; }
+
+  if(!entry.audioURL){
+    status.textContent = 'Admin ने अभी इस passage के लिए audio upload नहीं की — TTS से पढ़ा जा रहा है...';
+    speakWithTTS(state.currentPassageText, ()=>{
+      status.textContent = '✅ पूर्ण — ऑडियो केवल एक बार ही चलती है। अब टाइप करना शुरू करें।';
+      btn.textContent = '✔ Audio Played';
+      revealTypingBox();
+    });
+    return;
+  }
+
+  const audioEl = new Audio(entry.audioURL);
+  currentAudioEl = audioEl;
+  let fellBack = false;
+
+  // Real exam rule: dictation audio plays only ONCE — no rewind, no replay.
+  audioEl.addEventListener('seeking', ()=>{ audioEl.currentTime = audioEl.duration || 0; });
+
+  audioEl.addEventListener('playing', ()=>{
+    status.textContent = '🔊 चल रहा है — ध्यान से सुनें, यह दोबारा नहीं चलेगी...';
+  });
+  audioEl.addEventListener('ended', ()=>{
+    status.textContent = '✅ पूर्ण — ऑडियो केवल एक बार ही चलती है। अब टाइप करना शुरू करें।';
+    btn.textContent = '✔ Audio Played';
+    revealTypingBox();
+  });
+  audioEl.addEventListener('error', ()=>{
+    if(fellBack) return;
+    fellBack = true;
+    status.textContent = 'audio लोड नहीं हुआ — अस्थायी रूप से TTS से पढ़ा जा रहा है...';
+    speakWithTTS(state.currentPassageText, ()=>{
+      status.textContent = '✅ पूर्ण — ऑडियो केवल एक बार ही चलती है। अब टाइप करना शुरू करें।';
+      btn.textContent = '✔ Audio Played';
+      revealTypingBox();
+    });
+  });
+
+  audioEl.play().catch(()=> audioEl.dispatchEvent(new Event('error')));
+}
+
+function speakWithTTS(text, onDone){
+  if(!('speechSynthesis' in window)){ onDone(); return; }
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = state.lang === 'hi' ? 'hi-IN' : 'en-US';
+  utter.rate = Math.min(1.3, Math.max(0.6, state.wpm / 150));
+  utter.onend = onDone;
+  utter.onerror = onDone;
+  window.speechSynthesis.speak(utter);
+}
+
+/* ---------------- typing area + timer ---------------- */
+function revealTypingBox(){
+  const wordCount = state.currentPassageText.trim().split(/\s+/).length;
+  state.timeLimitSeconds = Math.max(20, Math.round((wordCount / state.wpm) * 60));
+  state.remainingSeconds = state.timeLimitSeconds;
+  updateTimerDisplay();
+  document.getElementById('typing-box').classList.remove('hidden');
+}
+
+document.getElementById('btn-start-type').addEventListener('click', ()=>{
+  const ta = document.getElementById('typing-area');
+  ta.disabled = false;
+  ta.value = '';
+  ta.focus();
+  document.getElementById('btn-start-type').disabled = true;
+  document.getElementById('btn-submit').classList.remove('hidden');
+  state.typingStartedAt = Date.now();
+  startTimer();
+});
+
+document.getElementById('btn-submit').addEventListener('click', ()=> finishTest(false));
+
+function startTimer(){
+  stopTimer();
+  state.timerHandle = setInterval(()=>{
+    state.remainingSeconds--;
+    updateTimerDisplay();
+    if(state.remainingSeconds <= 0){
+      finishTest(true);
+    }
+  }, 1000);
+}
+function stopTimer(){
+  if(state.timerHandle){ clearInterval(state.timerHandle); state.timerHandle = null; }
+}
+function updateTimerDisplay(){
+  const m = Math.floor(Math.max(0,state.remainingSeconds) / 60).toString().padStart(2,'0');
+  const s = Math.max(0,state.remainingSeconds % 60).toString().padStart(2,'0');
+  document.getElementById('timer-display').textContent = `${m}:${s}`;
+}
+
+/* ---------------- scoring + result screen ---------------- */
+let resultState = null; // raw numbers kept here so the toggles can recompute without re-running the whole test
+let currentExamStandard = 'general';
+
+// Small edit-distance helper — used to tell "spelling mistake" (word is close
+// to correct, SSC counts this as a HALF mistake) apart from a genuinely
+// "wrong/substituted word" (SSC counts this as a FULL mistake).
+function levenshtein(a, b){
+  const m = a.length, n = b.length;
+  if(m === 0) return n;
+  if(n === 0) return m;
+  const dp = Array.from({length:m+1}, (_,i)=>[i, ...Array(n).fill(0)]);
+  for(let j=0;j<=n;j++) dp[0][j] = j;
+  for(let i=1;i<=m;i++){
+    for(let j=1;j<=n;j++){
+      dp[i][j] = a[i-1]===b[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]);
+    }
+  }
+  return dp[m][n];
+}
+
+function finishTest(timeUp){
+  stopTimer();
+  document.getElementById('typing-area').disabled = true;
+  document.getElementById('btn-submit').classList.add('hidden');
+
+  const originalWords = state.currentPassageText.trim().split(/\s+/);
+  const typedRaw = document.getElementById('typing-area').value.trim();
+  const typedWords = typedRaw.length ? typedRaw.split(/\s+/) : [];
+
+  const secondsUsed = timeUp ? state.timeLimitSeconds : Math.max(1, Math.round((Date.now() - state.typingStartedAt)/1000));
+
+  // build word-by-word comparison, classifying each mismatch as a FULL
+  // mistake or HALF mistake per SSC's documented convention:
+  //   FULL  = omission, addition, or a genuinely different/wrong word
+  //   HALF  = spelling-only slip (word is close to correct) or a missing/
+  //           misplaced full-stop
+  const maxLen = Math.max(originalWords.length, typedWords.length);
+  let correctCount = 0, fullMistakeCount = 0, halfMistakeCount = 0, missedCount = 0, extraCount = 0;
+  let html = '';
+  const stripPunct = w => w.replace(/[.,;:!?"'\u0964]/g,'');
+  const normalize = w => stripPunct(w).toLowerCase();
+
+  for(let i=0;i<maxLen;i++){
+    const orig = originalWords[i];
+    const typed = typedWords[i];
+    if(orig === undefined){
+      html += `<span class="w-wrong">${typed}</span> `;
+      extraCount++; fullMistakeCount++;
+    } else if(typed === undefined){
+      html += `<span class="w-missing">${orig}</span> `;
+      missedCount++; fullMistakeCount++;
+    } else if(normalize(orig) === normalize(typed)){
+      // words match once punctuation is stripped — check if only the
+      // full-stop/punctuation differs (SSC: half mistake)
+      if(stripPunct(orig) === stripPunct(typed) && orig !== typed){
+        correctCount++; halfMistakeCount++;
+        html += `<span class="w-correct">${orig}</span> `;
+      } else {
+        correctCount++;
+        html += `<span class="w-correct">${orig}</span> `;
+      }
+    } else {
+      const dist = levenshtein(normalize(orig), normalize(typed));
+      const closeEnough = dist > 0 && dist <= 2 && normalize(orig).length > 3;
+      if(closeEnough){
+        halfMistakeCount++; // spelling-slip → half mistake
+      } else {
+        fullMistakeCount++; // genuinely different word → full mistake
+      }
+      html += `<span class="w-wrong">${orig}</span> `;
+    }
+  }
+
+  const accuracy = Math.round((correctCount / originalWords.length) * 100);
+  const weightedErrors = fullMistakeCount + (halfMistakeCount * 0.5);
+  const errorPct = Math.round((weightedErrors / originalWords.length) * 1000) / 10;
+
+  const entry = currentList.find(e=> e.key === state.selectedKey);
+  resultState = {
+    correctCount, fullMistakeCount, halfMistakeCount, missedCount, accuracy, errorPct,
+    totalOriginalWords: originalWords.length,
+    typedWordsCount: typedWords.length,
+    secondsUsed, timeLimitSeconds: state.timeLimitSeconds,
+    html, wpmLevel: state.wpm,
+    categoryLabel: `${state.lang === 'hi' ? 'Hindi' : 'English'} · ${state.wpm} WPM`,
+    passageTitle: entry ? entry.title : '—'
+  };
+
+  document.getElementById('srAvatar').textContent = state.lang === 'hi' ? 'हि' : 'EN';
+  document.getElementById('srCategory').textContent = resultState.categoryLabel;
+  document.getElementById('srPassageTitle').textContent = resultState.passageTitle;
+  document.getElementById('srDate').textContent = new Date().toLocaleDateString('en-GB');
+  document.getElementById('stat-missed').textContent = missedCount;
+  document.getElementById('stat-time-limit').textContent = `${state.timeLimitSeconds}s`;
+  document.getElementById('result-text').innerHTML = html;
+
+  // reset the two option-toggles to their default state for this fresh result
+  document.getElementById('optShowComparison').checked = true;
+  document.getElementById('optSpeedBasis').checked = true;
+
+  // always re-open on "General" for a fresh result, candidate can switch from there
+  document.querySelectorAll('.exam-std-btn').forEach(b=> b.classList.toggle('active', b.dataset.std === 'general'));
+  setExamStandard('general');
+
+  // offer next level (100 wpm) only right after completing 80 wpm
+  const nextBtn = document.getElementById('btn-next-level');
+  if(state.wpm === 80){
+    nextBtn.classList.remove('hidden');
+    nextBtn.textContent = 'Next: 100 WPM →';
+    nextBtn.onclick = ()=>{ document.getElementById('stenoResultOverlay').classList.remove('open'); state.wpm = 100; openPractice(); };
+  } else {
+    nextBtn.classList.add('hidden');
+  }
+
+  document.getElementById('btn-retry').onclick = ()=>{ document.getElementById('stenoResultOverlay').classList.remove('open'); openPractice(); };
+
+  document.getElementById('stenoResultOverlay').classList.add('open');
+}
+
+// The candidate can pick which exam's official evaluation style to view the
+// SAME result through — the underlying mistakes don't change, only how
+// they're scored/labelled changes.
+function setExamStandard(std){
+  if(!resultState) return;
+  currentExamStandard = std;
+  document.querySelectorAll('.exam-std-btn').forEach(b=> b.classList.toggle('active', b.dataset.std === std));
+
+  const badge = document.getElementById('result-badge');
+  const noteEl = document.getElementById('examStandardNote');
+  const cardHalf = document.getElementById('cardHalfMistake');
+  const cardErrPct = document.getElementById('cardErrorPct');
+  const cardExamResult = document.getElementById('cardExamResult');
+  const fullLbl = document.getElementById('stat-fullmistake-lbl');
+  const wrongLbl = document.getElementById('stat-wrong-lbl');
+
+  if(std === 'general'){
+    cardHalf.style.display = 'none';
+    cardErrPct.style.display = 'none';
+    cardExamResult.style.display = 'none';
+    fullLbl.textContent = 'Correct Words';
+    wrongLbl.textContent = 'Wrong Words';
+    document.getElementById('stat-correct').textContent = resultState.correctCount;
+    document.getElementById('stat-wrong').textContent = resultState.fullMistakeCount + resultState.halfMistakeCount;
+    document.getElementById('stat-accuracy').textContent = `${resultState.accuracy}%`;
+    noteEl.textContent = 'सामान्य शब्द-मिलान accuracy — किसी specific परीक्षा के rules apply नहीं हो रहे।';
+    if(resultState.accuracy >= 95){ setBadge(badge,'✅ उत्कृष्ट (Excellent)', 'good'); }
+    else if(resultState.accuracy >= 85){ setBadge(badge,'👍 अच्छा (Good)', 'warn'); }
+    else { setBadge(badge,'⚠ सुधार आवश्यक (Needs Improvement)', 'bad'); }
+
+  } else if(std === 'ssc'){
+    cardHalf.style.display = 'block';
+    cardErrPct.style.display = 'block';
+    cardExamResult.style.display = 'block';
+    fullLbl.textContent = 'Full Mistakes';
+    wrongLbl.textContent = 'Half Mistakes (shown below)';
+    document.getElementById('stat-correct').textContent = resultState.fullMistakeCount;
+    document.getElementById('stat-wrong').textContent = resultState.halfMistakeCount;
+    document.getElementById('stat-half').textContent = resultState.halfMistakeCount;
+    document.getElementById('stat-errorpct').textContent = `${resultState.errorPct}%`;
+    document.getElementById('stat-accuracy').textContent = `${resultState.accuracy}%`;
+    const grade = resultState.wpmLevel >= 100 ? 'C' : 'D';
+    const threshold = resultState.wpmLevel >= 100 ? 7 : 10;
+    const pass = resultState.errorPct <= threshold;
+    document.getElementById('stat-examresult').textContent = `${pass ? '✅ QUALIFIED' : '❌ NOT QUALIFIED'} (Grade ${grade}, ≤${threshold}% allowed)`;
+    setBadge(badge, pass ? `✅ SSC Grade ${grade} — Qualified` : `❌ SSC Grade ${grade} — Not Qualified`, pass ? 'good' : 'bad');
+    noteEl.textContent = `SSC ke documented rules: Full mistake = 1 error, Half mistake (spelling/full-stop) = 0.5 error. Grade C (100 wpm) ≤7%, Grade D (80 wpm) ≤10% allowed. Category (UR/OBC/SC-ST) ke hisaab se threshold thoda alag ho sakta hai — apne official notice se confirm karein.`;
+
+  } else if(std === 'ahc'){
+    cardHalf.style.display = 'none';
+    cardErrPct.style.display = 'block';
+    cardExamResult.style.display = 'block';
+    fullLbl.textContent = 'Correct Words';
+    wrongLbl.textContent = 'Wrong Words';
+    document.getElementById('stat-correct').textContent = resultState.correctCount;
+    document.getElementById('stat-wrong').textContent = resultState.fullMistakeCount + resultState.halfMistakeCount;
+    document.getElementById('stat-errorpct').textContent = `${100 - resultState.accuracy}%`;
+    document.getElementById('stat-accuracy').textContent = `${resultState.accuracy}%`;
+    const marks = Math.max(0, Math.round((resultState.accuracy/100) * 25 * 10)/10);
+    const pass = marks >= 10;
+    document.getElementById('stat-examresult').textContent = `${marks}/25 — ${pass ? '✅ QUALIFIED (≥10/25)' : '❌ NOT QUALIFIED (<10/25)'}`;
+    setBadge(badge, pass ? '✅ Allahabad HC — Qualified' : '❌ Allahabad HC — Not Qualified', pass ? 'good' : 'bad');
+    noteEl.textContent = '⚠ Allahabad HC ka exact per-error deduction formula publicly documented nahi mila — sirf marks-scale (25 marks, min 10/25 qualifying) confirmed hai. Ye ek approximation hai (accuracy % ko 25 marks mein proportionally convert kiya gaya), exact official formula nahi.';
+
+  } else if(std === 'upsssc'){
+    cardHalf.style.display = 'block';
+    cardErrPct.style.display = 'block';
+    cardExamResult.style.display = 'block';
+    fullLbl.textContent = 'Full Mistakes';
+    wrongLbl.textContent = 'Half Mistakes (shown below)';
+    document.getElementById('stat-correct').textContent = resultState.fullMistakeCount;
+    document.getElementById('stat-wrong').textContent = resultState.halfMistakeCount;
+    document.getElementById('stat-half').textContent = resultState.halfMistakeCount;
+    document.getElementById('stat-errorpct').textContent = `${resultState.errorPct}%`;
+    document.getElementById('stat-accuracy').textContent = `${resultState.accuracy}%`;
+    const pass = resultState.errorPct <= 5;
+    document.getElementById('stat-examresult').textContent = `${pass ? '✅ QUALIFIED' : '❌ DISQUALIFIED'} (≤5% allowed)`;
+    setBadge(badge, pass ? '✅ UPSSSC — Qualified' : '❌ UPSSSC — Disqualified', pass ? 'good' : 'bad');
+    noteEl.textContent = 'UPSSSC नियम: 80 wpm डिक्टेशन, 400 शब्द / 5 मिनट, transcription 30-40 मिनट। Full mistake (शब्द छूटना/नया शब्द/गलत शब्द) = 1 error, Half mistake (spelling/मात्रा/विराम-चिह्न/case) = 0.5 error। कुल त्रुटि ≤5% होने पर Qualified, 5% से अधिक पर Disqualified — merit list में नहीं जुड़ता (केवल qualifying)।';
+  }
+
+  toggleResultOption();
+}
+
+function setBadge(badge, text, kind){
+  badge.textContent = text;
+  if(kind === 'good'){ badge.style.background = '#e3f5ea'; badge.style.color = 'var(--good)'; badge.style.border = '1px solid #9fd8b6'; }
+  else if(kind === 'warn'){ badge.style.background = '#fff6e5'; badge.style.color = '#8a6d1f'; badge.style.border = '1px solid var(--warn-border)'; }
+  else { badge.style.background = '#fdeceb'; badge.style.color = 'var(--bad)'; badge.style.border = '1px solid #eab4ae'; }
+}
+
+// The two "options" the candidate can flip themselves — same idea as the
+// typing-test result popup's toggle switches.
+function toggleResultOption(){
+  if(!resultState) return;
+
+  // Option 1: show/hide the word-by-word comparison block
+  const showComparison = document.getElementById('optShowComparison').checked;
+  document.getElementById('comparisonBlock').style.display = showComparison ? 'block' : 'none';
+
+  // Option 2: WPM calculated on "time actually taken" vs "full time allotted"
+  const basisOnTaken = document.getElementById('optSpeedBasis').checked;
+  document.getElementById('speedBasisLabel').textContent = basisOnTaken ? 'Time Taken के आधार पर' : 'Time Allotted के आधार पर';
+  const basisSeconds = basisOnTaken ? resultState.secondsUsed : resultState.timeLimitSeconds;
+  const wpmAchieved = Math.round((resultState.typedWordsCount / Math.max(basisSeconds,1)) * 60);
+  document.getElementById('stat-wpm').textContent = wpmAchieved;
+  document.getElementById('stat-words').textContent = resultState.typedWordsCount;
+  document.getElementById('stat-time').textContent = `${resultState.secondsUsed}s`;
+}
+</script>
+<script src="anti-copy.js"></script>
+</body>
+</html>

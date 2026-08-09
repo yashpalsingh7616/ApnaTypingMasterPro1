@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Apna Typing Master Pro — India's typing practice platform for SSC CGL/CHSL, RRB NTPC, High Court, UPSSSC and other government exams. Practice English & Hindi typing, Stenography, take live tests, and track your WPM & accuracy — free.">
+<meta name="keywords" content="typing test, SSC typing test, hindi typing practice, kruti dev typing, mangal typing, stenography practice, government exam typing, allahabad high court typing test, upsssc typing test, speed test online">
+<meta name="author" content="Apna Typing Master Pro">
+<link rel="canonical" href="https://apnatypingmaster.com/">
+
+<!-- Open Graph / social share preview -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Apna Typing Master Pro — India's #1 Typing Practice">
+<meta property="og:description" content="Practice English & Hindi typing, Stenography and Speed Master for SSC, RRB, High Court, UPSSSC and other government exams — free.">
+<meta property="og:image" content="https://apnatypingmaster.com/assets/bg-keyboard.jpg">
+<meta property="og:url" content="https://apnatypingmaster.com/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Apna Typing Master Pro — India's #1 Typing Practice">
+<meta name="twitter:description" content="Practice English & Hindi typing, Stenography and Speed Master for government exams — free.">
+
+<!-- Favicon (inline SVG — no separate image file needed) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23f0a500'/%3E%3Ctext x='50' y='68' font-size='55' font-family='Arial,sans-serif' font-weight='800' fill='%230d0d0d' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<title>Apna Typing Master Pro — India's #1 Typing Practice</title>
+</head>
+<body>
+
+<div id="landingPage">
+  <header class="lp-header">
+    <div class="logo" onclick="window.scrollTo(0,0)">
+      <div class="logo-icon">⌨</div>
+      Apna Typing <span>Master</span> Pro
+    </div>
+    <button class="lp-nav-toggle" id="lpNavToggle" onclick="toggleMobileNav()" aria-label="Menu">☰</button>
+    <nav class="lp-nav" id="lpNav">
+      <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Home</a>
+      <a href="speed-master.html" class="nav-speed-master">⚡ Speed Master</a>
+      <a href="#">Pricing</a>
+      <a href="#features">Features</a>
+      <div class="user-badge" id="userBadge">
+        <span class="user-dot"></span>
+        <span id="userNameDisplay">User</span>
+        <button class="btn-logout-lp" onclick="doLogout()">Logout</button>
+      </div>
+      <button class="lp-btn lp-btn-login" id="headerLoginBtn" onclick="openAuthModal('login')">Log In</button>
+      <button class="lp-btn lp-btn-start" id="headerStartBtn" onclick="openAuthModal('signup')">Get Started →</button>
+    </nav>
+  </header>
+
+  <!-- BG IMAGE WRAPPER: header ke baad se footer tak — image background mein -->
+  <div class="lp-bg-wrap">
+
+  <section class="hero">
+    <div class="badge">🏆 INDIA'S #1 TYPING PRACTICE PLATFORM</div>
+    <h1>Master Typing.<br>Pass Every <span class="highlight">Government Exam.</span></h1>
+    <p>Practice English & Hindi typing for SSC, RRB, High Court, UPSC and more. Real exam patterns, live timers, detailed reports.</p>
+    <div class="hero-buttons">
+      <button class="btn-primary-lp" onclick="openAuthModal('signup')">Start Free Practice →</button>
+      <button class="btn-secondary-lp" onclick="openAuthModal('login')">Log In</button>
+    </div>
+  </section>
+
+  <div class="lp-stats">
+    <div><div class="stat-num">2.4L+</div><div class="stat-label">Registered Users</div></div>
+    <div><div class="stat-num">500+</div><div class="stat-label">Practice Passages</div></div>
+    <div><div class="stat-num">18+</div><div class="stat-label">Exam Patterns</div></div>
+    <div><div class="stat-num">98%</div><div class="stat-label">Success Rate</div></div>
+  </div>
+
+  <section class="features" id="features">
+    <div class="features-title">Everything You Need to Qualify</div>
+    <div class="features-sub">Built specifically for Indian government exam aspirants</div>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="feat-card-icon">📝</div><h3>Real Exam Passages</h3><p>Practice with passages from actual SSC CGL, RRB NTPC, High Court, and UPSC exams. 500+ exercises available.</p></div>
+      <div class="feat-card"><div class="feat-card-icon">🌐</div><h3>English & Hindi</h3><p>Full support for English typing and Hindi typing in KrutiDev, DevLys, and Mangal Unicode fonts.</p></div>
+      <div class="feat-card"><div class="feat-card-icon">📊</div><h3>Detailed Analysis</h3><p>Get WPM, accuracy, backspace count, net/gross speed — exactly the way your exam will calculate it.</p></div>
+      <div class="feat-card"><div class="feat-card-icon">🏆</div><h3>Exam Mode</h3><p>Simulate real exam conditions with strict timer, no corrections, and official evaluation criteria.</p></div>
+      <div class="feat-card"><div class="feat-card-icon">🔴</div><h3>Live Tests — Free!</h3><p>Participate in scheduled live typing tests with results & rankings. Free for all registered users.</p></div>
+      <div class="feat-card"><div class="feat-card-icon">📱</div><h3>Mobile Friendly</h3><p>Practice on any device. Sync progress seamlessly across all your devices.</p></div>
+      <div class="feat-card"><div class="feat-card-icon">⚡</div><h3>Speed Master</h3><p>Free-for-all typing booster — type random word passages, push your WPM, and climb the monthly leaderboard.</p></div>
+      <div class="feat-card"><div class="feat-card-icon">🎙</div><h3>Steno Dictation</h3><p>Listen to real dictation audio and type along — practice exactly like the actual steno exam.</p></div>
+      <div class="feat-card"><div class="feat-card-icon">🥇</div><h3>Monthly Leaderboard</h3><p>Top 50 fastest typists and most-active practicers ranked every month — fresh competition, every month.</p></div>
+    </div>
+  </section>
+
+  <footer class="lp-footer-new">
+    <div class="lp-footer-top">
+
+      <!-- Column 1: About Us -->
+      <div class="lf-col">
+        <div class="lf-logo">
+          <div class="lf-logo-icon">⌨</div>
+          <span>Apna Typing <b>Master</b> Pro</span>
+        </div>
+        <p class="lf-about-text">India ka sabse advanced typing practice platform — SSC, RRB, High Court, UPSSSC aur sabhi government exams ke liye. Real exam patterns, live timers, aur detailed performance reports ke saath apni typing speed badhayein aur har exam mein qualify karein.</p>
+        <div class="lf-social">
+          <a href="https://www.youtube.com/@ashulipikhindishorthand" target="_blank" class="lf-social-btn yt" title="YouTube">
+            <span>▶</span> YouTube
+          </a>
+          <a href="https://t.me/apnatypingmasterproandhindisteno" target="_blank" class="lf-social-btn tg" title="Telegram">
+            <span>✈</span> Telegram
+          </a>
+          <a href="mailto:businesspaheli177@gmail.com" class="lf-social-btn em" title="Email">
+            <span>✉</span> Email
+          </a>
+        </div>
+      </div>
+
+      <!-- Column 2: Quick Links -->
+      <div class="lf-col">
+        <div class="lf-col-title">Quick Links</div>
+        <ul class="lf-links">
+          <li><a href="index.html">🏠 Home</a></li>
+          <li><a href="candidate.html">📋 Dashboard</a></li>
+          <li><a href="typing.html">⌨ Typing Test</a></li>
+          <li><a href="live-tests.html">🔴 Live Tests</a></li>
+          <li><a href="speed-master.html">⚡ Speed Master</a></li>
+          <li><a href="steno-practice.html">🎙 Steno Practice</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Exam Coverage -->
+      <div class="lf-col">
+        <div class="lf-col-title">Exam Coverage</div>
+        <ul class="lf-links">
+          <li><a href="typing.html?rule=ssc_eng">📝 SSC CGL / CHSL</a></li>
+          <li><a href="typing.html?rule=rrb_eng">🚂 RRB NTPC</a></li>
+          <li><a href="typing.html?rule=upsssc_eng">🏛 UPSSSC</a></li>
+          <li><a href="typing.html?rule=ahc_eng">⚖ Allahabad High Court</a></li>
+          <li><a href="typing.html?lang=hindi">🇮🇳 Hindi Typing</a></li>
+          <li><a href="typing.html?lang=english">🌐 English Typing</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Contact & Info -->
+      <div class="lf-col">
+        <div class="lf-col-title">Contact Us</div>
+        <ul class="lf-links lf-contact">
+          <li>📧 <a href="mailto:businesspaheli177@gmail.com">businesspaheli177@gmail.com</a></li>
+          <li>📱 <a href="https://t.me/apnatypingmasterproandhindisteno" target="_blank">Telegram Channel</a></li>
+          <li>▶ <a href="https://www.youtube.com/@ashulipikhindishorthand" target="_blank">YouTube Channel</a></li>
+        </ul>
+        <div class="lf-col-title" style="margin-top:18px;">Support Hours</div>
+        <ul class="lf-links">
+          <li>🕐 Mon–Sat: 9 AM – 6 PM</li>
+          <li>📅 Sunday: Closed</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Footer Bottom Bar -->
+    <div class="lf-bottom">
+      <div class="lf-copy">© 2026 Apna Typing Master Pro · Made with ❤️ for India's exam aspirants</div>
+      <div class="lf-bottom-links">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="refund-policy.html">Refund Policy</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <!-- Admin link — bahut chhota, normal users dhyan nahi dete -->
+        <a href="admin.html" class="lf-admin-hidden" title="Admin">⚙</a>
+      </div>
+    </div>
+  </footer>
+  </div><!-- /lp-bg-wrap -->
+</div>
+
+<!-- =====================================================
+     AUTH MODAL
+     ===================================================== -->
+<div class="modal-overlay" id="authModal" onclick="handleAuthOverlay(event)">
+  <div class="modal-box-auth">
+    <button class="modal-close-btn" onclick="closeAuthModal()">✕</button>
+    <div class="modal-title" id="authTitle">Welcome Back 👋</div>
+    <div class="modal-sub" id="authSub">Apna account access karein</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Log In</button>
+      <button class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">Sign Up</button>
+    </div>
+    <div id="authLoginForm">
+      <div class="field"><label>Email</label><input type="text" id="authLoginEmail" placeholder="example@email.com"/></div>
+      <div class="field"><label>Password</label><div class="pwd-wrap"><input type="password" id="authLoginPass" placeholder="••••••••"/><button type="button" class="pwd-toggle" onclick="togglePwd('authLoginPass',this)">👁</button></div></div>
+      <div class="error-msg" id="authLoginErr">❌ Email aur password dono likhein.</div>
+      <button class="btn-submit-auth" onclick="doAuthLogin()">Log In →</button>
+      <div style="text-align:center;margin-top:12px;"><a href="#" onclick="openModalForgot();return false;" style="color:var(--accent);font-size:12px;text-decoration:none;font-weight:600;">Password bhool gaye?</a></div>
+    </div>
+    <!-- FORGOT PASSWORD FLOW (modal) -->
+    <div id="modalForgotForm" style="display:none;">
+      <div id="modalForgotStep1">
+        <div class="field"><label>Apna registered Email daalein</label><input type="email" id="modalForgotEmail" placeholder="example@email.com"/></div>
+        <div class="error-msg" id="modalForgotErr1"></div>
+        <button class="btn-submit-auth" onclick="sendModalForgotOTP()">OTP Bhejein →</button>
+      </div>
+      <div id="modalForgotStep2" style="display:none;">
+        <div class="modal-sub" style="margin-bottom:16px;">Email par bheja gaya 4-ank ka code daalein</div>
+        <div class="field"><label>OTP</label><input type="text" id="modalForgotOtp" maxlength="4" placeholder="0000" style="letter-spacing:6px;font-size:18px;text-align:center;"/></div>
+        <div class="field"><label>Naya Password</label><div class="pwd-wrap"><input type="password" id="modalForgotNewPass" placeholder="Min. 6 characters"/><button type="button" class="pwd-toggle" onclick="togglePwd('modalForgotNewPass',this)">👁</button></div></div>
+        <div class="error-msg" id="modalForgotErr2"></div>
+        <button class="btn-submit-auth" onclick="verifyModalForgotOTP()">Password Reset Karein →</button>
+        <div style="text-align:center;margin-top:12px;"><a href="#" onclick="sendModalForgotOTP();return false;" style="color:var(--muted);font-size:12px;text-decoration:none;">OTP dobara bhejein</a></div>
+      </div>
+      <div style="text-align:center;margin-top:14px;"><a href="#" onclick="closeModalForgot();return false;" style="color:var(--muted);font-size:12px;text-decoration:none;">← Log In par wapas</a></div>
+    </div>
+    <div id="authSignupForm" style="display:none;">
+      <div class="field"><label>Pura Naam</label><input type="text" id="authSignupName" placeholder="Aapka naam"/></div>
+      <div class="field"><label>Email Address</label><input type="email" id="authSignupEmail" placeholder="example@email.com"/></div>
+      <div class="field"><label>Password banayein</label><div class="pwd-wrap"><input type="password" id="authSignupPass" placeholder="Min. 6 characters"/><button type="button" class="pwd-toggle" onclick="togglePwd('authSignupPass',this)">👁</button></div></div>
+      <div class="field"><label>Preparing For</label>
+        <select id="authSignupExam">
+          <option>SSC CGL</option><option>SSC CHSL</option><option>RRB NTPC</option>
+          <option>High Court</option><option>UPSC</option><option>UPSSSC</option>
+          <option>Allahabad HC</option><option>KVS</option><option>State Exam</option>
+        </select>
+      </div>
+      <div class="error-msg" id="authSignupErr">❌ Sabhi fields bharna zaroori hai.</div>
+      <button class="btn-submit-auth" onclick="doAuthSignup()">Account Banayein →</button>
+    </div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script src="anti-copy.js"></script>
+<script src="app.js"></script>
+<script src="firebase-config.js"></script>
+<script type="module" src="firebase.js"></script>
+<script>
+loadSession();
+
+function toggleMobileNav(){
+  document.getElementById('lpNav').classList.toggle('open');
+}
+// close the mobile menu automatically after tapping a link/button inside it
+document.addEventListener('DOMContentLoaded', function(){
+  const nav = document.getElementById('lpNav');
+  if(nav){
+    nav.addEventListener('click', function(e){
+      if(e.target.tagName === 'A' || e.target.tagName === 'BUTTON'){
+        nav.classList.remove('open');
+      }
+    });
+  }
+});
+
+function updateLPHeader(){
+  const badge=document.getElementById('userBadge');
+  const loginBtn=document.getElementById('headerLoginBtn');
+  const startBtn=document.getElementById('headerStartBtn');
+  if(APP.loggedIn){
+    if(badge)badge.classList.add('visible');
+    const nd=document.getElementById('userNameDisplay');if(nd)nd.textContent=APP.name;
+    if(loginBtn)loginBtn.style.display='none';
+    if(startBtn){startBtn.textContent='Dashboard →';startBtn.onclick=()=>window.location.href='candidate.html';}
+  }else{
+    if(badge)badge.classList.remove('visible');
+    if(loginBtn)loginBtn.style.display='';
+    if(startBtn){startBtn.textContent='Get Started →';startBtn.onclick=()=>openAuthModal('signup');}
+  }
+}
+updateLPHeader();
+
+function doLogout(){
+  APP.loggedIn=false;APP.isPro=false;APP.name='';APP.email='';
+  if(typeof window.fbSignOutAuth==='function') window.fbSignOutAuth();
+  saveSession();updateLPHeader();
+}
+function openAdminPage(){ window.location.href='admin.html'; }
+</script>
+<!-- =====================================================
+     EXAM MODE — Picker
+     ===================================================== -->
+<div class="examx-overlay" id="examxPicker">
+  <div class="examx-picker-hdr">
+    <span>🔒 Exam Mode — Choose Your Exam</span>
+    <button onclick="examxClose('examxPicker')">✕</button>
+  </div>
+  <div class="examx-picker-grid" id="examxPickerGrid"></div>
+</div>
+
+<!-- Keyboard method choice (Hindi exams only) -->
+<div class="examx-overlay" id="examxKbChoice">
+  <div class="examx-picker-hdr">
+    <span id="examxKbTitle">Select Keyboard Input Method</span>
+    <button onclick="examxClose('examxKbChoice')">✕</button>
+  </div>
+  <div class="examx-kbchoice" id="examxKbBody"></div>
+</div>
+
+<!-- Instructions page -->
+<div class="examx-overlay" id="examxInstr">
+  <div class="examx-picker-hdr">
+    <span>Instructions</span>
+    <button onclick="examxClose('examxInstr')">✕</button>
+  </div>
+  <div class="examx-instr" id="examxInstrBody"></div>
+</div>
+
+<!-- The exam typing chrome -->
+<div class="examx-chrome" id="examxChrome">
+  <div class="examx-hdr-blue" id="examxHdrTitle">Typing Test</div>
+  <div class="examx-hdr-black" id="examxHdrExamName">Exam Name</div>
+  <div class="examx-hdr-info">
+    <div class="examx-toolbar">
+      <button onclick="examxToggleMute(this)" id="examxMuteBtn" title="Sound">🔊</button>
+      <button onclick="examxToggleFullscreen()" title="Fullscreen">⛶</button>
+      <button onclick="examxZoom(-1)">A-</button>
+      <button onclick="examxZoom(0)">A</button>
+      <button onclick="examxZoom(1)">A+</button>
+    </div>
+    <div class="examx-timer-box">
+      <div><div class="extime">Time left:- <span id="examxTimer">00:00</span></div></div>
+      <div>
+        <div class="examx-avatar">👤</div>
+        <div class="examx-avatar-name" id="examxUserName">—</div>
+      </div>
+    </div>
+  </div>
+  <div class="examx-hdr-kblang">
+    <span id="examxKbLabel">Keyboard Layout: —</span>
+    <span id="examxLangLabel">Language: —</span>
+  </div>
+  <div class="examx-body">
+    <div class="examx-passage" id="examxPassageDisplay"><span id="examxPassageSpan"></span></div>
+    <textarea class="examx-typebox" id="examxTypeArea" disabled placeholder="Typing yahin shuru hogi..."></textarea>
+  </div>
+  <div class="examx-footer">
+    <button class="examx-btn-cancel" onclick="examxCancelTest()">Cancel</button>
+    <button class="examx-btn-submit" onclick="examxSubmitTest()">Submit</button>
+  </div>
+  <button class="examx-gear" onclick="examxOpenSettings()" title="Typing Settings">⚙️</button>
+</div>
+
+<!-- Typing Settings side-panel -->
+<div class="examx-settings-panel" id="examxSettings">
+  <div class="examx-settings-hdr"><h3>Typing Settings</h3><button onclick="examxCloseSettings()">✕</button></div>
+  <div class="examx-settings-body">
+    <div class="examx-set-sec" id="examxSec1">
+      <div class="examx-set-sec-hdr" onclick="examxToggleSec('examxSec1')">📐 Appearance &amp; Layout <span class="examx-set-caret">▾</span></div>
+      <div class="examx-set-sec-body">
+        <div class="examx-set-row">Font Size <span><button onclick="examxZoom(-1)" style="margin-right:4px;">A-</button><button onclick="examxZoom(1)">A+</button></span></div>
+      </div>
+    </div>
+    <div class="examx-set-sec" id="examxSec2">
+      <div class="examx-set-sec-hdr" onclick="examxToggleSec('examxSec2')">✏️ Typing Behavior <span class="examx-set-caret">▾</span></div>
+      <div class="examx-set-sec-body">
+        <div class="examx-set-row">Backspace Rule <span id="examxBsInfo" style="color:#666;">—</span></div>
+        <div class="examx-set-row">Highlight Style <span id="examxHlInfo" style="color:#666;">—</span></div>
+      </div>
+    </div>
+    <div class="examx-set-sec" id="examxSec3">
+      <div class="examx-set-sec-hdr" onclick="examxToggleSec('examxSec3')">🔊 Sound &amp; View <span class="examx-set-caret">▾</span></div>
+      <div class="examx-set-sec-body">
+        <div class="examx-set-row">Key Sound <label class="examx-switch"><input type="checkbox" id="examxSoundToggle" checked onchange="examxSyncSoundBtn()"><span></span></label></div>
+        <div class="examx-set-row">Fullscreen <button onclick="examxToggleFullscreen()" style="padding:5px 10px;border-radius:5px;border:1px solid #ddd;background:#f7f7f7;cursor:pointer;">Toggle</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="examx-settings-footer"><button onclick="examxCloseSettings()">Close</button></div>
+</div>
+
+<!-- Result Dashboard -->
+<div class="examx-overlay" id="examxResult">
+  <div class="examx-result-body" id="examxResultBody"></div>
+</div>
+
+</body>
+</html>

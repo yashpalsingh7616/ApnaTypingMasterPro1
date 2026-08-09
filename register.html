@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — Apna Typing Master Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:var(--bg);display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;}
+.reg-wrap{width:100%;max-width:440px;padding:20px;}
+.reg-logo{text-align:center;margin-bottom:24px;}
+.reg-logo .logo-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 10px;}
+.reg-logo h1{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--text);}
+.reg-logo h1 span{color:var(--accent);}
+.reg-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:34px;}
+.reg-title{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:5px;}
+.reg-sub{color:var(--muted);font-size:13px;margin-bottom:22px;}
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:500;}
+.field input,.field select{width:100%;padding:11px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans';font-size:14px;outline:none;transition:border .2s;box-sizing:border-box;}
+.field input:focus,.field select:focus{border-color:var(--accent);}
+.field select option{background:var(--bg);}
+.btn-reg{width:100%;padding:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:black;border:none;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;font-family:'DM Sans';margin-top:6px;}
+.btn-reg:hover{opacity:.9;}
+.err-msg{color:#ff6b6b;font-size:12px;margin-top:8px;display:none;}
+.login-link{text-align:center;margin-top:16px;font-size:13px;color:var(--muted);}
+.login-link a{color:var(--accent);text-decoration:none;font-weight:600;}
+.divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--muted);font-size:12px;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+</style>
+</head>
+<body>
+<div class="reg-wrap">
+  <div class="reg-logo">
+    <div class="logo-icon">⌨</div>
+    <h1>Apna Typing <span>Master</span> Pro</h1>
+  </div>
+  <div class="reg-box">
+    <div class="reg-title">Join Free Today 🚀</div>
+    <div class="reg-sub">India ke lakhs aspirants ke saath practice karein</div>
+    <div class="field"><label>Pura Naam *</label><input type="text" id="rName" placeholder="Aapka naam"/></div>
+    <div class="field"><label>Email Address *</label><input type="email" id="rEmail" placeholder="example@email.com"/></div>
+    <div class="field"><label>Mobile Number</label><input type="tel" id="rMobile" placeholder="Optional"/></div>
+    <div class="field"><label>Password banayein *</label><div class="pwd-wrap"><input type="password" id="rPass" placeholder="Min. 6 characters"/><button type="button" class="pwd-toggle" onclick="togglePwd('rPass',this)">👁</button></div></div>
+    <div class="field"><label>Confirm Password *</label><div class="pwd-wrap"><input type="password" id="rPass2" placeholder="Password dobara likhein"/><button type="button" class="pwd-toggle" onclick="togglePwd('rPass2',this)">👁</button></div></div>
+    <div class="field"><label>Preparing For *</label>
+      <select id="rExam">
+        <option value="">-- Select Exam --</option>
+        <option>SSC CGL</option><option>SSC CHSL</option><option>RRB NTPC</option>
+        <option>High Court</option><option>UPSC</option><option>UPSSSC</option>
+        <option>Allahabad HC</option><option>KVS</option><option>MP Police ASI</option>
+        <option>UP Police ASI/SI</option><option>State Exam</option><option>Other</option>
+      </select>
+    </div>
+    <div class="err-msg" id="regErr">❌ Sabhi * fields bharna zaroori hai.</div>
+    <button class="btn-reg" onclick="doRegister()">✅ Account Banayein → Free</button>
+    <div class="divider">ya</div>
+    <div class="login-link">Pehle se account hai? <a href="login.html">Log In karein</a></div>
+  </div>
+  <div class="login-link" style="margin-top:16px;"><a href="index.html">← Home par wapas jayen</a></div>
+</div>
+<script src="shared.js"></script>
+<script src="anti-copy.js"></script>
+<script src="firebase-config.js"></script>
+<script type="module" src="firebase.js"></script>
+<script>
+loadSession();
+if(APP.loggedIn){ window.location.href='candidate.html'; }
+function doRegister(){
+  const name  = document.getElementById('rName').value.trim();
+  const email = document.getElementById('rEmail').value.trim();
+  const mobile= document.getElementById('rMobile').value.trim();
+  const pass  = document.getElementById('rPass').value;
+  const pass2 = document.getElementById('rPass2').value;
+  const exam  = document.getElementById('rExam').value;
+  const err   = document.getElementById('regErr');
+  err.style.display='none';
+  if(!name||!email||!pass){ err.textContent='❌ Naam, email aur password zaroori hain.'; err.style.display='block'; return; }
+  if(pass.length<6){ err.textContent='❌ Password min 6 characters hona chahiye.'; err.style.display='block'; return; }
+  if(pass!==pass2){ err.textContent='❌ Dono passwords match nahi kar rahe.'; err.style.display='block'; return; }
+  if(typeof window.fbSignupUser!=='function'){ err.textContent='Firebase abhi ready nahi hai, page refresh karein.'; err.style.display='block'; return; }
+  const btn=document.querySelector('.btn-reg');
+  btn.disabled=true; btn.textContent='Account ban raha hai...';
+  window.fbSignupUser(name, email, pass, exam, mobile).then(()=>{
+    APP.loggedIn=true; APP.name=name; APP.email=email; APP.isPro=false;
+    saveSession();
+    window.location.href='candidate.html';
+  }).catch(e=>{
+    btn.disabled=false; btn.textContent='✅ Account Banayein → Free';
+    err.textContent='❌ '+e.message; err.style.display='block';
+  });
+}
+</script>
+</body>
+</html>

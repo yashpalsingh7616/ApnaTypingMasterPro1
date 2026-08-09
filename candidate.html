@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<title>Candidate Dashboard — Apna Typing Master Pro</title>
+</head>
+<body>
+
+<style>#landingPage,#adminPage,#liveTestPage{display:none!important;}#dashboardPage{display:block!important;}</style>
+
+<div id="dashboardPage">
+  <div id="homePage">
+    <div class="topbar">
+      <span class="topbar-new">New</span>
+      <div class="topbar-title">⌨ Apna Typing Master Pro — Online Typing Test</div>
+      <div class="topbar-subtitle">ऑनलाइन टाइपिंग टेस्ट लीजिए और अपनी रैंक व टाइपिंग स्पीड अन्य विद्यार्थियों के साथ तुलना कीजिए।</div>
+      <div class="topbar-right">
+        <!-- Live Tests button → opens full Live Test page -->
+        <button class="topbar-btn live-btn" onclick="openLiveTestPage()">🔴 Live Tests</button>
+        <button class="topbar-btn" onclick="window.location.href='steno-practice.html'">Stenography Tests</button>
+        <button class="topbar-btn" onclick="openUserDashboard()">User Dashboard</button>
+      </div>
+    </div>
+    <div class="auth-strip" id="authStrip">
+      <span style="color:#555;">Welcome, Guest</span>
+      <button class="auth-btn-d" onclick="openAuthModal('login')">Log In</button>
+      <button class="auth-btn-d orange" onclick="openAuthModal('signup')">Sign Up Free</button>
+    </div>
+    <div id="streakBadge" style="display:none;margin:8px 20px 0;background:#fff3e0;color:#e65100;border:1px solid #ffcc80;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;width:fit-content;">🔥 <span id="streakCount">0</span> din streak! Roz practice karein, streak mat todein.</div>
+    <div style="margin:8px 20px 0;">
+      <a href="certificate.html" style="display:inline-block;background:#fff8e6;color:#8a6d1f;border:1px solid #f0d5ae;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;text-decoration:none;">🎓 Course poora kiya? Certificate download karein →</a>
+    </div>
+    <div class="pro-banner" id="proBanner">
+      <div>⚡ Upgrade to <b style="color:#f0a500;">Pro</b> — Unlock 500+ passages, all 18 exam patterns &amp; detailed analytics</div>
+      <button class="pro-btn" onclick="openDModal('subModal')">Get Pro ₹149/month →</button>
+    </div>
+    <div class="main-wrapper">
+      <div class="left-panel">
+        <div class="section-card">
+          <div class="section-header sh-blue">English Typing</div>
+          <div class="section-body">
+            <div class="typing-grid">
+              <div class="typing-item" onclick="openProfessionalTutor()">
+                <div class="icon-box"><div class="row"><div class="key">A</div><div class="key">B</div></div><div class="row"><div class="key">C</div><div class="key">D</div></div></div>
+                <div class="typing-label">Learn Typing</div>
+              </div>
+              <div class="typing-item" onclick="tryTest('english')">
+                <div class="icon-box"><div class="row"><div class="key">A</div><div class="key accent">B</div></div><div class="row"><div class="key">C</div><div class="key accent">D</div></div></div>
+                <div class="typing-label">Take Tests</div>
+              </div>
+              <div class="typing-item" onclick="tryTest('numbers')">
+                <div class="icon-box"><div class="row"><div class="key">1</div><div class="key">2</div></div><div class="row"><div class="key">3</div><div class="key">+</div></div></div>
+                <div class="typing-label">Number Typing</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-header sh-orange">Hindi Typing — KrutiDev &amp; DevLys Font</div>
+          <div class="section-body">
+            <div class="typing-grid">
+              <div class="typing-item" onclick="openHindiTutor('krutidev')"><div class="icon-box"><div class="row"><div class="key h">अ</div><div class="key h">ब</div></div><div class="row"><div class="key h">स</div><div class="key h">द</div></div></div><div class="typing-label">Learn Typing</div></div>
+              <div class="typing-item" onclick="tryTestHindi('krutidev')"><div class="icon-box"><div class="row"><div class="key h">अ</div><div class="key h accent">ब</div></div><div class="row"><div class="key h">स</div><div class="key h accent">द</div></div></div><div class="typing-label">Take Tests</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-header sh-green">Hindi Typing — Mangal Unicode Font</div>
+          <div class="section-body">
+            <div style="display:flex;gap:0;">
+              <div style="flex:1;border-right:1px solid #e0e0e0;padding-right:12px;">
+                <div style="font-size:11px;font-weight:700;color:#555;margin-bottom:7px;">Remington GAIL Layout</div>
+                <div class="typing-grid" style="gap:10px;">
+                  <div class="typing-item" onclick="openHindiTutor('mangal_gail')"><div class="icon-box" style="width:54px;height:54px;"><div class="row"><div class="key h" style="font-size:9px;padding:1px 3px;">अ</div><div class="key h" style="font-size:9px;padding:1px 3px;">ब</div></div><div class="row"><div class="key h" style="font-size:9px;padding:1px 3px;">स</div><div class="key h" style="font-size:9px;padding:1px 3px;">द</div></div></div><div class="typing-label" style="font-size:10px;">Learn Typing</div></div>
+                  <div class="typing-item" onclick="tryTestHindi('mangal_gail')"><div class="icon-box" style="width:54px;height:54px;"><div class="row"><div class="key h" style="font-size:9px;padding:1px 3px;">अ</div><div class="key h accent" style="font-size:9px;padding:1px 3px;">ब</div></div><div class="row"><div class="key h" style="font-size:9px;padding:1px 3px;">स</div><div class="key h accent" style="font-size:9px;padding:1px 3px;">द</div></div></div><div class="typing-label" style="font-size:10px;">Take Test</div></div>
+                </div>
+              </div>
+              <div style="flex:1;padding-left:12px;">
+                <div style="font-size:11px;font-weight:700;color:#555;margin-bottom:7px;">INSCRIPT Layout</div>
+                <div class="typing-grid" style="gap:10px;">
+                  <div class="typing-item" onclick="openHindiTutor('mangal_inscript')"><div class="icon-box" style="width:54px;height:54px;background:linear-gradient(135deg,#1a5276,#2471a3);"><div class="row"><div class="key h" style="font-size:9px;padding:1px 3px;">अ</div><div class="key h" style="font-size:9px;padding:1px 3px;">ब</div></div><div class="row"><div class="key h" style="font-size:9px;padding:1px 3px;">स</div><div class="key h" style="font-size:9px;padding:1px 3px;">द</div></div></div><div class="typing-label" style="font-size:10px;">Learn Typing</div></div>
+                  <div class="typing-item" onclick="tryTestHindi('mangal_inscript')"><div class="icon-box" style="width:54px;height:54px;background:linear-gradient(135deg,#1a5276,#2471a3);"><div class="row"><div class="key h" style="font-size:9px;padding:1px 3px;">अ</div><div class="key h accent" style="font-size:9px;padding:1px 3px;">ब</div></div><div class="row"><div class="key h" style="font-size:9px;padding:1px 3px;">स</div><div class="key h accent" style="font-size:9px;padding:1px 3px;">द</div></div></div><div class="typing-label" style="font-size:10px;">Take Test</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><div class="section-card">
+          <div class="section-header sh-orange">Hindi Stenography tutorial — Vishisht Pranali with Yesh</div>
+          <div class="section-body">
+            <div class="typing-grid">
+              <div class="typing-item" onclick="openStenoPlaylist('learnSteno')"><div class="icon-box" style="display:flex;align-items:center;justify-content:center;font-size:26px;">🎬</div><div class="typing-label">Learn Steno</div></div>
+              <div class="typing-item" onclick="openStenoPlaylist('chapterExercise')"><div class="icon-box" style="display:flex;align-items:center;justify-content:center;font-size:26px;">🎬</div><div class="typing-label">Chapterwise Exercise</div></div>
+              <div class="typing-item" onclick="openStenoPlaylist('speedBooster')"><div class="icon-box" style="display:flex;align-items:center;justify-content:center;font-size:26px;">🎬</div><div class="typing-label">Speed Booster</div></div>
+              <div class="typing-item" onclick="openStenoPdfList()"><div class="icon-box" style="display:flex;align-items:center;justify-content:center;font-size:26px;">📄</div><div class="typing-label">PDF</div></div>
+            </div>
+            </div>
+          </div>
+        <div class="section-card">
+          <div class="section-header sh-orange">OTHER LINKS — YASH PAL SINGH Font</div>
+          <div class="section-body">
+            <div class="typing-grid">
+             <div class="lt-title">YOUTUBE</div>
+    <div class="lt-youtube">
+     	 Join us on Youtube :
+      <a href="https://www.youtube.com/@ashulipikhindishorthand" target="_blank">https://www.youtube.com/@ashulipikhindishorthand</a>
+    </div>
+</div>
+<div class="typing-grid">
+  <div class="lt-title">tELEGRAM</div>
+  <div class="lt-telegram">
+    Join us on Telegram :
+   <a href="https://t.me/apnatypingmasterproandhindisteno" target="_blank">https://t.me/apnatypingmasterproandhindisteno</a>
+  </div>
+</div>
+          </div>
+        </div>
+      </div>
+       <div class="right-panel">
+        <div class="section-card">
+          <div class="section-header sh-blue">Common Exam Pattern</div>
+          <div style="margin:5px 14px 3px;"><span style="font-size:11px;font-weight:700;color:#444;background:#ebebeb;padding:2px 10px;border-radius:2px;display:inline-block;">All Exams (General Pattern)</span></div>
+          <div class="exam-tabs">
+            <div class="exam-badge-wrap" onclick="tryTest('english')"><div class="exam-badge"><div class="stamp">ALL<br>IN<br>ONE</div></div><div class="exam-label">English Test</div></div>
+            <div class="exam-badge-wrap" onclick="tryTest('hindi')"><div class="exam-badge"><div class="stamp">ALL<br>IN<br>ONE</div></div><div class="exam-label">Hindi – Krutidev/Devlys</div></div>
+            <div class="exam-badge-wrap" onclick="tryTest('hindi')"><div class="exam-badge"><div class="stamp">ALL<br>IN<br>ONE</div></div><div class="exam-label">Hindi – Mangal Font</div></div>
+          </div>
+          <div class="exam-note">ये  Normal typing PASSAGE हैं इन्हें Typing की  Practice की तौर पर लिया जाए ये Normal हैं। <br><b>Jaise:</b> ALL Civil Courts, KVS, BSF, CRPF, CISF, UPSC, SSC, UPSSSC aur sabhi exams के लिए  Typing की जरूरत होती है .</div>
+        </div>
+        <div class="section-card">
+          <div class="section-header" style="background:linear-gradient(90deg,#7d6608,#a0810c);font-size:14px;">All India Level Exams</div>
+          <div style="padding:7px 14px 2px;"><span class="exam-group-label">SSC CGL / CHSL / MTS</span></div>
+          <div style="font-size:10px;color:#777;background:#fffcf5;border-left:3px solid #e67e22;margin:0 14px 5px;padding:4px 8px;border-radius:2px;">⏱ 10 min &nbsp;|&nbsp; ⌫ Word-by-Word &nbsp;|&nbsp; ❌ No Spell Check &nbsp;|&nbsp; ❌ No Copy-Paste</div>
+          <div style="font-size:10px;font-weight:700;color:#7d6608;padding:2px 14px 3px;">▸ SSC CGL</div>
+          <div class="exam-row">
+            <div class="exam-item" onclick="tryTestWithRules('ssc_eng')"><div class="exam-logo">SSC<br>ENG</div><div class="exam-item-label">CGL English<br><span style="color:#27ae60;font-size:9px;font-weight:700;">35 WPM</span></div></div>
+            <div class="exam-item" onclick="tryTestWithRules('ssc_hindi')"><div class="exam-logo">SSC<br>Hindi</div><div class="exam-item-label">CGL Hindi<br><span style="color:#27ae60;font-size:9px;font-weight:700;">30 WPM</span></div></div>
+          </div>
+          <div style="font-size:10px;font-weight:700;color:#7d6608;padding:2px 14px 3px;">▸ SSC CHSL</div>
+          <div class="exam-row">
+            <div class="exam-item" onclick="tryTestWithRules('chsl_eng')"><div class="exam-logo" style="background:linear-gradient(135deg,#fef9e7,#fdebd0);border-color:#d4ac0d;color:#7d6608;">CHSL<br>ENG</div><div class="exam-item-label">CHSL English<br><span style="color:#27ae60;font-size:9px;font-weight:700;">35 WPM</span></div></div>
+            <div class="exam-item" onclick="tryTestWithRules('chsl_hindi')"><div class="exam-logo" style="background:linear-gradient(135deg,#fef9e7,#fdebd0);border-color:#d4ac0d;color:#7d6608;">CHSL<br>Hindi</div><div class="exam-item-label">CHSL Hindi<br><span style="color:#27ae60;font-size:9px;font-weight:700;">30 WPM</span></div></div>
+            <div class="exam-item" onclick="openDModal('subModal')"><div class="exam-logo" style="background:#f5f5f5;border-color:#ccc;color:#aaa;border-style:dashed;font-size:8px;">MTS<br>🔒</div><div class="exam-item-label">SSC MTS<br><span style="color:#e67e22;font-size:9px;">PRO</span></div></div>
+          </div>
+          <div style="padding:2px 14px;"><span class="exam-group-label">RRB NTPC / Group D</span></div>
+          <div class="exam-row">
+            <div class="exam-item" onclick="tryTestWithRules('rrb_eng')"><div class="exam-logo" style="background:linear-gradient(135deg,#fef5e7,#fdebd0);border-color:#e67e22;color:#e67e22;">RRB<br>NTPC</div><div class="exam-item-label">NTPC English<br><span style="color:#27ae60;font-size:9px;font-weight:700;">30 WPM</span></div></div>
+            <div class="exam-item" onclick="tryTestWithRules('rrb_hindi')"><div class="exam-logo" style="background:linear-gradient(135deg,#fef5e7,#fdebd0);border-color:#e67e22;color:#e67e22;">RRB<br>Hindi</div><div class="exam-item-label">NTPC Hindi<br><span style="color:#27ae60;font-size:9px;font-weight:700;">25 WPM</span></div></div>
+          </div>
+          <div style="padding:2px 14px;"><span class="exam-group-label" style="background:#1a7a4a;">UPSSSC</span></div>
+          <div class="exam-row">
+            <div class="exam-item" onclick="tryTestWithRules('upsssc_eng')"><div class="exam-logo" style="background:linear-gradient(135deg,#e8f8f5,#d1f2eb);border-color:#1abc9c;color:#148f77;">UPSSSC<br>ENG</div><div class="exam-item-label">UPSSSC English<br><span style="color:#27ae60;font-size:9px;font-weight:700;">30 WPM</span></div></div>
+            <div class="exam-item" onclick="tryTestWithRules('upsssc_hindi')"><div class="exam-logo" style="background:linear-gradient(135deg,#e8f8f5,#d1f2eb);border-color:#1abc9c;color:#148f77;">UPSSSC<br>Hindi</div><div class="exam-item-label">UPSSSC Hindi<br><span style="color:#27ae60;font-size:9px;font-weight:700;">25 WPM</span></div></div>
+          </div>
+          <div style="padding:2px 14px;"><span class="exam-group-label" style="background:#6c3483;">High Courts</span></div>
+          <div class="exam-row">
+            <div class="exam-item" onclick="tryTestWithRules('ahc_hindi')"><div class="exam-logo" style="background:linear-gradient(135deg,#f9ebea,#f2d7d5);border-color:#6c3483;color:#6c3483;">AHC<br>Hindi</div><div class="exam-item-label">Allahabad HC<br><span style="color:#27ae60;font-size:9px;font-weight:700;">30 WPM</span></div></div>
+            <div class="exam-item" onclick="tryTestWithRules('ahc_eng')"><div class="exam-logo" style="background:linear-gradient(135deg,#f9ebea,#f2d7d5);border-color:#6c3483;color:#6c3483;">AHC<br>ENG</div><div class="exam-item-label">Allahabad HC<br><span style="color:#27ae60;font-size:9px;font-weight:700;">35 WPM</span></div></div>
+            <div class="exam-item" onclick="openDModal('subModal')"><div class="exam-logo" style="background:#f5f5f5;border-color:#ccc;color:#aaa;border-style:dashed;font-size:8px;">BSF<br>🔒</div><div class="exam-item-label">BSF/CAPF<br><span style="color:#e67e22;font-size:9px;">PRO</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dash-footer">© 2026 Apna Typing Master Pro &nbsp;|&nbsp; India's Best Typing Practice Platform</div>
+  </div>
+
+  <!-- TEST PAGE -->
+  <div id="testPageWrap" style="display:none;">
+    <div class="test-topbar-main">
+      <div style="background:#e74c3c;color:#fff;font-size:10px;font-weight:700;padding:3px 6px;margin:auto 0 auto 6px;border-radius:2px;text-transform:uppercase;align-self:center;">TEST</div>
+      <div class="test-topbar-title" id="testTitle">⌨ English Typing Test — Apna Typing Master Pro</div>
+      <div class="test-topbar-right">
+        <button class="test-topbar-btn" onclick="goHome()">← Home</button>
+        <button class="test-topbar-btn" onclick="openDModal('subModal')">⚡ Get Pro</button>
+      </div>
+    </div>
+    <div class="test-container">
+      <div class="test-main">
+        <div class="test-bar">
+          <button class="test-mode-btn">Printout Mode</button>
+          <div class="test-ex-label" id="testExLabel">Select duration and start typing.</div>
+          <div style="display:flex;align-items:center;gap:3px;">
+            <button class="test-mode-btn" style="background:#555;padding:4px 9px;font-size:15px;font-weight:900;" onclick="zoomPassage(-1)">A-</button>
+            <button class="test-mode-btn" style="background:#777;padding:4px 9px;font-size:12px;" onclick="zoomPassage(0)">A</button>
+            <button class="test-mode-btn" style="background:#555;padding:4px 9px;font-size:15px;font-weight:900;" onclick="zoomPassage(1)">A+</button>
+          </div>
+          <button class="test-mode-btn" onclick="openExamMode()">Exam Mode 🔒</button>
+        </div>
+        <div class="passage-display" id="passageDisplay"><span id="passageSpan"></span></div>
+        <div class="control-bar">
+          <button class="ctrl-nav" onclick="prevEx()">«</button>
+          <select class="ctrl-select" id="ctrlDur" onchange="resetTest()">
+            <option value="5">5 Minutes</option>
+            <option value="10" selected>10 Minutes</option>
+            <option value="15">15 Minutes</option>
+            <option value="30">30 Minutes</option>
+          </select>
+          <select class="ctrl-select" id="ctrlEx" onchange="changeEx()"></select>
+          <button class="ctrl-nav" onclick="nextEx()">»</button>
+          <div class="ctrl-timer" id="ctrlTimer">10:00</div>
+          <button class="ctrl-start" id="startBtn" onclick="startTest()">▶ Start</button>
+          <button class="ctrl-stop" id="stopBtn" style="display:none" onclick="submitTest()">■ Submit</button>
+          <button class="ctrl-reset" onclick="resetTest()">↺ Reset</button>
+          <div class="ctrl-wpm">WPM: <span id="liveWpm">0</span> | Acc: <span id="liveAcc">—</span></div>
+        </div>
+        <textarea class="type-area" id="typeArea" disabled placeholder="Click ▶ Start to begin typing..."></textarea>
+      </div>
+      <div class="test-sidebar">
+        <div class="sb-title" style="color:#1a5276;">📋 Active Exam</div>
+        <div id="activeExamDisplay" style="background:#eaf2ff;border:1.5px solid #2471a3;border-radius:4px;padding:6px 10px;font-size:11px;margin-bottom:4px;color:#1a5276;font-weight:700;">— General Practice Mode —</div>
+        <div id="examInfoBox" style="background:#f8f9fa;border:1px solid #ddd;border-radius:4px;padding:6px 10px;font-size:10px;margin-bottom:7px;display:none;line-height:1.7;"><div id="examInfoContent"></div></div>
+        <div class="sb-title">Backspace Options</div>
+        <label class="sb-opt"><input type="radio" name="bs" value="full"> Full Backspace</label>
+        <label class="sb-opt"><input type="radio" name="bs" value="word" checked> One Word Backspace</label>
+        <label class="sb-opt"><input type="radio" name="bs" value="off"> Deactivate Backspace</label>
+        <div class="sb-title">Highlight Options</div>
+        <label class="sb-opt"><input type="radio" name="hl" value="word"> Word Highlight</label>
+        <label class="sb-opt"><input type="radio" name="hl" value="error"> Word + Error Highlight</label>
+        <label class="sb-opt"><input type="radio" name="hl" value="none" checked> No Highlight</label>
+        <label class="sb-opt"><input type="radio" name="hl" value="letter"> Letter Highlight</label>
+        <div class="sb-title">Scroll Options</div>
+        <label class="sb-opt"><input type="radio" name="scroll" value="auto"> Auto Scroll</label>
+        <label class="sb-opt"><input type="radio" name="scroll" value="manual" checked> Manual Scroll</label>
+        <div class="sb-title" style="color:#e67e22;">✏️ Custom Passage</div>
+        <textarea id="customPassageInput" style="width:100%;height:70px;padding:5px 7px;border:1.5px solid #e67e22;border-radius:4px;font-size:11px;font-family:'Noto Sans',sans-serif;resize:vertical;outline:none;" placeholder="Koi bhi passage paste karein..."></textarea>
+        <button onclick="applyCustomPassage()" style="width:100%;margin-top:4px;padding:6px;background:linear-gradient(90deg,#e67e22,#f0a500);color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;">✅ Apply</button>
+        <button onclick="clearCustomPassage()" style="width:100%;margin-top:3px;padding:5px;background:#fff;color:#777;border:1px solid #ddd;border-radius:4px;font-size:11px;cursor:pointer;">↺ Restore Default</button>
+        <button class="help-btn" style="margin-top:7px;">📖 Help Guide</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT MODAL -->
+  <div class="modal-bg" id="resultModal">
+    <div class="modal-box-d" style="width:580px;">
+      <div class="modal-hdr"><span>Result — Apna Typing Master Pro</span><button class="modal-close-d" onclick="closeDModal('resultModal')">✕</button></div>
+      <div class="res-title">Apna Typing Master Pro</div>
+      <div class="res-tabs">
+        <button class="res-tab active" onclick="switchResTab(this)">Most Exams</button>
+        <button class="res-tab" onclick="switchResTab(this)">SSC/CGL/CHSL</button>
+        <button class="res-tab" onclick="switchResTab(this)">RRB NTPC</button>
+        <button class="res-tab" onclick="switchResTab(this)">Allahabad HC</button>
+        <button class="res-tab" onclick="switchResTab(this)">UPSSSC</button>
+      </div>
+      <div class="res-body" id="resBody"></div>
+      <div class="res-footer">
+        <button class="res-btn" onclick="closeDModal('resultModal');resetTest()">Repeat</button>
+        <button class="res-btn next" onclick="closeDModal('resultModal');nextEx()">Next &gt;&gt;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBSCRIPTION MODAL -->
+  <div class="modal-bg" id="subModal">
+    <div class="modal-box-d" style="width:500px;">
+      <div class="modal-hdr"><span>⚡ Pro Upgrade — Apna Typing Master Pro</span><button class="modal-close-d" onclick="closeDModal('subModal')">✕</button></div>
+      <div id="subS1">
+        <div class="sub-plans">
+          <div class="sub-plan selected" id="planM" onclick="selPlan('monthly',this)"><div class="sp-name">Monthly</div><div class="sp-price">₹149<span>/mo</span></div><div class="sp-save">Billed monthly</div></div>
+          <div class="sub-plan" id="planQ" onclick="selPlan('quarterly',this)"><div class="sp-name">3-Month</div><div class="sp-price">₹349<span>/3mo</span></div><div class="sp-save">₹116/month</div><div class="sp-badge">Save 22%</div></div>
+          <div class="sub-plan" id="planY" onclick="selPlan('yearly',this)"><div class="sp-name">Yearly</div><div class="sp-price">₹999<span>/yr</span></div><div class="sp-save">₹83/month</div><div class="sp-badge">Best Value</div></div>
+        </div>
+        <div class="sub-feat">
+          <h4>✅ Pro mein kya milega:</h4>
+          <div class="feat-item-d">500+ English + 370+ Hindi passages</div>
+          <div class="feat-item-d">18 exam patterns: SSC, RRB, HC, UPSC, UPSSSC…</div>
+          <div class="feat-item-d">Exam Mode — strict timer, no corrections</div>
+          <div class="feat-item-d">National leaderboard & detailed analytics</div>
+        </div>
+        <div class="pay-section">
+          <h4>💳 Payment</h4>
+          <div class="pay-method-note" style="background:#f8f9fa;border:1px solid #e0e0e0;border-radius:6px;padding:12px 14px;font-size:12.5px;color:#555;line-height:1.65;">
+            🔐 "Pay" dabate hi <b>Razorpay</b> ka secure checkout khulega — wahan UPI, Card ya Net Banking, jo pasand ho wo choose kar sakte hain. Aapka card/UPI detail humare server par kabhi store nahi hota.
+          </div>
+          <div class="pay-total-row"><div><div class="pay-total-label">Total Amount (GST included)</div><div class="gst-note">Base: ₹<span id="baseAmt">126.27</span> + GST 18%: ₹<span id="gstAmt">22.73</span></div></div><div class="pay-total-amt">₹<span id="payAmt">149.00</span></div></div>
+          <button class="pay-submit" id="razorpayPayBtn" onclick="payWithRazorpay()">🔐 Pay ₹<span id="payAmt2">149.00</span> Securely via Razorpay →</button>
+          <div class="pay-secure">🔒 256-bit SSL &nbsp;|&nbsp; ✅ 7-day Refund &nbsp;|&nbsp; 🇮🇳 Made in India</div>
+        </div>
+      </div>
+      <div id="subS2" style="display:none;">
+        <div class="success-box">
+          <div class="tick">🎉</div><h2>Payment Successful!</h2><p>Aapka Pro subscription active hai!</p>
+          <div class="success-details">
+            <div class="success-row"><span style="color:#777;">Plan</span><span id="confPlan">Pro Monthly</span></div>
+            <div class="success-row"><span style="color:#777;">Amount</span><span>₹<span id="confAmt">149.00</span></span></div>
+            <div class="success-row"><span style="color:#777;">Valid Until</span><span id="confExpiry">—</span></div>
+            <div class="success-row"><span style="color:#777;">Status</span><span style="color:#27ae60;">✅ ACTIVE</span></div>
+          </div>
+          <button class="pay-submit" style="margin:0 18px 18px;width:calc(100% - 36px);" onclick="closeDModal('subModal'); if(document.getElementById('testPageWrap')&&document.getElementById('testPageWrap').style.display!=='none') buildDd();">Start Practicing →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USER DASHBOARD MODAL -->
+  <div class="modal-bg" id="userDashModal">
+    <div class="modal-box-d" style="width:520px;">
+      <div class="modal-hdr"><span>👤 My Dashboard</span><button class="modal-close-d" onclick="closeDModal('userDashModal')">✕</button></div>
+
+      <div id="userDashLoggedOut" style="display:none;padding:34px 24px;text-align:center;">
+        <div style="font-size:34px;margin-bottom:10px;">🔒</div>
+        <p style="color:#666;margin-bottom:18px;">Apna Dashboard dekhne ke liye pehle Log In karein.</p>
+        <button class="pay-submit" style="width:auto;padding:10px 26px;" onclick="closeDModal('userDashModal');window.location.href='login.html';">Log In Karein →</button>
+      </div>
+
+      <div id="userDashLoading" style="display:none;padding:34px;text-align:center;color:#777;">⏳ Loading aapki details...</div>
+
+      <div id="userDashContent" style="display:none;padding:20px;">
+        <div class="udash-section">
+          <h4>👤 Profile</h4>
+          <div class="udash-row"><span>Name</span><span id="udName">—</span></div>
+          <div class="udash-row"><span>Email</span><span id="udEmail">—</span></div>
+          <div class="udash-row"><span>Mobile</span><span id="udMobile">—</span></div>
+        </div>
+        <div class="udash-section">
+          <h4>⚡ Plan</h4>
+          <div id="udPlanBody"></div>
+        </div>
+        <div class="udash-section">
+          <h4>🧾 Purchase History</h4>
+          <div id="udHistory"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /dashboardPage -->
+
+<!-- =====================================================
+     AUTH MODAL
+     ===================================================== -->
+<div class="modal-overlay" id="authModal" onclick="handleAuthOverlay(event)">
+  <div class="modal-box-auth">
+    <button class="modal-close-btn" onclick="closeAuthModal()">✕</button>
+    <div class="modal-title" id="authTitle">Welcome Back 👋</div>
+    <div class="modal-sub" id="authSub">Apna account access karein</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Log In</button>
+      <button class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">Sign Up</button>
+    </div>
+    <div id="authLoginForm">
+      <div class="field"><label>Email</label><input type="text" id="authLoginEmail" placeholder="example@email.com"/></div>
+      <div class="field"><label>Password</label><div class="pwd-wrap"><input type="password" id="authLoginPass" placeholder="••••••••"/><button type="button" class="pwd-toggle" onclick="togglePwd('authLoginPass',this)">👁</button></div></div>
+      <div class="error-msg" id="authLoginErr">❌ Email aur password dono likhein.</div>
+      <button class="btn-submit-auth" onclick="doAuthLogin()">Log In →</button>
+    </div>
+    <div id="authSignupForm" style="display:none;">
+      <div class="field"><label>Pura Naam</label><input type="text" id="authSignupName" placeholder="Aapka naam"/></div>
+      <div class="field"><label>Email Address</label><input type="email" id="authSignupEmail" placeholder="example@email.com"/></div>
+      <div class="field"><label>Password banayein</label><div class="pwd-wrap"><input type="password" id="authSignupPass" placeholder="Min. 6 characters"/><button type="button" class="pwd-toggle" onclick="togglePwd('authSignupPass',this)">👁</button></div></div>
+      <div class="field"><label>Preparing For</label>
+        <select id="authSignupExam">
+          <option>SSC CGL</option><option>SSC CHSL</option><option>RRB NTPC</option>
+          <option>High Court</option><option>UPSC</option><option>UPSSSC</option>
+          <option>Allahabad HC</option><option>KVS</option><option>State Exam</option>
+        </select>
+      </div>
+      <div class="error-msg" id="authSignupErr">❌ Sabhi fields bharna zaroori hai.</div>
+      <button class="btn-submit-auth" onclick="doAuthSignup()">Account Banayein →</button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     EXAM MODE — Picker
+     ===================================================== -->
+<div class="examx-overlay" id="examxPicker">
+  <div class="examx-picker-hdr">
+    <span>🔒 Exam Mode — Choose Your Exam</span>
+    <button onclick="examxClose('examxPicker')">✕</button>
+  </div>
+  <div class="examx-picker-grid" id="examxPickerGrid"></div>
+</div>
+
+<!-- Keyboard method choice (Hindi exams only) -->
+<div class="examx-overlay" id="examxKbChoice">
+  <div class="examx-picker-hdr">
+    <span id="examxKbTitle">Select Keyboard Input Method</span>
+    <button onclick="examxClose('examxKbChoice')">✕</button>
+  </div>
+  <div class="examx-kbchoice" id="examxKbBody"></div>
+</div>
+
+<!-- Instructions page -->
+<div class="examx-overlay" id="examxInstr">
+  <div class="examx-picker-hdr">
+    <span>Instructions</span>
+    <button onclick="examxClose('examxInstr')">✕</button>
+  </div>
+  <div class="examx-instr" id="examxInstrBody"></div>
+</div>
+
+<!-- The exam typing chrome -->
+<div class="examx-chrome" id="examxChrome">
+  <div class="examx-hdr-blue" id="examxHdrTitle">Typing Test</div>
+  <div class="examx-hdr-black" id="examxHdrExamName">Exam Name</div>
+  <div class="examx-hdr-info">
+    <div class="examx-toolbar">
+      <button onclick="examxToggleMute(this)" id="examxMuteBtn" title="Sound">🔊</button>
+      <button onclick="examxToggleFullscreen()" title="Fullscreen">⛶</button>
+      <button onclick="examxZoom(-1)">A-</button>
+      <button onclick="examxZoom(0)">A</button>
+      <button onclick="examxZoom(1)">A+</button>
+    </div>
+    <div class="examx-timer-box">
+      <div><div class="extime">Time left:- <span id="examxTimer">00:00</span></div></div>
+      <div>
+        <div class="examx-avatar">👤</div>
+        <div class="examx-avatar-name" id="examxUserName">—</div>
+      </div>
+    </div>
+  </div>
+  <div class="examx-hdr-kblang">
+    <span id="examxKbLabel">Keyboard Layout: —</span>
+    <span id="examxLangLabel">Language: —</span>
+  </div>
+  <div class="examx-body">
+    <div class="examx-passage" id="examxPassageDisplay"><span id="examxPassageSpan"></span></div>
+    <textarea class="examx-typebox" id="examxTypeArea" disabled placeholder="Typing yahin shuru hogi..."></textarea>
+  </div>
+  <div class="examx-footer">
+    <button class="examx-btn-cancel" onclick="examxCancelTest()">Cancel</button>
+    <button class="examx-btn-submit" onclick="examxSubmitTest()">Submit</button>
+  </div>
+  <button class="examx-gear" onclick="examxOpenSettings()" title="Typing Settings">⚙️</button>
+</div>
+
+<!-- Typing Settings side-panel -->
+<div class="examx-settings-panel" id="examxSettings">
+  <div class="examx-settings-hdr"><h3>Typing Settings</h3><button onclick="examxCloseSettings()">✕</button></div>
+  <div class="examx-settings-body">
+    <div class="examx-set-sec" id="examxSec1">
+      <div class="examx-set-sec-hdr" onclick="examxToggleSec('examxSec1')">📐 Appearance &amp; Layout <span class="examx-set-caret">▾</span></div>
+      <div class="examx-set-sec-body">
+        <div class="examx-set-row">Font Size <span><button onclick="examxZoom(-1)" style="margin-right:4px;">A-</button><button onclick="examxZoom(1)">A+</button></span></div>
+      </div>
+    </div>
+    <div class="examx-set-sec" id="examxSec2">
+      <div class="examx-set-sec-hdr" onclick="examxToggleSec('examxSec2')">✏️ Typing Behavior <span class="examx-set-caret">▾</span></div>
+      <div class="examx-set-sec-body">
+        <div class="examx-set-row">Backspace Rule <span id="examxBsInfo" style="color:#666;">—</span></div>
+        <div class="examx-set-row">Highlight Style <span id="examxHlInfo" style="color:#666;">—</span></div>
+      </div>
+    </div>
+    <div class="examx-set-sec" id="examxSec3">
+      <div class="examx-set-sec-hdr" onclick="examxToggleSec('examxSec3')">🔊 Sound &amp; View <span class="examx-set-caret">▾</span></div>
+      <div class="examx-set-sec-body">
+        <div class="examx-set-row">Key Sound <label class="examx-switch"><input type="checkbox" id="examxSoundToggle" checked onchange="examxSyncSoundBtn()"><span></span></label></div>
+        <div class="examx-set-row">Fullscreen <button onclick="examxToggleFullscreen()" style="padding:5px 10px;border-radius:5px;border:1px solid #ddd;background:#f7f7f7;cursor:pointer;">Toggle</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="examx-settings-footer"><button onclick="examxCloseSettings()">Close</button></div>
+</div>
+
+<!-- Result Dashboard -->
+<div class="examx-overlay" id="examxResult">
+  <div class="examx-result-body" id="examxResultBody"></div>
+</div>
+
+<!-- Steno Video/PDF Playlist Popup -->
+<div class="steno-modal-overlay" id="stenoModalOverlay" onclick="if(event.target===this) closeStenoModal()">
+  <div class="steno-modal-box">
+    <button class="steno-modal-close" onclick="closeStenoModal()">✕</button>
+    <h3 id="stenoModalTitle">Videos</h3>
+    <div id="stenoModalPlayer" class="steno-modal-player"></div>
+    <div id="stenoModalList" class="steno-modal-list"></div>
+  </div>
+</div>
+
+<style>
+.steno-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px;}
+.steno-modal-overlay.active{display:flex;}
+.steno-modal-box{background:#fff;border-radius:14px;max-width:640px;width:100%;max-height:88vh;overflow-y:auto;padding:24px;position:relative;font-family:'DM Sans',sans-serif;}
+.steno-modal-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#888;line-height:1;}
+.steno-modal-close:hover{color:#e74c3c;}
+.steno-modal-box h3{margin:0 0 16px;color:#e07b00;font-family:'Syne',sans-serif;font-size:20px;padding-right:24px;}
+.steno-modal-player{width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;margin-bottom:16px;display:none;}
+.steno-modal-player iframe{width:100%;height:100%;border:0;border-radius:10px;}
+.steno-modal-list{display:flex;flex-direction:column;gap:8px;}
+.steno-modal-item{display:flex;align-items:center;gap:10px;padding:11px 14px;background:#f7f7f9;border:1px solid #eee;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;color:#333;transition:.15s;}
+.steno-modal-item:hover{background:#fff3e0;border-color:#f0a500;}
+.steno-modal-item .num{width:24px;height:24px;border-radius:50%;background:#f0a500;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.steno-modal-item.locked{background:#fbf3ea;border-color:#f0d5ae;}
+.steno-modal-item.locked:hover{background:#fdeedb;border-color:#e67e22;}
+.steno-modal-item.locked .num{background:#e67e22;}
+</style>
+
+<!-- Inbuilt PDF Viewer — zoom + page navigation ONLY, no print/download/share -->
+<div class="pdf-viewer-overlay" id="pdfViewerOverlay">
+  <div class="pdf-viewer-box">
+    <div class="pdf-viewer-topbar">
+      <span id="pdfViewerTitle">PDF</span>
+      <button class="pdf-viewer-close" onclick="closePdfViewer()">✕ Close</button>
+    </div>
+    <div class="pdf-viewer-toolbar">
+      <button onclick="pdfZoomOut()">➖ Zoom</button>
+      <button onclick="pdfZoomIn()">➕ Zoom</button>
+      <button onclick="pdfPrevPage()">◀ Prev</button>
+      <span id="pdfPageIndicator">Page - / -</span>
+      <button onclick="pdfNextPage()">Next ▶</button>
+      <span id="pdfViewerStatus" style="margin-left:auto;color:#ffd27a;"></span>
+    </div>
+    <div class="pdf-viewer-canvas-wrap" oncontextmenu="return false;">
+      <canvas id="pdfCanvas"></canvas>
+    </div>
+  </div>
+</div>
+
+<style>
+.pdf-viewer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:6000;display:none;align-items:center;justify-content:center;padding:16px;}
+.pdf-viewer-overlay.active{display:flex;}
+.pdf-viewer-box{background:#525659;border-radius:10px;width:100%;max-width:900px;height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.5);}
+.pdf-viewer-topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:#2b2e30;color:#fff;font-weight:700;font-family:'DM Sans',sans-serif;}
+.pdf-viewer-close{background:none;border:none;color:#fff;font-size:14px;cursor:pointer;font-weight:700;}
+.pdf-viewer-close:hover{color:#ff6b6b;}
+.pdf-viewer-toolbar{display:flex;gap:8px;align-items:center;padding:8px 16px;background:#3c4043;color:#fff;font-size:13px;font-family:'DM Sans',sans-serif;flex-wrap:wrap;}
+.pdf-viewer-toolbar button{background:#5c6165;border:none;color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;}
+.pdf-viewer-toolbar button:hover{background:#767c81;}
+.pdf-viewer-canvas-wrap{flex:1;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:16px;user-select:none;-webkit-user-select:none;}
+.pdf-viewer-canvas-wrap canvas{box-shadow:0 2px 14px rgba(0,0,0,.5);}
+/* Agar koi Ctrl+P dabaye bhi, print ke time ye poora overlay hi hide ho jaata hai — kuch print nahi hoga */
+@media print{ .pdf-viewer-overlay{ display:none !important; } }
+</style>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="shared.js"></script>
+<script src="anti-copy.js"></script>
+<script src="app.js"></script>
+<script src="firebase-config.js"></script>
+<script type="module" src="firebase.js"></script>
+<script>
+loadSession();
+if(!APP.loggedIn){ window.location.href='login.html'; }
+
+// On load show dashboard
+document.addEventListener('DOMContentLoaded',()=>{
+  // Show homePage, hide testPageWrap
+  const hp=document.getElementById('homePage');
+  const tw=document.getElementById('testPageWrap');
+  if(hp) hp.style.display='block';
+  if(tw) tw.style.display='none';
+  updateDashStrip();
+  updateStreakBadge();
+  // Handle any pending action after login
+  const params=new URLSearchParams(window.location.search);
+  const rule=params.get('rule');
+  const lang=params.get('lang');
+  const live=params.get('live');
+  if(rule) setTimeout(()=>tryTestWithRules(rule),100);
+  else if(lang) setTimeout(()=>tryTest(lang),100);
+});
+
+function loginSuccess(name,email){
+  APP.loggedIn=true;APP.name=name;APP.email=email;
+  saveSession();if(typeof closeAuthModal==='function')closeAuthModal();
+  updateDashStrip();
+  updateStreakBadge();
+}
+function doLogout(){
+  if(typeof window.fbSignOutAuth==='function') window.fbSignOutAuth();
+  APP.loggedIn=false;APP.isPro=false;APP.name='';APP.email='';
+  saveSession();window.location.href='index.html';
+}
+function openAdminPage(){ window.location.href='admin.html'; }
+function openLiveTestPage(){ window.location.href='live-tests.html'; }
+
+// ══════════════════════════════════════════════════════════════
+// STENO VIDEO / PDF PLAYLISTS — ab LIVE Firebase se aate hain.
+// Admin Panel → "🎬 Steno Videos & PDF" section se jo bhi video/PDF
+// add-edit-delete kiya jayega, wahi seedha yahan reflect hoga —
+// is file ko dobara edit/deploy karne ki zaroorat nahi.
+//
+// ⚠️ ZAROORI: video ko YouTube par "Unlisted" rakhna (poori tarah
+// "Private" nahi) — sirf Unlisted videos hi is popup mein doosre
+// visitors ke liye embed/play ho sakti hain.
+//
+// ── USER ACCESS (kaise available hote hain) ──
+// Poora dashboard (candidate.html) pehle se hi login-required hai,
+// isliye login gate pehle se ban chuka hai. Ismein FREE-vs-PRO layer
+// bhi hai: admin panel se set kiya gaya free-count jitne videos har
+// list ke shuru mein hain wahi FREE hain; usse aage ke videos apne
+// aap 🔒 PRO-locked dikhenge aur click par site ka standard "Get Pro"
+// upgrade popup (openDModal('subModal')) khulega.
+// ══════════════════════════════════════════════════════════════
+window.STENO_FREE_COUNT = { learnSteno:5, chapterExercise:2, speedBooster:2 }; // fallback agar Firebase se kuch na aaye
+window.STENO_VIDEOS = { learnSteno:[], chapterExercise:[], speedBooster:[] };  // fallback
+window.STENO_PDFS = [];
+
+function stenoObjToArray(obj){
+  if(!obj) return [];
+  return Object.keys(obj)
+    .map(k=>({key:k, ...obj[k]}))
+    .sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
+}
+
+// Har ek ko chhota 5s timeout deke fetch karte hain — agar Firebase
+// slow/unavailable ho to bhi fallback defaults ke sath page kaam karta
+// rahe, kabhi "hamesha ke liye" latakta nahi.
+function withStenoTimeout(promise, ms=5000){
+  return Promise.race([
+    promise,
+    new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')), ms))
+  ]);
+}
+
+(async function loadStenoVideosAndPdfsLive(){
+  try {
+    if(typeof window.fbGetStenoVideosOnce === 'function'){
+      const data = await withStenoTimeout(window.fbGetStenoVideosOnce());
+      if(data){
+        ['learnSteno','chapterExercise','speedBooster'].forEach(cat=>{
+          const arr = stenoObjToArray(data[cat]);
+          if(arr.length) window.STENO_VIDEOS[cat] = arr;
+        });
+      }
+    }
+  } catch(e){ console.warn('steno videos live-load failed, using fallback', e); }
+
+  try {
+    if(typeof window.fbGetStenoFreeCountOnce === 'function'){
+      const data = await withStenoTimeout(window.fbGetStenoFreeCountOnce());
+      if(data) Object.assign(window.STENO_FREE_COUNT, data);
+    }
+  } catch(e){ console.warn('steno free-count live-load failed, using fallback', e); }
+
+  try {
+    if(typeof window.fbGetStenoPdfsOnce === 'function'){
+      const data = await withStenoTimeout(window.fbGetStenoPdfsOnce());
+      if(data) window.STENO_PDFS = stenoObjToArray(data);
+    }
+  } catch(e){ console.warn('steno pdfs live-load failed, using fallback', e); }
+})();
+
+const STENO_PLAYLIST_TITLES = {
+  learnSteno:'Learn Steno',
+  chapterExercise:'Chapterwise Exercise',
+  speedBooster:'Speed Booster'
+};
+
+function extractYoutubeId(v){
+  if(!v) return '';
+  const m = v.match(/(?:youtu\.be\/|[?&]v=|embed\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : v; // agar already sirf ID pasted hai to wahi use ho jaayega
+}
+
+window.openStenoPlaylist = function(category){
+  const list = window.STENO_VIDEOS[category] || [];
+  const freeCount = (window.STENO_FREE_COUNT && window.STENO_FREE_COUNT[category]) || 0;
+  document.getElementById('stenoModalTitle').textContent =
+    (STENO_PLAYLIST_TITLES[category] || 'Videos') + ` — पहले ${freeCount} videos free`;
+  const player = document.getElementById('stenoModalPlayer');
+  player.style.display='none'; player.innerHTML='';
+  const listEl = document.getElementById('stenoModalList');
+  listEl.innerHTML = list.map((v,i)=>{
+    const isLocked = i >= freeCount && !(window.APP && window.APP.isPro);
+    if(isLocked){
+      return `<div class="steno-modal-item locked" onclick="openDModal('subModal')">
+        <span class="num">🔒</span><span>${v.title} <span style="color:#e67e22;font-weight:700;">(PRO)</span></span>
+      </div>`;
+    }
+    return `<div class="steno-modal-item" onclick="playStenoVideo('${category}',${i})">
+      <span class="num">${i+1}</span><span>${v.title}${v.youtubeId?'':' (Coming soon)'}</span>
+    </div>`;
+  }).join('') || '<div style="color:#999;">Jald hi videos add honge.</div>';
+  document.getElementById('stenoModalOverlay').classList.add('active');
+};
+
+window.playStenoVideo = function(category, idx){
+  const v = (window.STENO_VIDEOS[category]||[])[idx];
+  const player = document.getElementById('stenoModalPlayer');
+  if(!v || !v.youtubeId){ alert('Ye video jald hi add hoga.'); return; }
+  const id = extractYoutubeId(v.youtubeId);
+  player.style.display='block';
+  player.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" title="${v.title}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  player.scrollIntoView({behavior:'smooth', block:'start'});
+};
+
+window.openStenoPdfList = function(){
+  document.getElementById('stenoModalTitle').textContent = 'Steno PDFs';
+  const player = document.getElementById('stenoModalPlayer');
+  player.style.display='none'; player.innerHTML='';
+  const listEl = document.getElementById('stenoModalList');
+  listEl.innerHTML = (window.STENO_PDFS||[]).map((p,i)=>
+    `<div class="steno-modal-item" onclick="closeStenoModal();openPdfViewer('${p.url}','${(p.title||'PDF').replace(/'/g,"\\'")}')">
+      <span class="num">📄</span><span>${p.title}</span>
+    </div>`
+  ).join('') || '<div style="color:#999;">Jald hi PDFs add honge.</div>';
+  document.getElementById('stenoModalOverlay').classList.add('active');
+};
+
+window.closeStenoModal = function(){
+  document.getElementById('stenoModalOverlay').classList.remove('active');
+  document.getElementById('stenoModalPlayer').innerHTML='';
+};
+
+// ══════════════════════════════════════════════════════════════
+// INBUILT PDF VIEWER — sirf zoom + page navigation, koi print/
+// download/share button nahi. PDF.js se canvas par render karte hain
+// (browser ka default PDF viewer show hi nahi hota, isliye uska
+// print/download toolbar bhi kabhi dikhta nahi).
+// ══════════════════════════════════════════════════════════════
+let pdfDoc=null, pdfPageNum=1, pdfScale=1.3, pdfRenderTask=null;
+
+function loadPdfJsLib(cb){
+  if(window.pdfjsLib){ cb(); return; }
+  const s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+  s.onload = ()=>{
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    cb();
+  };
+  s.onerror = ()=>{ document.getElementById('pdfViewerStatus').textContent = 'PDF viewer load nahi ho saka.'; };
+  document.head.appendChild(s);
+}
+
+window.openPdfViewer = function(url, title){
+  document.getElementById('pdfViewerTitle').textContent = title || 'PDF';
+  document.getElementById('pdfViewerOverlay').classList.add('active');
+  document.getElementById('pdfViewerStatus').textContent = 'Loading...';
+  document.getElementById('pdfPageIndicator').textContent = 'Page - / -';
+  loadPdfJsLib(()=>{
+    pdfjsLib.getDocument(url).promise.then(doc=>{
+      pdfDoc = doc; pdfPageNum = 1; pdfScale = 1.3;
+      document.getElementById('pdfViewerStatus').textContent = '';
+      renderPdfPage();
+    }).catch(()=>{
+      document.getElementById('pdfViewerStatus').textContent = '⚠️ PDF load nahi ho saka.';
+    });
+  });
+};
+
+function renderPdfPage(){
+  if(!pdfDoc) return;
+  pdfDoc.getPage(pdfPageNum).then(page=>{
+    const viewport = page.getViewport({scale: pdfScale});
+    const canvas = document.getElementById('pdfCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = viewport.width; canvas.height = viewport.height;
+    if(pdfRenderTask) pdfRenderTask.cancel();
+    pdfRenderTask = page.render({canvasContext: ctx, viewport});
+    pdfRenderTask.promise.then(()=>{
+      document.getElementById('pdfPageIndicator').textContent = `Page ${pdfPageNum} / ${pdfDoc.numPages}`;
+    });
+  });
+}
+window.pdfNextPage = function(){ if(pdfDoc && pdfPageNum < pdfDoc.numPages){ pdfPageNum++; renderPdfPage(); } };
+window.pdfPrevPage = function(){ if(pdfDoc && pdfPageNum > 1){ pdfPageNum--; renderPdfPage(); } };
+window.pdfZoomIn  = function(){ pdfScale = Math.min(pdfScale + 0.2, 3);   renderPdfPage(); };
+window.pdfZoomOut = function(){ pdfScale = Math.max(pdfScale - 0.2, 0.5); renderPdfPage(); };
+window.closePdfViewer = function(){
+  document.getElementById('pdfViewerOverlay').classList.remove('active');
+  pdfDoc = null;
+  const canvas = document.getElementById('pdfCanvas');
+  canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);
+};
+
+// Best-effort: PDF viewer khula ho to Ctrl/Cmd+P (print) aur Ctrl/Cmd+S
+// (save) ko block kar do.
+document.addEventListener('keydown', function(e){
+  const overlay = document.getElementById('pdfViewerOverlay');
+  if(overlay && overlay.classList.contains('active')){
+    if((e.ctrlKey||e.metaKey) && (e.key==='p' || e.key==='P' || e.key==='s' || e.key==='S')){
+      e.preventDefault();
+    }
+  }
+});
+</script>
+</body>
+</html>

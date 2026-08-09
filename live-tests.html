@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<title>Live Tests — Apna Typing Master Pro</title>
+</head>
+<body>
+
+<style>body{display:flex;flex-direction:column;min-height:100vh;margin:0;}</style>
+
+<!-- =====================================================
+     LIVE TEST PAGE — Image-1 exact layout
+     ===================================================== -->
+<div id="liveTestPage">
+  <!-- Top header -->
+  <div class="lt-header">
+    <div class="lt-logo-badge">
+      <span class="lt-logo-dot"></span>
+      Live Test Series
+    </div>
+   <div class="lt-title">Live Tests</div>
+    <div class="lt-youtube">
+      Join us on Youtube :
+      <a href="https://www.youtube.com/@ashulipikhindishorthand" target="_blank">https://www.youtube.com/@ashulipikhindishorthand</a>
+    </div>
+   <div class="lt-telegram">
+      Join us on Telegram Channel :
+      <a href="https://t.me/apnatypingmasterproandhindisteno" target="_blank">https://t.me/apnatypingmasterproandhindisteno</a>
+    </div>
+    <div class="lt-user-area">
+      <span class="lt-username" id="ltUserName">—</span>
+      <button class="lt-btn-sm" onclick="openAuthModal('login')">Edit</button>
+      <button class="lt-btn-sm lt-btn-back" onclick="closeLiveTestPage()">← Dashboard</button>
+    </div>
+  </div>
+
+  <!-- Body: left + right -->
+  <div class="lt-body">
+
+    <!-- LEFT: Upcoming Tests -->
+    <div class="lt-left">
+      <div class="lt-panel-hdr">
+        <span class="lt-panel-hdr-title">Upcoming Tests</span>
+        <button class="lt-refresh-btn" onclick="renderLtUpcoming()">Refresh</button>
+      </div>
+      <div class="lt-filter-bar">
+        <label>Select Exam :-></label>
+        <select class="lt-filter-sel" id="ltExamFilter" onchange="renderLtUpcoming()">
+          <option value="all">All Exams</option>
+          <option value="UPSSSC 2026">UPSSSC 2026</option>
+          <option value="UP Police ASI/SI">UP Police ASI/SI</option>
+          <option value="RRB NTPC">RRB NTPC</option>
+          <option value="SSC CGL">SSC CGL</option>
+          <option value="SSC CHSL">SSC CHSL</option>
+          <option value="MP Police ASI">MP Police ASI</option>
+          <option value="Allahabad HC">Allahabad HC</option>
+        </select>
+      </div>
+      <div class="lt-list" id="ltUpcomingList">
+        <div class="lt-empty">Loading tests...</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Results -->
+    <div class="lt-right">
+
+      <!-- Your Results -->
+      <div class="lt-results-panel">
+        <div class="lt-panel-hdr">
+          <span class="lt-panel-hdr-title">Your Results</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="lt-show-bar">
+              Show Tests:
+              <select class="lt-show-sel" onchange="renderLtResults()">
+                <option>10</option><option>20</option><option>50</option>
+              </select>
+            </div>
+            <button class="lt-refresh-btn" onclick="renderLtResults()">Refresh</button>
+          </div>
+        </div>
+        <div class="lt-results-list" id="ltResultsList">
+          <div class="lt-empty">Abhi koi result nahi hai.<br>Koi live test complete karein.</div>
+        </div>
+      </div>
+
+      <!-- Unattempted Results -->
+      <div class="lt-results-panel">
+        <div class="lt-panel-hdr">
+          <span class="lt-panel-hdr-title">Unattempted Results</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="lt-show-bar">
+              Show Tests:
+              <select class="lt-show-sel" onchange="renderLtUnattempted()">
+                <option>10</option><option>20</option>
+              </select>
+            </div>
+            <button class="lt-refresh-btn" onclick="renderLtUnattempted()">Refresh</button>
+          </div>
+        </div>
+        <div class="lt-results-list" id="ltUnattemptedList">
+          <div class="lt-empty">Loading...</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- RESULT MODAL -->
+  <div class="modal-bg" id="resultModal">
+    <div class="modal-box-d" style="width:580px;">
+      <div class="modal-hdr"><span>Result — Apna Typing Master Pro</span><button class="modal-close-d" onclick="closeDModal('resultModal')">✕</button></div>
+      <div class="res-title">Apna Typing Master Pro</div>
+      <div class="res-tabs">
+        <button class="res-tab active" onclick="switchResTab(this)">Most Exams</button>
+        <button class="res-tab" onclick="switchResTab(this)">SSC/CGL/CHSL</button>
+        <button class="res-tab" onclick="switchResTab(this)">RRB NTPC</button>
+        <button class="res-tab" onclick="switchResTab(this)">Allahabad HC</button>
+        <button class="res-tab" onclick="switchResTab(this)">UPSSSC</button>
+      </div>
+      <div class="res-body" id="resBody"></div>
+      <div class="res-footer">
+        <button class="res-btn" onclick="closeDModal('resultModal');resetTest()">Repeat</button>
+        <button class="res-btn next" onclick="closeDModal('resultModal');nextEx()">Next &gt;&gt;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBSCRIPTION MODAL -->
+  <div class="modal-bg" id="subModal">
+    <div class="modal-box-d" style="width:500px;">
+      <div class="modal-hdr"><span>⚡ Pro Upgrade — Apna Typing Master Pro</span><button class="modal-close-d" onclick="closeDModal('subModal')">✕</button></div>
+      <div id="subS1">
+        <div class="sub-plans">
+          <div class="sub-plan selected" id="planM" onclick="selPlan('monthly',this)"><div class="sp-name">Monthly</div><div class="sp-price">₹149<span>/mo</span></div><div class="sp-save">Billed monthly</div></div>
+          <div class="sub-plan" id="planQ" onclick="selPlan('quarterly',this)"><div class="sp-name">3-Month</div><div class="sp-price">₹349<span>/3mo</span></div><div class="sp-save">₹116/month</div><div class="sp-badge">Save 22%</div></div>
+          <div class="sub-plan" id="planY" onclick="selPlan('yearly',this)"><div class="sp-name">Yearly</div><div class="sp-price">₹999<span>/yr</span></div><div class="sp-save">₹83/month</div><div class="sp-badge">Best Value</div></div>
+        </div>
+        <div class="sub-feat">
+          <h4>✅ Pro mein kya milega:</h4>
+          <div class="feat-item-d">500+ English + 370+ Hindi passages</div>
+          <div class="feat-item-d">18 exam patterns: SSC, RRB, HC, UPSC, UPSSSC…</div>
+          <div class="feat-item-d">Exam Mode — strict timer, no corrections</div>
+          <div class="feat-item-d">National leaderboard & detailed analytics</div>
+        </div>
+        <div class="pay-section">
+          <h4>💳 Payment</h4>
+          <div class="pay-method-note" style="background:#f8f9fa;border:1px solid #e0e0e0;border-radius:6px;padding:12px 14px;font-size:12.5px;color:#555;line-height:1.65;">
+            🔐 "Pay" dabate hi <b>Razorpay</b> ka secure checkout khulega — wahan UPI, Card ya Net Banking, jo pasand ho wo choose kar sakte hain. Aapka card/UPI detail humare server par kabhi store nahi hota.
+          </div>
+          <div class="pay-total-row"><div><div class="pay-total-label">Total Amount (GST included)</div><div class="gst-note">Base: ₹<span id="baseAmt">126.27</span> + GST 18%: ₹<span id="gstAmt">22.73</span></div></div><div class="pay-total-amt">₹<span id="payAmt">149.00</span></div></div>
+          <button class="pay-submit" id="razorpayPayBtn" onclick="payWithRazorpay()">🔐 Pay ₹<span id="payAmt2">149.00</span> Securely via Razorpay →</button>
+          <div class="pay-secure">🔒 256-bit SSL &nbsp;|&nbsp; ✅ 7-day Refund &nbsp;|&nbsp; 🇮🇳 Made in India</div>
+        </div>
+      </div>
+      <div id="subS2" style="display:none;">
+        <div class="success-box">
+          <div class="tick">🎉</div><h2>Payment Successful!</h2><p>Aapka Pro subscription active hai!</p>
+          <div class="success-details">
+            <div class="success-row"><span style="color:#777;">Plan</span><span id="confPlan">Pro Monthly</span></div>
+            <div class="success-row"><span style="color:#777;">Amount</span><span>₹<span id="confAmt">149.00</span></span></div>
+            <div class="success-row"><span style="color:#777;">Valid Until</span><span id="confExpiry">—</span></div>
+            <div class="success-row"><span style="color:#777;">Status</span><span style="color:#27ae60;">✅ ACTIVE</span></div>
+          </div>
+          <button class="pay-submit" style="margin:0 18px 18px;width:calc(100% - 36px);" onclick="closeDModal('subModal'); if(document.getElementById('testPageWrap')&&document.getElementById('testPageWrap').style.display!=='none') buildDd();">Start Practicing →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="shared.js"></script>
+<script src="anti-copy.js"></script>
+<script src="app.js"></script>
+<script src="firebase-config.js"></script>
+<script type="module" src="firebase.js"></script>
+<script>
+loadSession();
+if(!APP.loggedIn){ window.location.href='login.html'; }
+function goBackToDash(){ window.location.href='candidate.html'; }
+function goHome(){ window.location.href='candidate.html'; }
+function openAdminPage(){ window.location.href='admin.html'; }
+function loginSuccess(n,e){ APP.loggedIn=true;APP.name=n;APP.email=e;saveSession(); }
+
+// Override startLiveScheduledTest
+function startLiveScheduledTest(schedIdx){
+  saveSession();
+  window.location.href='typing.html?live='+schedIdx;
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const lt=document.getElementById('liveTestPage');
+  if(lt){ lt.style.display='flex'; lt.style.flexDirection='column'; lt.style.minHeight='100vh'; }
+  const un=document.getElementById('ltUsername');
+  if(un&&APP.loggedIn) un.textContent=APP.name;
+  if(typeof renderLtSchedule==='function') renderLtSchedule();
+  if(typeof renderLtResults==='function') renderLtResults();
+  if(typeof renderLtUnattempted==='function') renderLtUnattempted();
+});
+</script>
+<!-- =====================================================
+     EXAM MODE — Picker
+     ===================================================== -->
+<div class="examx-overlay" id="examxPicker">
+  <div class="examx-picker-hdr">
+    <span>🔒 Exam Mode — Choose Your Exam</span>
+    <button onclick="examxClose('examxPicker')">✕</button>
+  </div>
+  <div class="examx-picker-grid" id="examxPickerGrid"></div>
+</div>
+
+<!-- Keyboard method choice (Hindi exams only) -->
+<div class="examx-overlay" id="examxKbChoice">
+  <div class="examx-picker-hdr">
+    <span id="examxKbTitle">Select Keyboard Input Method</span>
+    <button onclick="examxClose('examxKbChoice')">✕</button>
+  </div>
+  <div class="examx-kbchoice" id="examxKbBody"></div>
+</div>
+
+<!-- Instructions page -->
+<div class="examx-overlay" id="examxInstr">
+  <div class="examx-picker-hdr">
+    <span>Instructions</span>
+    <button onclick="examxClose('examxInstr')">✕</button>
+  </div>
+  <div class="examx-instr" id="examxInstrBody"></div>
+</div>
+
+<!-- The exam typing chrome -->
+<div class="examx-chrome" id="examxChrome">
+  <div class="examx-hdr-blue" id="examxHdrTitle">Typing Test</div>
+  <div class="examx-hdr-black" id="examxHdrExamName">Exam Name</div>
+  <div class="examx-hdr-info">
+    <div class="examx-toolbar">
+      <button onclick="examxToggleMute(this)" id="examxMuteBtn" title="Sound">🔊</button>
+      <button onclick="examxToggleFullscreen()" title="Fullscreen">⛶</button>
+      <button onclick="examxZoom(-1)">A-</button>
+      <button onclick="examxZoom(0)">A</button>
+      <button onclick="examxZoom(1)">A+</button>
+    </div>
+    <div class="examx-timer-box">
+      <div><div class="extime">Time left:- <span id="examxTimer">00:00</span></div></div>
+      <div>
+        <div class="examx-avatar">👤</div>
+        <div class="examx-avatar-name" id="examxUserName">—</div>
+      </div>
+    </div>
+  </div>
+  <div class="examx-hdr-kblang">
+    <span id="examxKbLabel">Keyboard Layout: —</span>
+    <span id="examxLangLabel">Language: —</span>
+  </div>
+  <div class="examx-body">
+    <div class="examx-passage" id="examxPassageDisplay"><span id="examxPassageSpan"></span></div>
+    <textarea class="examx-typebox" id="examxTypeArea" disabled placeholder="Typing yahin shuru hogi..."></textarea>
+  </div>
+  <div class="examx-footer">
+    <button class="examx-btn-cancel" onclick="examxCancelTest()">Cancel</button>
+    <button class="examx-btn-submit" onclick="examxSubmitTest()">Submit</button>
+  </div>
+  <button class="examx-gear" onclick="examxOpenSettings()" title="Typing Settings">⚙️</button>
+</div>
+
+<!-- Typing Settings side-panel -->
+<div class="examx-settings-panel" id="examxSettings">
+  <div class="examx-settings-hdr"><h3>Typing Settings</h3><button onclick="examxCloseSettings()">✕</button></div>
+  <div class="examx-settings-body">
+    <div class="examx-set-sec" id="examxSec1">
+      <div class="examx-set-sec-hdr" onclick="examxToggleSec('examxSec1')">📐 Appearance &amp; Layout <span class="examx-set-caret">▾</span></div>
+      <div class="examx-set-sec-body">
+        <div class="examx-set-row">Font Size <span><button onclick="examxZoom(-1)" style="margin-right:4px;">A-</button><button onclick="examxZoom(1)">A+</button></span></div>
+      </div>
+    </div>
+    <div class="examx-set-sec" id="examxSec2">
+      <div class="examx-set-sec-hdr" onclick="examxToggleSec('examxSec2')">✏️ Typing Behavior <span class="examx-set-caret">▾</span></div>
+      <div class="examx-set-sec-body">
+        <div class="examx-set-row">Backspace Rule <span id="examxBsInfo" style="color:#666;">—</span></div>
+        <div class="examx-set-row">Highlight Style <span id="examxHlInfo" style="color:#666;">—</span></div>
+      </div>
+    </div>
+    <div class="examx-set-sec" id="examxSec3">
+      <div class="examx-set-sec-hdr" onclick="examxToggleSec('examxSec3')">🔊 Sound &amp; View <span class="examx-set-caret">▾</span></div>
+      <div class="examx-set-sec-body">
+        <div class="examx-set-row">Key Sound <label class="examx-switch"><input type="checkbox" id="examxSoundToggle" checked onchange="examxSyncSoundBtn()"><span></span></label></div>
+        <div class="examx-set-row">Fullscreen <button onclick="examxToggleFullscreen()" style="padding:5px 10px;border-radius:5px;border:1px solid #ddd;background:#f7f7f7;cursor:pointer;">Toggle</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="examx-settings-footer"><button onclick="examxCloseSettings()">Close</button></div>
+</div>
+
+<!-- Result Dashboard -->
+<div class="examx-overlay" id="examxResult">
+  <div class="examx-result-body" id="examxResultBody"></div>
+</div>
+
+</body>
+</html>

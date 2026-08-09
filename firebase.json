@@ -1,0 +1,31 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "firebase-database-rules.json",
+      "storage.rules",
+      "functions/**",
+      "node_modules/**",
+      ".git/**",
+      "*.md",
+      "reset-admin-password.js",
+      "serviceAccountKey.json"
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(jpg|jpeg|gif|png|svg|webp)",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
+      }
+    ]
+  },
+  "database": {
+    "rules": "firebase-database-rules.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "functions": {
+    "source": "functions"
+  }
+}

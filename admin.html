@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<title>Admin Panel — Apna Typing Master Pro</title>
+</head>
+<body>
+<style>
+body{margin:0;}
+#adminPage{display:block!important;min-height:100vh;}
+/* Schedule Cards */
+.sched-card{background:#12121a;border:1px solid #2a2a3e;border-radius:12px;padding:16px;}
+.sched-card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:#f0a500;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;}
+.sched-ta{width:100%;height:160px;background:#0a0a0f;border:1.5px solid #2a2a3e;border-radius:8px;color:#e8e8f0;font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 12px;resize:vertical;outline:none;box-sizing:border-box;line-height:1.6;transition:border .2s;}
+.sched-ta:focus{border-color:#f0a500;}
+.sched-count{font-size:11px;color:#4a4a5e;margin-top:5px;text-align:right;}
+/* Upcoming list */
+.sched-upcoming-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#0a0a0f;border-radius:6px;margin-bottom:6px;cursor:pointer;transition:background .2s;}
+.sched-upcoming-item:hover{background:#12121a;}
+.sched-date-badge{background:rgba(240,165,0,0.12);color:#f0a500;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;min-width:90px;text-align:center;}
+.sched-date-badge.today{background:rgba(231,76,60,0.15);color:#e74c3c;}
+.sched-pass-count{font-size:12px;color:#6b6b8a;}
+</style>
+
+<div id="adminPage">
+  <div class="adm-topbar">
+    <div class="adm-logo">⚙️ Admin Panel — Apna Typing Master Pro</div>
+    <div class="adm-topbar-right">
+      <span class="adm-topbar-info" id="admLoggedInInfo"></span>
+      <button class="adm-back-btn" onclick="closeAdminPage()">← Back to Site</button>
+      <button class="adm-back-btn" onclick="if(confirm('Aaj ke saare Live passages ko Normal section mein migrate kar dein?')) window.fbMigrateLiveToNormal()">🔄 Migrate Live→Normal Now</button>
+      <button class="adm-save-btn" onclick="admSaveAll()">💾 Save All</button>
+    </div>
+  </div>
+  <div id="admGate">
+    <!-- Login box -->
+    <div class="adm-login-gate" id="admLoginGate">
+      <div class="adm-login-box">
+        <div class="adm-login-icon">🔐</div>
+        <div class="adm-login-title">Admin Login</div>
+        <div class="adm-login-sub">Apne admin credentials se login karein</div>
+
+        <!-- Normal Login Form -->
+        <div id="admNormalLogin">
+          <div class="adm-field"><label>Admin Email</label><input type="email" id="admEmail" placeholder="yashpalsingh7616@gmail.com"></div>
+          <div class="adm-field"><label>Password</label><div class="pwd-wrap"><input type="password" id="admPass" placeholder="••••••••"
+            onkeydown="if(event.key==='Enter') doAdminLogin()"><button type="button" class="pwd-toggle" onclick="togglePwd('admPass',this)">👁</button></div></div>
+          <div class="adm-login-err" id="admLoginErr" style="display:none;"></div>
+          <button class="adm-login-btn" onclick="doAdminLogin()" style="margin-top:10px;">Login as Admin →</button>
+          <div style="margin-top:14px;text-align:center;">
+            <button onclick="showForgotPassword()"
+              style="background:none;border:none;color:#6b6b8a;font-size:12px;cursor:pointer;text-decoration:underline;font-family:'DM Sans',sans-serif;">
+              🔑 Password bhul gaye? Reset karein
+            </button>
+          </div>
+        </div>
+
+        <!-- Forgot Password Form — 4-digit Email OTP (same system as candidate) -->
+        <div id="admForgotForm" style="display:none;">
+          <div style="text-align:center;margin-bottom:16px;">
+            <div style="font-size:2rem;">🔑</div>
+            <div style="font-weight:700;color:#e8e8f0;margin:8px 0 4px;">Password Reset</div>
+            <div style="font-size:12px;color:#6b6b8a;" id="admForgotSubtext">Email par 4-ank ka OTP bheja jayega</div>
+          </div>
+
+          <div id="admForgotStep1">
+            <div class="adm-field">
+              <label>Admin Email</label>
+              <input type="email" id="admForgotEmail" placeholder="yashpalsingh7616@gmail.com"
+                onkeydown="if(event.key==='Enter') doAdminSendOTP()">
+            </div>
+            <div class="adm-login-err" id="admForgotErr1" style="display:none;"></div>
+            <button class="adm-login-btn" onclick="doAdminSendOTP()" style="margin-top:10px;">📧 OTP Bhejein →</button>
+          </div>
+
+          <div id="admForgotStep2" style="display:none;">
+            <div class="adm-field">
+              <label>OTP</label>
+              <input type="text" id="admForgotOtp" maxlength="4" placeholder="0000" style="letter-spacing:6px;font-size:18px;text-align:center;">
+            </div>
+            <div class="adm-field">
+              <label>Naya Password</label>
+              <div class="pwd-wrap"><input type="password" id="admForgotNewPass" placeholder="Min. 6 characters"
+                onkeydown="if(event.key==='Enter') doAdminVerifyOTP()"><button type="button" class="pwd-toggle" onclick="togglePwd('admForgotNewPass',this)">👁</button></div>
+            </div>
+            <div class="adm-login-err" id="admForgotErr2" style="display:none;"></div>
+            <button class="adm-login-btn" onclick="doAdminVerifyOTP()" style="margin-top:10px;">Password Reset Karein →</button>
+            <div style="margin-top:12px;text-align:center;">
+              <button onclick="doAdminSendOTP()"
+                style="background:none;border:none;color:#6b6b8a;font-size:11px;cursor:pointer;text-decoration:underline;font-family:'DM Sans',sans-serif;">
+                OTP dobara bhejein
+              </button>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;text-align:center;">
+            <button onclick="showNormalLogin()"
+              style="background:none;border:none;color:#6b6b8a;font-size:12px;cursor:pointer;text-decoration:underline;font-family:'DM Sans',sans-serif;">
+              ← Wapas Login pe jaayein
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- Main UI -->
+    <div id="admMain" style="display:none;">
+      <div class="adm-main-nav">
+        <button class="adm-main-nav-btn active" id="admNavAnalytics" onclick="showAdminAnalytics()">📊 Website Analytics</button>
+        <button class="adm-main-nav-btn" id="admNavPassages" onclick="showAdminPassages()">📝 Manage Passages</button>
+        <button class="adm-main-nav-btn" id="admNavSchedule" onclick="showAdminSchedule()">📅 Schedule Live</button>
+        <button class="adm-main-nav-btn" id="admNavSteno" onclick="showAdminSteno()">🎙 Steno Audio</button>
+        <button class="adm-main-nav-btn" id="admNavStenoVideo" onclick="showAdminStenoVideo()">🎬 Steno Videos & PDF</button>
+      </div>
+
+      <!-- ANALYTICS VIEW (default, shown first after login) -->
+      <div id="admAnalyticsView"></div>
+
+      <!-- PASSAGES VIEW -->
+      <div id="admPassagesView" style="display:none;">
+        <div class="adm-tabs">
+          <button class="adm-tab active" onclick="switchAdmTab(0)">📝 English Normal <span class="tab-count" id="tcount0">0</span></button>
+          <button class="adm-tab" onclick="switchAdmTab(1)">📝 Hindi Normal <span class="tab-count" id="tcount1">0</span></button>
+          <button class="adm-tab" onclick="switchAdmTab(2)">🔴 English Live <span class="tab-count live" id="tcount2">0</span></button>
+          <button class="adm-tab" onclick="switchAdmTab(3)">🔴 Hindi Live <span class="tab-count live" id="tcount3">0</span></button>
+          <button class="adm-tab" onclick="switchAdmTab(4)">🔢 Numbers <span class="tab-count" id="tcount4">0</span></button>
+          <button class="adm-tab" onclick="switchAdmTab(5)">⚡ Speed Master <span class="tab-count" id="tcount5">0</span></button>
+          <button class="adm-tab" onclick="switchAdmTab(6)">⌨️ Hindi (KrutiDev) <span class="tab-count" id="tcount6">0</span></button>
+        </div>
+        <div class="adm-content" id="admContent"></div>
+      </div>
+
+      <!-- SCHEDULE LIVE VIEW -->
+      <div id="admScheduleView" style="display:none;padding:24px 28px;max-width:900px;margin:0 auto;">
+
+        <!-- Info box -->
+        <div style="background:rgba(240,165,0,0.08);border:1px solid rgba(240,165,0,0.25);border-radius:12px;padding:18px 22px;margin-bottom:24px;">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:#f0a500;margin-bottom:8px;">📅 Daily Live Schedule — Kaise Kaam Karta Hai</div>
+          <div style="font-size:13px;color:#8888aa;line-height:1.8;">
+            ✅ Yahan se kisi bhi date ke liye <b style="color:#e8e8f0;">2 English + 2 Hindi</b> passages schedule karo<br>
+            🕕 <b style="color:#e8e8f0;">Roz subah 6:00 AM</b> — Aaj ki date ke passages automatically <b style="color:#e74c3c;">Live</b> section mein publish ho jaate hain<br>
+            🌙 <b style="color:#e8e8f0;">Raat 10:00 PM</b> — Live passages khud <b style="color:#27ae60;">Normal</b> mein shift ho jaate hain<br>
+            📆 <b style="color:#e8e8f0;">Hafte ya mahine</b> ke passages ek baar mein schedule kar sakte ho — roz kuch karna nahi
+          </div>
+        </div>
+
+        <!-- Date selector + Publish Now -->
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+          <div style="font-family:'Syne';font-weight:700;font-size:1rem;color:#e8e8f0;">Date Select Karo:</div>
+          <input type="date" id="schedDate" style="padding:9px 14px;background:#0a0a0f;border:1.5px solid #2a2a3e;border-radius:8px;color:#e8e8f0;font-family:'DM Sans';font-size:14px;outline:none;cursor:pointer;"
+            onchange="loadScheduledPassages()">
+          <button onclick="setTodayDate()" style="padding:9px 16px;background:#1a1a2e;border:1px solid #2a2a3e;border-radius:8px;color:#8888aa;font-size:13px;cursor:pointer;font-family:'DM Sans';">📅 Aaj</button>
+          <button onclick="publishNow()" id="publishNowBtn" style="padding:9px 18px;background:linear-gradient(135deg,#e74c3c,#c0392b);border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans';margin-left:auto;">
+            ⚡ Aaj Ka Abhi Publish Karo
+          </button>
+        </div>
+        <div id="publishNowResult" style="display:none;margin-bottom:16px;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;"></div>
+
+        <!-- 2 English + 2 Hindi textarea grid -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+          <!-- English Passage 1 -->
+          <div class="sched-card">
+            <div class="sched-card-title">🇬🇧 English Passage 1</div>
+            <textarea class="sched-ta" id="schedEng0" placeholder="Pehla English passage yahan likhein ya paste karein..."></textarea>
+            <div class="sched-count" id="schedEng0Count">0 words</div>
+          </div>
+
+          <!-- English Passage 2 -->
+          <div class="sched-card">
+            <div class="sched-card-title">🇬🇧 English Passage 2</div>
+            <textarea class="sched-ta" id="schedEng1" placeholder="Doosra English passage yahan likhein ya paste karein..."></textarea>
+            <div class="sched-count" id="schedEng1Count">0 words</div>
+          </div>
+
+          <!-- Hindi Passage 1 -->
+          <div class="sched-card">
+            <div class="sched-card-title">🇮🇳 Hindi Passage 1</div>
+            <textarea class="sched-ta" id="schedHin0" placeholder="Pehla Hindi passage yahan likhein ya paste karein..." style="font-family:'Noto Sans Devanagari',sans-serif;"></textarea>
+            <div class="sched-count" id="schedHin0Count">0 words</div>
+          </div>
+
+          <!-- Hindi Passage 2 -->
+          <div class="sched-card">
+            <div class="sched-card-title">🇮🇳 Hindi Passage 2</div>
+            <textarea class="sched-ta" id="schedHin1" placeholder="Doosra Hindi passage yahan likhein ya paste karein..." style="font-family:'Noto Sans Devanagari',sans-serif;"></textarea>
+            <div class="sched-count" id="schedHin1Count">0 words</div>
+          </div>
+        </div>
+
+        <!-- Save button -->
+        <div style="margin-top:18px;display:flex;gap:12px;align-items:center;">
+          <button onclick="saveScheduledPassages()" style="padding:12px 28px;background:linear-gradient(135deg,#f0a500,#e05a00);border:none;border-radius:10px;color:#000;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans';">
+            💾 Is Date Ke Passages Save Karo
+          </button>
+          <button onclick="clearScheduledPassages()" style="padding:12px 20px;background:#1a1a2e;border:1px solid #2a2a3e;border-radius:10px;color:#6b6b8a;font-size:13px;cursor:pointer;font-family:'DM Sans';">
+            🗑️ Clear
+          </button>
+          <div id="schedSaveMsg" style="display:none;font-size:13px;font-weight:600;"></div>
+        </div>
+
+        <!-- Upcoming schedule preview -->
+        <div style="margin-top:32px;">
+          <div style="font-family:'Syne';font-weight:800;font-size:1rem;color:#e8e8f0;margin-bottom:14px;">📋 Upcoming Scheduled Days</div>
+          <div id="schedUpcomingList" style="font-size:13px;color:#6b6b8a;">Loading...</div>
+        </div>
+
+      </div>
+
+      <!-- STENO DICTATION AUDIO ADMIN (hidden by default, opens via button) -->
+      <div id="admStenoView" style="display:none;">
+        <div class="adm-tabs">
+          <button class="adm-tab active" onclick="switchStenoTab('hi-80')">🎙 Hindi · 80 WPM</button>
+          <button class="adm-tab" onclick="switchStenoTab('hi-100')">🎙 Hindi · 100 WPM</button>
+          <button class="adm-tab" onclick="switchStenoTab('en-80')">🎙 English · 80 WPM</button>
+          <button class="adm-tab" onclick="switchStenoTab('en-100')">🎙 English · 100 WPM</button>
+        </div>
+        <div class="adm-content" id="admStenoContent"></div>
+      </div>
+
+      <!-- STENO VIDEOS + PDF ADMIN (hidden by default, opens via button) -->
+      <div id="admStenoVideoView" style="display:none;">
+        <div class="adm-tabs">
+          <button class="adm-tab active" onclick="switchStenoVideoTab('learnSteno')">🎬 Learn Steno</button>
+          <button class="adm-tab" onclick="switchStenoVideoTab('chapterExercise')">🎬 Chapterwise Exercise</button>
+          <button class="adm-tab" onclick="switchStenoVideoTab('speedBooster')">🎬 Speed Booster</button>
+          <button class="adm-tab" onclick="switchStenoVideoTab('pdf')">📄 PDF</button>
+        </div>
+        <div class="adm-content" id="admStenoVideoContent"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="adm-toast" id="admToast"></div>
+
+<script src="shared.js"></script>
+<script src="app.js"></script>
+<script src="steno-admin.js"></script>
+<script src="steno-video-admin.js"></script>
+<script src="firebase-config.js"></script>
+<script type="module" src="firebase.js"></script>
+<script>
+loadSession();
+function closeAdminPage(){
+  if(typeof window.fbAdminSignOut==='function') window.fbAdminSignOut();
+  window.setAdmLoggedIn(false);
+  window.location.href='candidate.html';
+}
+
+// ── Forgot Password Toggle ───────────────────────────────
+function showForgotPassword(){
+  document.getElementById('admNormalLogin').style.display='none';
+  document.getElementById('admForgotForm').style.display='block';
+  document.getElementById('admForgotStep1').style.display='block';
+  document.getElementById('admForgotStep2').style.display='none';
+  document.getElementById('admForgotErr1').style.display='none';
+  document.getElementById('admForgotErr2').style.display='none';
+  const emailVal = document.getElementById('admEmail').value;
+  if(emailVal) document.getElementById('admForgotEmail').value = emailVal;
+}
+function showNormalLogin(){
+  document.getElementById('admForgotForm').style.display='none';
+  document.getElementById('admNormalLogin').style.display='block';
+  document.getElementById('admLoginErr').style.display='none';
+}
+
+// ── Forgot Password — 4-digit Email OTP (same Cloud Functions as candidate) ──
+function doAdminSendOTP(){
+  const email = document.getElementById('admForgotEmail').value.trim();
+  const errEl = document.getElementById('admForgotErr1');
+  errEl.style.display='none';
+
+  if(!email){
+    errEl.textContent='❌ Email address likhein.';
+    errEl.style.display='block'; return;
+  }
+  if(typeof window.fbSendResetOTP!=='function'){
+    errEl.textContent='⚠️ Firebase load ho raha hai, thoda wait karein aur dobara try karein.';
+    errEl.style.display='block'; return;
+  }
+  const btn=document.querySelector('#admForgotStep1 .adm-login-btn');
+  btn.disabled=true; btn.textContent='Bheja ja raha hai...';
+  window.fbSendResetOTP(email)
+    .then(()=>{
+      btn.disabled=false; btn.textContent='📧 OTP Bhejein →';
+      document.getElementById('admForgotStep1').style.display='none';
+      document.getElementById('admForgotStep2').style.display='block';
+      document.getElementById('admForgotSubtext').textContent='4-ank ka OTP bhej diya gaya, email check karein';
+    })
+    .catch(err=>{
+      btn.disabled=false; btn.textContent='📧 OTP Bhejein →';
+      errEl.textContent='❌ '+err.message;
+      errEl.style.display='block';
+    });
+}
+function doAdminVerifyOTP(){
+  const email = document.getElementById('admForgotEmail').value.trim();
+  const otp = document.getElementById('admForgotOtp').value.trim();
+  const newPass = document.getElementById('admForgotNewPass').value;
+  const errEl = document.getElementById('admForgotErr2');
+  errEl.style.display='none';
+
+  if(!otp||otp.length!==4){ errEl.textContent='❌ 4-ank ka OTP daalein.'; errEl.style.display='block'; return; }
+  if(!newPass||newPass.length<6){ errEl.textContent='❌ Password kam se kam 6 characters ka hona chahiye.'; errEl.style.display='block'; return; }
+  if(typeof window.fbVerifyResetOTP!=='function'){
+    errEl.textContent='⚠️ Firebase load ho raha hai, thoda wait karein aur dobara try karein.';
+    errEl.style.display='block'; return;
+  }
+  const btn=document.querySelector('#admForgotStep2 .adm-login-btn');
+  btn.disabled=true; btn.textContent='Verify ho raha hai...';
+  window.fbVerifyResetOTP(email, otp, newPass)
+    .then(()=>{
+      alert('✅ Password reset ho gaya! Ab naye password se Login karein.');
+      document.getElementById('admEmail').value = email;
+      document.getElementById('admPass').value = '';
+      showNormalLogin();
+    })
+    .catch(err=>{
+      btn.disabled=false; btn.textContent='Password Reset Karein →';
+      errEl.textContent='❌ '+err.message;
+      errEl.style.display='block';
+    });
+}
+
+// ── Improve admin login error messages ──────────────────
+const _origDoAdminLogin = window.doAdminLogin;
+window.doAdminLogin = function(){
+  const errEl = document.getElementById('admLoginErr');
+  if(errEl) errEl.style.display='none';
+  if(typeof _origDoAdminLogin === 'function') _origDoAdminLogin();
+};
+
+// ── Admin Nav — Schedule tab show/hide ──────────────────
+function showAdminSchedule(){
+  window.admView='schedule';
+  ['admAnalyticsView','admPassagesView','admScheduleView','admStenoView','admStenoVideoView'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.style.display='none';
+  });
+  document.getElementById('admScheduleView').style.display='block';
+  ['admNavAnalytics','admNavPassages','admNavSchedule','admNavSteno','admNavStenoVideo'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.classList.remove('active');
+  });
+  const nb=document.getElementById('admNavSchedule');
+  if(nb) nb.classList.add('active');
+  setTodayDate();
+  loadUpcomingSchedule();
+  // Word counters
+  ['schedEng0','schedEng1','schedHin0','schedHin1'].forEach(id=>{
+    const ta=document.getElementById(id); if(!ta) return;
+    ta.addEventListener('input',()=>{
+      const w=ta.value.trim().split(/\s+/).filter(Boolean).length;
+      const c=document.getElementById(id+'Count');
+      if(c) c.textContent=w+' words';
+    });
+  });
+}
+
+function setTodayDate(){
+  const ist=new Date(new Date().getTime()+5.5*3600000);
+  const el=document.getElementById('schedDate');
+  if(el){ el.value=ist.toISOString().slice(0,10); loadScheduledPassages(); }
+}
+
+// ── Load passages for selected date ─────────────────────
+function loadScheduledPassages(){
+  const date=document.getElementById('schedDate')?.value; if(!date) return;
+  if(typeof window.fbGetScheduledPassages!=='function'){
+    setTimeout(loadScheduledPassages,800); return;
+  }
+  window.fbGetScheduledPassages(date,(data)=>{
+    const vals={schedEng0:data.eng[0]||'',schedEng1:data.eng[1]||'',
+                schedHin0:data.hin[0]||'',schedHin1:data.hin[1]||''};
+    Object.keys(vals).forEach(id=>{
+      const ta=document.getElementById(id); if(!ta) return;
+      ta.value=vals[id];
+      const w=ta.value.trim().split(/\s+/).filter(Boolean).length;
+      const c=document.getElementById(id+'Count'); if(c) c.textContent=w+' words';
+    });
+  });
+}
+
+// ── Save passages to Firebase scheduledPassages/ ─────────
+function saveScheduledPassages(){
+  const date=document.getElementById('schedDate')?.value;
+  const msg=document.getElementById('schedSaveMsg');
+  if(!date){ msg.textContent='❌ Date select karo!'; msg.style.color='#e74c3c'; msg.style.display='block'; return; }
+  const eng0=document.getElementById('schedEng0').value.trim();
+  const eng1=document.getElementById('schedEng1').value.trim();
+  const hin0=document.getElementById('schedHin0').value.trim();
+  const hin1=document.getElementById('schedHin1').value.trim();
+  if(!eng0&&!eng1&&!hin0&&!hin1){
+    msg.textContent='❌ Kam se kam ek passage likhein!'; msg.style.color='#e74c3c'; msg.style.display='block'; return;
+  }
+  if(typeof window.fbSaveScheduledPassages!=='function'){
+    msg.textContent='⚠️ Firebase load ho raha hai...'; msg.style.color='#f0a500'; msg.style.display='block'; return;
+  }
+  msg.textContent='💾 Save ho raha hai...'; msg.style.color='#f0a500'; msg.style.display='block';
+  window.fbSaveScheduledPassages(date,[eng0,eng1].filter(Boolean),[hin0,hin1].filter(Boolean))
+    .then(()=>{
+      msg.textContent='✅ Passages save! Subah 6 AM ko automatically live honge.';
+      msg.style.color='#2ecc71';
+      loadUpcomingSchedule();
+      setTimeout(()=>{ msg.style.display='none'; },5000);
+    })
+    .catch(err=>{ msg.textContent='❌ Error: '+err.message; msg.style.color='#e74c3c'; });
+}
+
+function clearScheduledPassages(){
+  ['schedEng0','schedEng1','schedHin0','schedHin1'].forEach(id=>{
+    const ta=document.getElementById(id); if(ta) ta.value='';
+    const c=document.getElementById(id+'Count'); if(c) c.textContent='0 words';
+  });
+}
+
+// ── Publish Now — call Firebase Cloud Function ────────────
+function publishNow(){
+  const btn=document.getElementById('publishNowBtn');
+  const res=document.getElementById('publishNowResult');
+  if(btn){ btn.disabled=true; btn.textContent='⏳ Publishing...'; }
+  if(typeof window.fbCallManualPublish!=='function'){
+    if(res){ res.textContent='⚠️ Firebase load ho raha hai, thoda wait karke dobara try karein.';
+      res.style.background='rgba(240,165,0,0.10)'; res.style.color='#f0a500'; res.style.display='block'; }
+    if(btn){ btn.disabled=false; btn.textContent='⚡ Aaj Ka Abhi Publish Karo'; } return;
+  }
+  window.fbCallManualPublish()
+    .then(result=>{
+      if(res){ res.textContent='✅ '+(result.message||'Published!');
+        res.style.background='rgba(39,174,96,0.10)'; res.style.color='#2ecc71'; res.style.display='block'; }
+      if(btn){ btn.disabled=false; btn.textContent='⚡ Aaj Ka Abhi Publish Karo'; }
+      setTimeout(()=>{ if(res) res.style.display='none'; },7000);
+    })
+    .catch(err=>{
+      if(res){ res.textContent='❌ Error: '+err.message;
+        res.style.background='rgba(231,76,60,0.10)'; res.style.color='#e74c3c'; res.style.display='block'; }
+      if(btn){ btn.disabled=false; btn.textContent='⚡ Aaj Ka Abhi Publish Karo'; }
+    });
+}
+
+// ── Upcoming schedule list ────────────────────────────────
+function loadUpcomingSchedule(){
+  const el=document.getElementById('schedUpcomingList'); if(!el) return;
+  el.textContent='Loading...';
+  if(typeof window.fbGetUpcomingSchedule!=='function'){
+    setTimeout(loadUpcomingSchedule,1000); return;
+  }
+  window.fbGetUpcomingSchedule((days)=>{
+    if(!days||days.length===0){
+      el.innerHTML='<div style="color:#4a4a5e;font-size:13px;padding:12px;">Koi schedule nahi mila. Upar se dates add karo.</div>';
+      return;
+    }
+    const ist=new Date(new Date().getTime()+5.5*3600000);
+    const todayStr=ist.toISOString().slice(0,10);
+    el.innerHTML=days.slice(0,14).map(d=>`
+      <div class="sched-upcoming-item"
+        onclick="document.getElementById('schedDate').value='${d.date}';loadScheduledPassages();">
+        <span class="sched-date-badge ${d.date===todayStr?'today':''}">
+          ${d.date===todayStr?'📅 Today':'📌'} &nbsp;${d.date}
+        </span>
+        <span class="sched-pass-count">
+          🇬🇧 ${d.engCount} English &nbsp;|&nbsp; 🇮🇳 ${d.hinCount} Hindi
+        </span>
+        ${d.date<todayStr?'<span style="font-size:10px;color:#3a3a52;margin-left:auto;">✓ Done</span>':''}
+      </div>`).join('');
+  });
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const adm=document.getElementById('adminPage');
+  if(adm) adm.style.display='block';
+  if(window.getAdmLoggedIn()){
+    const gate=document.getElementById('admLoginGate');
+    const main=document.getElementById('admMain');
+    if(gate) gate.style.display='none';
+    if(main) main.style.display='block';
+    if(typeof window.showAdminAnalytics==='function') window.showAdminAnalytics();
+  }
+});
+</script>
+</body>
+</html>

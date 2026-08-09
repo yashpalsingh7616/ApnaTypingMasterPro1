@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificate — Apna Typing Master Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;margin:0;min-height:100vh;}
+.cert-wrap{max-width:720px;margin:0 auto;padding:40px 20px 60px;}
+.cert-header{text-align:center;margin-bottom:28px;}
+.cert-header h1{font-family:'Syne';font-size:1.7rem;font-weight:800;}
+.cert-header p{color:var(--muted);font-size:13px;margin-top:6px;}
+.cert-form{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:24px;}
+.cert-field{margin-bottom:16px;}
+.cert-field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600;}
+.cert-field input,.cert-field select{width:100%;padding:11px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans';font-size:14px;box-sizing:border-box;}
+.cert-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;}
+#certCanvas{width:100%;border-radius:10px;box-shadow:0 4px 24px rgba(0,0,0,.35);margin-bottom:18px;display:none;}
+.download-btn{display:none;width:100%;padding:12px;background:#27ae60;color:#fff;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;text-align:center;text-decoration:none;box-sizing:border-box;}
+.note{font-size:11.5px;color:var(--muted);margin-top:14px;text-align:center;}
+.nav-btns{display:flex;gap:10px;justify-content:center;margin-top:24px;}
+.nav-btn{padding:10px 22px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);text-decoration:none;font-size:14px;}
+</style>
+</head>
+<body>
+<div class="cert-wrap">
+  <div class="cert-header">
+    <h1>🎓 Course Completion Certificate</h1>
+    <p>Apna 30/45-din ka typing course poora karne pe apna certificate banaye aur download karein</p>
+  </div>
+
+  <div class="cert-form">
+    <div class="cert-field">
+      <label>Aapka Poora Naam</label>
+      <input type="text" id="certName" placeholder="Jaise: Rahul Kumar Sharma">
+    </div>
+    <div class="cert-field">
+      <label>Course</label>
+      <select id="certCourse">
+        <option value="English Typing — 45-Day Professional Course">English Typing — 45-Day Course</option>
+        <option value="Hindi Typing (Mangal/Remington/Inscript) — 45-Day Course">Hindi Typing (Mangal) — 45-Day Course</option>
+        <option value="Hindi Typing (KrutiDev) — 45-Day Course">Hindi Typing (KrutiDev) — 45-Day Course</option>
+        <option value="Stenography Practice">Stenography Practice</option>
+        <option value="Speed Master">Speed Master</option>
+      </select>
+    </div>
+    <button class="cert-btn" onclick="generateCert()">🎨 Certificate Banayein</button>
+  </div>
+
+  <canvas id="certCanvas" width="1200" height="850"></canvas>
+  <a class="download-btn" id="downloadBtn" download="Apna-Typing-Master-Certificate.png">⬇️ Certificate Download Karein (PNG)</a>
+  <div class="note">ℹ️ Ye certificate self-generated hai (aapke diye naam se) — course poora karne ka pramaan swayं-ghoshit (self-declared) hai, kisi automatic verification se nahi juda hai।</div>
+
+  <div class="nav-btns">
+    <a class="nav-btn" href="candidate.html">← Dashboard</a>
+  </div>
+</div>
+
+<script>
+function generateCert(){
+  const name = document.getElementById('certName').value.trim();
+  const course = document.getElementById('certCourse').value;
+  if(!name){ alert('Pehle apna naam likhein!'); return; }
+
+  const canvas = document.getElementById('certCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  // Background
+  const grad = ctx.createLinearGradient(0,0,W,H);
+  grad.addColorStop(0,'#fffdf5');
+  grad.addColorStop(1,'#fff6e0');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,W,H);
+
+  // Outer border
+  ctx.strokeStyle = '#f0a500';
+  ctx.lineWidth = 10;
+  ctx.strokeRect(20,20,W-40,H-40);
+  ctx.strokeStyle = '#1a1a1a';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(38,38,W-76,H-76);
+
+  // Header
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#f0a500';
+  ctx.font = '700 22px Arial';
+  ctx.fillText('⌨ APNA TYPING MASTER PRO', W/2, 110);
+
+  ctx.fillStyle = '#1a1a1a';
+  ctx.font = '800 46px Georgia';
+  ctx.fillText('Certificate of Completion', W/2, 190);
+
+  ctx.font = '16px Arial';
+  ctx.fillStyle = '#666';
+  ctx.fillText('This is to certify that', W/2, 260);
+
+  // Name
+  ctx.font = '700 44px "Segoe Script", Georgia, cursive';
+  ctx.fillStyle = '#1a3a6b';
+  ctx.fillText(name, W/2, 340);
+  ctx.strokeStyle = '#f0a500';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  const nameWidth = ctx.measureText(name).width;
+  ctx.moveTo(W/2 - nameWidth/2 - 20, 360);
+  ctx.lineTo(W/2 + nameWidth/2 + 20, 360);
+  ctx.stroke();
+
+  ctx.font = '16px Arial';
+  ctx.fillStyle = '#666';
+  ctx.fillText('has successfully completed the', W/2, 410);
+
+  ctx.font = '700 26px Georgia';
+  ctx.fillStyle = '#1a1a1a';
+  wrapText(ctx, course, W/2, 450, W-200, 34);
+
+  ctx.font = '15px Arial';
+  ctx.fillStyle = '#888';
+  ctx.fillText('on Apna Typing Master Pro — India\'s Typing Practice Platform', W/2, 540);
+
+  // Date + signature area
+  const dateStr = new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  ctx.textAlign = 'left';
+  ctx.font = '15px Arial';
+  ctx.fillStyle = '#444';
+  ctx.fillText('Date: ' + dateStr, 100, H-100);
+  ctx.strokeStyle = '#999';
+  ctx.beginPath(); ctx.moveTo(100, H-130); ctx.lineTo(320, H-130); ctx.stroke();
+
+  ctx.textAlign = 'right';
+  ctx.font = 'italic 26px Georgia';
+  ctx.fillStyle = '#1a3a6b';
+  ctx.fillText('Apna Typing Master Pro', W-100, H-115);
+  ctx.strokeStyle = '#999';
+  ctx.beginPath(); ctx.moveTo(W-320, H-130); ctx.lineTo(W-100, H-130); ctx.stroke();
+  ctx.font = '13px Arial';
+  ctx.fillStyle = '#888';
+  ctx.fillText('Authorized Signature', W-100, H-95);
+
+  canvas.style.display = 'block';
+  const link = document.getElementById('downloadBtn');
+  link.href = canvas.toDataURL('image/png');
+  link.style.display = 'block';
+  canvas.scrollIntoView({behavior:'smooth'});
+}
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight){
+  const words = text.split(' ');
+  let line = '', lines = [];
+  for(let n=0;n<words.length;n++){
+    const testLine = line + words[n] + ' ';
+    if(ctx.measureText(testLine).width > maxWidth && n > 0){
+      lines.push(line);
+      line = words[n] + ' ';
+    } else {
+      line = testLine;
+    }
+  }
+  lines.push(line);
+  const startY = y - ((lines.length-1) * lineHeight)/2;
+  lines.forEach((l,i)=> ctx.fillText(l.trim(), x, startY + i*lineHeight));
+}
+</script>
+<script src="anti-copy.js"></script>
+</body>
+</html>

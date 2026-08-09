@@ -1,0 +1,72 @@
+{
+  "rules": {
+    "passages": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email === 'yashpalsingh7616@gmail.com'"
+    },
+    "scheduledPassages": {
+      ".read": "auth != null && auth.token.email === 'yashpalsingh7616@gmail.com'",
+      ".write": "auth != null && auth.token.email === 'yashpalsingh7616@gmail.com'"
+    },
+    "users": {
+      ".read": "auth != null",
+      "$uid": {
+        ".write": "auth != null",
+        "isPro": { ".write": false },
+        "plan": { ".write": false },
+        "proExpiry": { ".write": false }
+      }
+    },
+    "payments": {
+      ".read": "auth != null && auth.token.email === 'yashpalsingh7616@gmail.com'",
+      ".write": "auth != null && auth.token.email === 'yashpalsingh7616@gmail.com'"
+    },
+    "activeSessions": {
+      ".read": "auth != null && auth.token.email === 'yashpalsingh7616@gmail.com'",
+      ".write": true
+    },
+    "dailyStats": {
+      ".read": "auth != null && auth.token.email === 'yashpalsingh7616@gmail.com'",
+      ".write": "auth != null"
+    },
+    "passwordResetOTPs": {
+      ".read": false,
+      ".write": false
+    },
+    "stenoPassages": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email === 'yashpalsingh7616@gmail.com'"
+    },
+    "speedMaster": {
+      ".read": true,
+      "$month": {
+        "$duration": {
+          "scores": {
+            "$user": {
+              ".write": true,
+              ".validate": "newData.hasChildren(['name','wpm','accuracy','ts']) && newData.child('wpm').isNumber() && newData.child('wpm').val() >= 0 && newData.child('wpm').val() <= 400 && newData.child('accuracy').isNumber() && newData.child('accuracy').val() >= 0 && newData.child('accuracy').val() <= 100"
+            }
+          },
+          "testsTaken": {
+            "$user": {
+              ".write": true,
+              ".validate": "newData.hasChildren(['name','count']) && newData.child('count').isNumber()"
+            }
+          }
+        }
+      }
+    },
+    "stenoVideos": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email === 'yashpalsingh7616@gmail.com'"
+    },
+    "stenoVideoFreeCount": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email === 'yashpalsingh7616@gmail.com'"
+    },
+    "stenoPdfs": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email === 'yashpalsingh7616@gmail.com'"
+    }
+  }
+}

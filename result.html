@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Result — Apna Typing Master Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:var(--bg);color:var(--text);min-height:100vh;font-family:'DM Sans',sans-serif;padding:30px 20px;}
+.res-page{max-width:680px;margin:0 auto;}
+.res-header{background:linear-gradient(90deg,#1a5276,#2471a3);color:#fff;padding:14px 20px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
+.res-header h2{font-family:'Syne';font-size:1.2rem;font-weight:800;}
+.res-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;margin-bottom:16px;}
+.res-card h3{font-family:'Syne';font-size:1rem;font-weight:700;color:var(--accent);margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:10px;}
+.big-num{font-size:56px;font-weight:900;color:#2471a3;text-align:center;line-height:1;}
+.big-label{font-size:12px;color:var(--muted);text-align:center;margin-top:4px;text-transform:uppercase;}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px;}
+.stat-item{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+.stat-val{font-size:24px;font-weight:800;color:var(--text);}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:3px;}
+.qualified{background:#d4edda;color:#155724;border:1px solid #c3e6cb;border-radius:8px;padding:12px 16px;font-size:14px;font-weight:700;margin:16px 0;text-align:center;}
+.not-qualified{background:#fde8e8;color:#721c24;border:1px solid #f5c6cb;border-radius:8px;padding:12px 16px;font-size:14px;font-weight:700;margin:16px 0;text-align:center;}
+.res-actions{display:flex;gap:12px;justify-content:center;margin-top:20px;}
+.btn-res{padding:11px 24px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:none;font-family:'DM Sans';}
+.btn-retry{background:linear-gradient(135deg,var(--accent),var(--accent2));color:black;}
+.btn-home{background:var(--surface);color:var(--text);border:1px solid var(--border);}
+.empty-res{text-align:center;padding:50px 20px;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="res-page">
+  <div class="res-header">
+    <h2>📊 Result Page — Apna Typing Master Pro</h2>
+    <button onclick="window.location.href='candidate.html'" style="background:rgba(255,255,255,0.2);border:none;color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;">← Dashboard</button>
+  </div>
+  <div id="resultContent">
+    <div class="empty-res">
+      <div style="font-size:48px;margin-bottom:12px;">📝</div>
+      <div style="font-size:16px;font-weight:700;margin-bottom:8px;">Koi result nahi mila</div>
+      <div style="font-size:13px;">Pehle ek typing test complete karein</div>
+      <button onclick="window.location.href='typing.html'" style="margin-top:16px;padding:10px 24px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:black;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;">Test Lein →</button>
+    </div>
+  </div>
+</div>
+<script src="shared.js"></script>
+<script src="anti-copy.js"></script>
+<script src="firebase-config.js"></script>
+<script type="module" src="firebase.js"></script>
+<script>
+loadSession();
+// Show last result from session
+const r = window.liveResults && window.liveResults[window.liveResults.length-1];
+if(r){
+  const qualified = r.net >= r.minSpeed;
+  document.getElementById('resultContent').innerHTML = `
+    <div class="res-card">
+      <h3>🔴 ${r.exam} — ${r.lang}</h3>
+      <div class="big-num">${r.net}</div>
+      <div class="big-label">Net WPM</div>
+      <div class="stat-grid">
+        <div class="stat-item"><div class="stat-val">${r.gross}</div><div class="stat-lbl">Gross WPM</div></div>
+        <div class="stat-item"><div class="stat-val">${r.acc}%</div><div class="stat-lbl">Accuracy</div></div>
+        <div class="stat-item"><div class="stat-val">${r.err}</div><div class="stat-lbl">Errors</div></div>
+        <div class="stat-item"><div class="stat-val">${r.total}</div><div class="stat-lbl">Words Typed</div></div>
+        <div class="stat-item"><div class="stat-val">${r.correct}</div><div class="stat-lbl">Correct</div></div>
+        <div class="stat-item"><div class="stat-val">${r.minSpeed}</div><div class="stat-lbl">Min Required</div></div>
+      </div>
+      <div class="${qualified?'qualified':'not-qualified'}">${qualified?'✅ QUALIFIED':'❌ NOT QUALIFIED'} — Required: ${r.minSpeed} WPM | Your Net: ${r.net} WPM</div>
+      <div style="font-size:11px;color:var(--muted);text-align:center;">Date: ${r.date}</div>
+    </div>
+    <div class="res-actions">
+      <button class="btn-res btn-retry" onclick="history.back()">↺ Retry Test</button>
+      <button class="btn-res btn-home" onclick="window.location.href='candidate.html'">Dashboard →</button>
+    </div>`;
+}
+</script>
+</body>
+</html>

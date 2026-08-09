@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Apna Typing Master Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;margin:0;min-height:100vh;}
+.contact-wrap{max-width:680px;margin:0 auto;padding:50px 24px;}
+.contact-header{text-align:center;margin-bottom:40px;}
+.contact-header h1{font-family:'Syne';font-size:2rem;font-weight:800;}
+.contact-header p{color:var(--muted);margin-top:6px;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px;}
+.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;text-align:center;}
+.contact-card-icon{font-size:2rem;margin-bottom:10px;}
+.contact-card h3{font-family:'Syne';font-weight:700;margin-bottom:8px;font-size:1rem;}
+.contact-card a{color:var(--accent);text-decoration:none;font-size:13px;display:block;margin-top:4px;word-break:break-all;}
+.contact-card p{color:var(--muted);font-size:13px;margin-top:4px;}
+.contact-form{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;}
+.contact-form h2{font-family:'Syne';font-weight:800;margin-bottom:20px;font-size:1.1rem;}
+.cf-field{margin-bottom:16px;}
+.cf-field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:500;}
+.cf-field input,.cf-field textarea,.cf-field select{width:100%;padding:11px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans';font-size:14px;outline:none;transition:border .2s;box-sizing:border-box;}
+.cf-field input:focus,.cf-field textarea:focus,.cf-field select:focus{border-color:var(--accent);}
+.cf-field textarea{min-height:100px;resize:vertical;}
+.cf-submit{width:100%;padding:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:black;border:none;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;font-family:'DM Sans';}
+.cf-success{display:none;background:rgba(39,174,96,0.1);border:1px solid #27ae6055;color:#27ae60;padding:12px;border-radius:8px;text-align:center;margin-top:12px;font-size:13px;}
+.nav-btns{display:flex;gap:10px;justify-content:center;margin-top:24px;}
+.nav-btn{padding:10px 22px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);text-decoration:none;font-size:14px;font-family:'DM Sans';}
+</style>
+</head>
+<body>
+<div class="contact-wrap">
+  <div class="contact-header">
+    <h1>📬 Contact Us</h1>
+    <p>Koi sawal? Hum yahan hain!</p>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-card">
+      <div class="contact-card-icon">📺</div>
+      <h3>YouTube</h3>
+      <a href="https://www.youtube.com/@ashulipikhindishorthand" target="_blank">@ashulipikhindishorthand</a>
+      <p>Typing tutorials aur stenography</p>
+    </div>
+    <div class="contact-card">
+      <div class="contact-card-icon">📱</div>
+      <h3>Telegram</h3>
+      <a href="https://t.me/apnatypingmasterproandhindisteno" target="_blank">Join Channel</a>
+      <p>Live updates aur discussions</p>
+    </div>
+    <div class="contact-card">
+      <div class="contact-card-icon">✉️</div>
+      <h3>Email</h3>
+      <a href="mailto:businesspaheli177@gmail.com">businesspaheli177@gmail.com</a>
+      <p>24-48 hours mein reply</p>
+    </div>
+    <div class="contact-card">
+      <div class="contact-card-icon">🕐</div>
+      <h3>Support Hours</h3>
+      <p style="margin-top:8px;">Mon–Sat: 9 AM – 6 PM</p>
+      <p>Sunday: Closed</p>
+    </div>
+  </div>
+  <div class="contact-form">
+    <h2>✍️ Message Bhejein</h2>
+    <div class="cf-field"><label>Aapka Naam</label><input type="text" id="cfName" placeholder="Pura naam likhein"/></div>
+    <div class="cf-field"><label>Email Address</label><input type="email" id="cfEmail" placeholder="example@email.com"/></div>
+    <div class="cf-field"><label>Subject</label>
+      <select id="cfSubject">
+        <option>-- Subject choose karein --</option>
+        <option>Technical Issue</option><option>Payment Problem</option>
+        <option>Passage Suggestion</option><option>Partnership</option><option>Other</option>
+      </select>
+    </div>
+    <div class="cf-field"><label>Message</label><textarea id="cfMsg" placeholder="Apna message yahan likhein..."></textarea></div>
+    <button class="cf-submit" id="cfSubmitBtn" onclick="sendMsg()">📤 Message Bhejein</button>
+    <div class="cf-success" id="cfSuccess">✅ Aapka message mil gaya! Hum jald hi reply karenge.</div>
+    <div class="cf-error" id="cfError" style="display:none;background:rgba(220,53,69,0.1);border:1px solid #dc354555;color:#dc3545;padding:12px;border-radius:8px;text-align:center;margin-top:12px;font-size:13px;"></div>
+  </div>
+  <div class="nav-btns">
+    <a class="nav-btn" href="index.html">← Home</a>
+    <a class="nav-btn" href="about.html">About Us</a>
+  </div>
+</div>
+<script src="firebase-config.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-functions.js";
+
+const fbApp = initializeApp(window.FIREBASE_CONFIG);
+const fns = getFunctions(fbApp, 'asia-south1');
+
+window.sendMsg = async function(){
+  const name = document.getElementById('cfName').value.trim();
+  const email = document.getElementById('cfEmail').value.trim();
+  const subject = document.getElementById('cfSubject').value;
+  const msg = document.getElementById('cfMsg').value.trim();
+  const errBox = document.getElementById('cfError');
+  const btn = document.getElementById('cfSubmitBtn');
+  errBox.style.display = 'none';
+
+  if(!name || !email || !msg){ errBox.textContent = 'Naam, email aur message zaroori hain.'; errBox.style.display='block'; return; }
+  if(!email.includes('@')){ errBox.textContent = 'Valid email address daalein.'; errBox.style.display='block'; return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Bhej rahe hain...';
+  try {
+    const fn = httpsCallable(fns, 'sendContactMessage');
+    await fn({ name, email, subject, message: msg });
+    document.getElementById('cfSuccess').style.display = 'block';
+    document.getElementById('cfName').value = '';
+    document.getElementById('cfEmail').value = '';
+    document.getElementById('cfMsg').value = '';
+    setTimeout(()=> document.getElementById('cfSuccess').style.display='none', 6000);
+  } catch(err){
+    errBox.textContent = '⚠️ Message bhejne mein dikkat aayi: ' + err.message + ' — ya seedha businesspaheli177@gmail.com par email kar dein.';
+    errBox.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📤 Message Bhejein';
+  }
+};
+</script>
+<script src="anti-copy.js"></script>
+</body>
+</html>

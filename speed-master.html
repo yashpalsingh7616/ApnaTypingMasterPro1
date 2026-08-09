@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<title>Speed Master — Apna Typing Master Pro</title>
+<style>
+  :root{
+    --sm-bg:#eef4fb; --sm-card:#ffffff; --sm-border:#dbe4f0;
+    --sm-text:#26293a; --sm-muted:#7a8399;
+    --sm-accent:#6c5ce7; --sm-accent2:#f0a500;
+    --sm-green:#1fb976; --sm-red:#ff5a5f;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--sm-bg);color:var(--sm-text);font-family:'DM Sans',sans-serif;}
+  .sm-wrap{max-width:920px;margin:0 auto;padding:26px 20px 60px;}
+  .sm-back{color:var(--sm-muted);text-decoration:none;font-size:13px;font-weight:600;}
+  .sm-back:hover{color:var(--sm-accent);}
+  .sm-title{font-family:'Syne',sans-serif;color:var(--sm-accent2);font-size:30px;font-weight:800;margin:12px 0 4px;display:flex;align-items:center;gap:8px;}
+  .sm-sub{color:var(--sm-muted);font-size:13px;margin-bottom:22px;}
+
+  .sm-card{background:var(--sm-card);border:1px solid var(--sm-border);border-radius:16px;padding:22px;box-shadow:0 4px 20px rgba(60,80,140,.06);}
+
+  /* Start / name+duration gate */
+  .sm-gate-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+  .sm-gate-row input{flex:1;min-width:200px;padding:12px 14px;border-radius:10px;border:1.5px solid var(--sm-border);font-size:14px;background:#f7faff;color:var(--sm-text);}
+  .sm-gate-row input:focus{outline:none;border-color:var(--sm-accent);}
+  .sm-dur-label{font-size:12px;color:var(--sm-muted);text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:8px;}
+  .sm-dur-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+  .sm-dur-btn{padding:9px 18px;border-radius:999px;border:1.5px solid var(--sm-border);background:#f7faff;color:var(--sm-text);font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;}
+  .sm-dur-btn:hover{border-color:var(--sm-accent);}
+  .sm-dur-btn.active{background:linear-gradient(135deg,var(--sm-accent),#8e7cf5);border-color:transparent;color:#fff;box-shadow:0 3px 10px rgba(108,92,231,.35);}
+  .sm-start-btn{padding:13px 26px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--sm-accent2),#ff7a00);font-weight:800;font-size:15px;cursor:pointer;color:#1a1200;box-shadow:0 4px 14px rgba(240,165,0,.35);}
+  .sm-start-btn:hover{filter:brightness(1.06);transform:translateY(-1px);}
+
+  /* Test area */
+  .sm-live-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+  .sm-live-pill{display:flex;gap:18px;flex-wrap:wrap;}
+  .sm-live-item{text-align:center;}
+  .sm-live-item span{display:block;font-size:11px;color:var(--sm-muted);text-transform:uppercase;letter-spacing:.5px;}
+  .sm-live-item b{display:block;font-size:22px;color:var(--sm-accent);}
+  .sm-live-item.sm-timer b{color:var(--sm-accent2);}
+  .sm-finish-btn{padding:9px 18px;border-radius:8px;border:1.5px solid var(--sm-border);background:#f7faff;font-weight:700;font-size:13px;cursor:pointer;color:var(--sm-text);}
+  .sm-finish-btn:hover{border-color:var(--sm-red);color:var(--sm-red);}
+
+  .sm-words{font-size:23px;line-height:2;letter-spacing:.2px;user-select:none;max-height:210px;overflow:hidden;}
+  .sm-words span{color:#b8c0d4;}
+  .sm-words span.correct{color:var(--sm-green);}
+  .sm-words span.wrong{color:var(--sm-red);text-decoration:underline;text-decoration-color:var(--sm-red);}
+  .sm-words span.current{background:rgba(108,92,231,.14);border-radius:5px;padding:0 2px;}
+  .sm-input{width:100%;margin-top:16px;padding:15px;font-size:16px;border-radius:10px;border:1.5px solid var(--sm-border);background:#f7faff;color:var(--sm-text);}
+  .sm-input:focus{outline:none;border-color:var(--sm-accent);}
+
+  /* Results */
+  .sm-stats{display:flex;gap:14px;margin:0 0 18px;flex-wrap:wrap;}
+  .sm-stat{background:#f7faff;border:1px solid var(--sm-border);border-radius:12px;padding:14px 20px;min-width:110px;}
+  .sm-stat span{display:block;font-size:11px;color:var(--sm-muted);text-transform:uppercase;letter-spacing:.5px;}
+  .sm-stat b{display:block;font-size:24px;color:var(--sm-accent2);margin-top:3px;}
+  .sm-restart{margin-top:16px;padding:11px 22px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--sm-accent2),#ff7a00);font-weight:800;cursor:pointer;color:#1a1200;}
+  .sm-restart:hover{filter:brightness(1.06);}
+  .sm-err{background:#fff1f1;border:1px solid #ffc9c9;color:#c0392b;padding:10px 14px;border-radius:10px;font-size:13px;margin-top:12px;}
+
+  /* Leaderboard */
+  .sm-lb-title{font-family:'Syne',sans-serif;font-weight:800;color:var(--sm-text);font-size:18px;margin:34px 0 12px;}
+  .sm-lb-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+  .sm-lb-tab{padding:7px 14px;border-radius:8px;border:1.5px solid var(--sm-border);background:#f7faff;font-size:12px;font-weight:700;cursor:pointer;color:var(--sm-muted);}
+  .sm-lb-tab.active{background:var(--sm-text);color:#fff;border-color:var(--sm-text);}
+  .sm-lb{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media (max-width:640px){.sm-lb{grid-template-columns:1fr;}}
+  .sm-lb-col{max-height:400px;overflow-y:auto;}
+  .sm-lb-col h4{color:var(--sm-accent);margin:0 0 10px;font-size:14px;}
+  .sm-lb-row{display:flex;justify-content:space-between;padding:8px 4px;border-bottom:1px solid var(--sm-border);font-size:13px;}
+  .sm-lb-row.me{background:rgba(240,165,0,.12);border-radius:6px;font-weight:700;}
+  .sm-lb-row:last-child{border-bottom:none;}
+  .sm-lb-empty{color:var(--sm-muted);font-size:13px;padding:8px 4px;}
+</style>
+</head>
+<body>
+<div class="sm-wrap">
+  <a href="index.html" class="sm-back">← Back to Home</a>
+  <div class="sm-title">⚡ Speed Master</div>
+  <div class="sm-sub">Free-for-all typing booster — apna time chuno, real passage type karo, apni speed check karo aur leaderboard mein chado.</div>
+
+  <div class="sm-card">
+    <div id="smNameGate">
+      <div class="sm-gate-row">
+        <input type="text" id="smNameInput" placeholder="Apna naam / nickname likhein (e.g. Rahul_Fast)" maxlength="20">
+      </div>
+      <div class="sm-dur-label">Duration chuno</div>
+      <div class="sm-dur-row" id="smDurRow">
+        <button class="sm-dur-btn" data-d="1">1 min</button>
+        <button class="sm-dur-btn" data-d="2">2 min</button>
+        <button class="sm-dur-btn active" data-d="5">5 min</button>
+        <button class="sm-dur-btn" data-d="10">10 min</button>
+        <button class="sm-dur-btn" data-d="unlimited">♾ Unlimited</button>
+      </div>
+      <button class="sm-start-btn" onclick="smStartTest()">🚀 Test Shuru Karein</button>
+    </div>
+
+    <div id="smTestArea" style="display:none;">
+      <div class="sm-live-bar">
+        <div class="sm-live-pill">
+          <div class="sm-live-item sm-timer"><span>Time</span><b id="smTimer">00:00</b></div>
+          <div class="sm-live-item"><span>Live WPM</span><b id="smLiveWpm">0</b></div>
+          <div class="sm-live-item"><span>Accuracy</span><b id="smLiveAcc">100%</b></div>
+        </div>
+        <button class="sm-finish-btn" onclick="finishTest()">⏹ Finish Test</button>
+      </div>
+      <div class="sm-words" id="smWordsBox"></div>
+      <input type="text" id="smInputBox" class="sm-input" placeholder="Yahan type karna shuru karein..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    </div>
+
+    <div id="smResultArea" style="display:none;">
+      <div class="sm-stats">
+        <div class="sm-stat"><span>WPM</span><b id="smResWpm">0</b></div>
+        <div class="sm-stat"><span>Accuracy</span><b id="smResAcc">0%</b></div>
+        <div class="sm-stat"><span>Correct Words</span><b id="smResCorrect">0</b></div>
+        <div class="sm-stat"><span>Wrong Words</span><b id="smResWrong">0</b></div>
+        <div class="sm-stat"><span>Duration</span><b id="smResDur">—</b></div>
+      </div>
+      <svg id="smGraph" viewBox="0 0 700 180" style="width:100%;background:#f7faff;border-radius:12px;border:1px solid var(--sm-border);"></svg>
+      <div id="smSaveErr"></div>
+      <button class="sm-restart" onclick="smRestart()">🔁 Dobara Try Karein</button>
+    </div>
+  </div>
+
+  <div class="sm-lb-title">🏆 Leaderboard — <span id="smMonthLabel"></span></div>
+  <div class="sm-lb-tabs" id="smLbTabs">
+    <button class="sm-lb-tab" data-d="1">1 min</button>
+    <button class="sm-lb-tab" data-d="2">2 min</button>
+    <button class="sm-lb-tab active" data-d="5">5 min</button>
+    <button class="sm-lb-tab" data-d="10">10 min</button>
+    <button class="sm-lb-tab" data-d="unlimited">♾ Unlimited</button>
+  </div>
+  <div class="sm-card sm-lb">
+    <div class="sm-lb-col">
+      <h4>WPM Ranking (Top 50)</h4>
+      <div id="smLbWpm" class="sm-lb-empty">Loading...</div>
+    </div>
+    <div class="sm-lb-col">
+      <h4>Tests Taken (Top 50)</h4>
+      <div id="smLbTests" class="sm-lb-empty">Loading...</div>
+    </div>
+  </div>
+</div>
+
+<script src="firebase-config.js"></script>
+<script src="shared.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getDatabase, ref, get, runTransaction }
+  from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+const fbApp = initializeApp(window.FIREBASE_CONFIG);
+const db    = getDatabase(fbApp);
+
+// Har mahine leaderboard apne aap "reset" ho jata hai kyunki hum current
+// YYYY-MM ke node ke andar hi likhte/padhte hain — purana data delete nahi
+// hota, bas naye mahine mein dikhta nahi (fresh competition har mahine).
+function monthKey(){
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+}
+
+// Koi bhi Firebase call agar 6 second ke andar respond na kare (slow/dead
+// network, blocked connection, etc.) to hum use "timed out" maan kar khud
+// reject kar dete hain — is se UI KABHI hamesha ke liye "Loading..." mein
+// atki nahi rahegi, chahe network kuch bhi ho.
+function withTimeout(promise, ms=6000){
+  return Promise.race([
+    promise,
+    new Promise((_, reject)=> setTimeout(()=> reject(new Error('Timeout: server ne '+(ms/1000)+'s mein jawab nahi diya')), ms))
+  ]);
+}
+
+// ── Duration picker ──
+let smDuration = '5'; // minutes as string, or 'unlimited'
+document.getElementById('smDurRow').addEventListener('click',(e)=>{
+  const btn = e.target.closest('.sm-dur-btn'); if(!btn) return;
+  document.querySelectorAll('#smDurRow .sm-dur-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  smDuration = btn.dataset.d;
+});
+
+// ── Passage source: admin-managed (Firebase passages/normal/speedmaster),
+//    falls back to window.PASS.speedmaster (shared.js) if empty/offline ──
+async function getPassagePool(){
+  try{
+    const snap = await withTimeout(get(ref(db,'passages/normal/speedmaster')));
+    if(snap.exists()){
+      const obj = snap.val();
+      const arr = Object.keys(obj).map(Number).sort((a,b)=>a-b).map(k=>obj[k]);
+      if(arr.length) return arr;
+    }
+  } catch(e){ console.warn('passage fetch failed/timed out, using local fallback', e); }
+  return window.PASS && window.PASS.speedmaster ? window.PASS.speedmaster : ['The quick brown fox jumps over the lazy dog.'];
+}
+
+function shuffle(arr){ return arr.slice().sort(()=>Math.random()-0.5); }
+
+let smWords=[], smIdx=0, smStartTime=null, smTimerInt=null, smWpmSamples=[], smUserName='';
+let smPassagePool=[], smPoolCursor=0, smDurationUsed='5', smEndAt=null;
+let countCorrect=0, countWrong=0;
+
+// PREFETCH: passage list ko page load hote hi background mein manga lo (user
+// abhi apna naam type kar raha hoga) — taaki "Test Shuru Karein" dabate hi
+// data pehle se ready ho aur koi visible delay na dikhe. Agar user turant
+// button dabata hai to bhi hum isi promise ka wait karte hain (double-fetch
+// nahi karte), aur agar wo bahut der baad dabata hai to result already cached hai.
+let smPassagePoolPromise = getPassagePool();
+
+function loadMoreWords(){
+  // Endless supply: agar passage khatam ho raha hai to next passage ke words jod do
+  if(smPoolCursor >= smPassagePool.length){ smPassagePool = shuffle(smPassagePool); smPoolCursor = 0; }
+  const nextPassage = smPassagePool[smPoolCursor++];
+  smWords.push(...nextPassage.trim().split(/\s+/));
+}
+
+window.smStartTest = async function(){
+  const name = document.getElementById('smNameInput').value.trim();
+  if(!name){ alert('Pehle apna naam likhein!'); return; }
+  smUserName = name;
+  smDurationUsed = smDuration;
+  localStorage.setItem('smUserName', name);
+
+  document.getElementById('smNameGate').style.display='none';
+  document.getElementById('smTestArea').style.display='block';
+  document.getElementById('smResultArea').style.display='none';
+  document.getElementById('smWordsBox').innerHTML = '<span style="color:#b8c0d4;">Passage load ho raha hai...</span>';
+
+  smPassagePool = shuffle(await smPassagePoolPromise);
+  smPoolCursor = 0; smWords = []; smIdx = 0; smWpmSamples = []; smStartTime = null;
+  countCorrect = 0; countWrong = 0;
+  loadMoreWords(); loadMoreWords(); loadMoreWords();
+
+  clearInterval(smTimerInt);
+  renderWords();
+  const inp = document.getElementById('smInputBox');
+  inp.value=''; inp.oninput = onType; inp.focus();
+  document.getElementById('smTimer').textContent = smDurationUsed==='unlimited' ? '00:00' : String(smDurationUsed).padStart(2,'0')+':00';
+  document.getElementById('smLiveWpm').textContent = '0';
+  document.getElementById('smLiveAcc').textContent = '100%';
+};
+
+function renderWords(){
+  // Sirf window jitna dikhana kaafi hai (performance ke liye), lekin poora
+  // array maintain karte hain taaki index tracking simple rahe.
+  const from = Math.max(0, smIdx-2);
+  const visible = smWords.slice(from, from+40);
+  document.getElementById('smWordsBox').innerHTML = visible.map((w,i)=>{
+    const realIdx = from+i;
+    return `<span class="${realIdx===smIdx?'current':''}" id="smW_${realIdx}">${w}</span>`;
+  }).join(' ');
+}
+
+function updateLiveStats(){
+  const elapsedMin = (Date.now()-smStartTime)/60000;
+  const wpmNow = Math.round(countCorrect / Math.max(elapsedMin,0.008));
+  const accNow = Math.round((countCorrect/(countCorrect+countWrong||1))*100);
+  document.getElementById('smLiveWpm').textContent = wpmNow;
+  document.getElementById('smLiveAcc').textContent = accNow+'%';
+  smWpmSamples.push(wpmNow);
+}
+
+function onType(e){
+  if(!smStartTime){
+    smStartTime = Date.now();
+    if(smDurationUsed !== 'unlimited'){
+      smEndAt = smStartTime + (parseInt(smDurationUsed,10) * 60000);
+    }
+    smTimerInt = setInterval(()=>{
+      let s;
+      if(smDurationUsed==='unlimited'){
+        s = Math.floor((Date.now()-smStartTime)/1000);
+      } else {
+        s = Math.max(0, Math.floor((smEndAt-Date.now())/1000));
+        if(s<=0){ finishTest(); return; }
+      }
+      document.getElementById('smTimer').textContent =
+        String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+      updateLiveStats();
+    }, 500);
+  }
+  const val = e.target.value;
+  if(val.endsWith(' ')){
+    const typed = val.trim();
+    const target = smWords[smIdx];
+    const isCorrect = typed === target;
+    if(isCorrect) countCorrect++; else countWrong++;
+    const el = document.getElementById('smW_'+smIdx);
+    if(el){ el.classList.remove('current'); el.classList.add(isCorrect ? 'correct' : 'wrong'); }
+    smIdx++;
+    e.target.value='';
+
+    if(smIdx >= smWords.length - 12) loadMoreWords(); // endless supply
+    renderWords();
+    updateLiveStats();
+  }
+}
+
+window.finishTest = function(){
+  clearInterval(smTimerInt);
+  if(!smStartTime){ smRestart(); return; }
+  finalizeResult();
+};
+
+function finalizeResult(){
+  const totalMin = Math.max((Date.now()-smStartTime)/60000, 0.008);
+  const correct = countCorrect, wrong = countWrong;
+  const wpm = Math.round(correct / totalMin);
+  const acc = Math.round((correct/(correct+wrong||1))*100);
+
+  document.getElementById('smTestArea').style.display='none';
+  document.getElementById('smResultArea').style.display='block';
+  document.getElementById('smResWpm').textContent = wpm;
+  document.getElementById('smResAcc').textContent = acc+'%';
+  document.getElementById('smResCorrect').textContent = correct;
+  document.getElementById('smResWrong').textContent = wrong;
+  document.getElementById('smResDur').textContent = smDurationUsed==='unlimited' ? 'Unlimited' : smDurationUsed+' min';
+  drawGraph(smWpmSamples);
+  saveScore(wpm, acc);
+}
+
+function drawGraph(samples){
+  const svg = document.getElementById('smGraph');
+  if(!samples.length){ svg.innerHTML=''; return; }
+  const max = Math.max(...samples, 10);
+  const stepX = 700 / Math.max(samples.length-1,1);
+  const pts = samples.map((v,i)=> `${Math.round(i*stepX)},${Math.round(180 - (v/max)*160 - 8)}`).join(' ');
+  svg.innerHTML = `<polyline points="${pts}" fill="none" stroke="#6c5ce7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+}
+
+function nameKey(n){ return n.replace(/[.#$/\[\]]/g,'_'); }
+
+async function saveScore(wpm, acc){
+  const mk = monthKey();
+  const nk = nameKey(smUserName);
+  const dk = smDurationUsed;
+  const errBox = document.getElementById('smSaveErr');
+  errBox.innerHTML = '';
+  try {
+    await withTimeout(runTransaction(ref(db, `speedMaster/${mk}/${dk}/scores/${nk}`), (cur)=>{
+      if(!cur || wpm > cur.wpm) return { name: smUserName, wpm, accuracy: acc, ts: Date.now() };
+      return cur;
+    }));
+    await withTimeout(runTransaction(ref(db, `speedMaster/${mk}/${dk}/testsTaken/${nk}`), (cur)=>{
+      return { name: smUserName, count: (cur && cur.count ? cur.count : 0) + 1 };
+    }));
+  } catch(e){
+    console.error('speed master save failed', e);
+    errBox.innerHTML = `<div class="sm-err">⚠️ Score leaderboard mein save nahi ho saka (${e.message}). Agar ye baar-baar aa raha hai to Firebase rules deploy karna baaki ho sakta hai — <code>firebase deploy --only database</code> chalayein.</div>`;
+  }
+  switchLbTab(dk);
+}
+
+async function loadLeaderboard(dk){
+  const mk = monthKey();
+  document.getElementById('smMonthLabel').textContent = mk;
+  const wpmEl = document.getElementById('smLbWpm'), testsEl = document.getElementById('smLbTests');
+  wpmEl.textContent = 'Loading...'; testsEl.textContent = 'Loading...';
+  try {
+    const [scoresSnap, testsSnap] = await Promise.all([
+      withTimeout(get(ref(db, `speedMaster/${mk}/${dk}/scores`))),
+      withTimeout(get(ref(db, `speedMaster/${mk}/${dk}/testsTaken`)))
+    ]);
+    const scores = scoresSnap.exists() ? Object.values(scoresSnap.val()) : [];
+    scores.sort((a,b)=> b.wpm - a.wpm);
+    const wpmHtml = scores.slice(0,50).map((s,i)=>
+      `<div class="sm-lb-row ${s.name===smUserName?'me':''}"><span>#${i+1} ${escapeHtml(s.name)}</span><span>${s.wpm} wpm</span></div>`).join('');
+    wpmEl.innerHTML = wpmHtml || '<div class="sm-lb-empty">Abhi tak koi score nahi. Sabse pehle aap bano!</div>';
+
+    const tests = testsSnap.exists() ? Object.values(testsSnap.val()) : [];
+    tests.sort((a,b)=> b.count - a.count);
+    const testsHtml = tests.slice(0,50).map((s,i)=>
+      `<div class="sm-lb-row ${s.name===smUserName?'me':''}"><span>#${i+1} ${escapeHtml(s.name)}</span><span>${s.count} tests</span></div>`).join('');
+    testsEl.innerHTML = testsHtml || '<div class="sm-lb-empty">Abhi tak koi test nahi.</div>';
+  } catch(e){
+    console.error('leaderboard load failed', e);
+    wpmEl.innerHTML = `<div class="sm-lb-empty">⚠️ Leaderboard load nahi ho saka: ${e.message}</div>`;
+    testsEl.innerHTML = `<div class="sm-lb-empty">⚠️ Leaderboard load nahi ho saka: ${e.message}</div>`;
+  }
+}
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+let smActiveLbTab = '5';
+function switchLbTab(dk){
+  smActiveLbTab = dk;
+  document.querySelectorAll('#smLbTabs .sm-lb-tab').forEach(b=>b.classList.toggle('active', b.dataset.d===dk));
+  loadLeaderboard(dk);
+}
+document.getElementById('smLbTabs').addEventListener('click',(e)=>{
+  const btn = e.target.closest('.sm-lb-tab'); if(!btn) return;
+  switchLbTab(btn.dataset.d);
+});
+
+window.smRestart = function(){
+  document.getElementById('smResultArea').style.display='none';
+  document.getElementById('smNameGate').style.display='block';
+};
+
+const saved = localStorage.getItem('smUserName');
+if(saved) document.getElementById('smNameInput').value = saved;
+
+switchLbTab('5');
+</script>
+</body>
+</html>
