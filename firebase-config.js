@@ -3,14 +3,14 @@
 // ⚠️  Sirf apne local computer pe rakho aur server pe manually upload karo
 
 window.FIREBASE_CONFIG = {
-  apiKey:            "AIzaSyAJcKdAYz2SRA75XtDB_VQZEzvoCK8WdUQ",
-  authDomain:        "apna-typing-master-pro-af16d.firebaseapp.com",
-  databaseURL:       "https://apna-typing-master-pro-af16d-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId:         "apna-typing-master-pro-af16d",
-  storageBucket:     "apna-typing-master-pro-af16d.firebasestorage.app",
-  messagingSenderId: "727800871355",
-  appId:             "1:727800871355:web:97bc57c93e6514372fac9e",
-  measurementId:     "G-6CNL0V0BPS"
+  apiKey: "AIzaSyAgE2VCUcy20rGn-czG7_jJSVOhY_qxhLI",
+  authDomain: "apnatypingmasterpro.firebaseapp.com",
+  databaseURL: "https://apnatypingmasterpro-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "apnatypingmasterpro",
+  storageBucket: "apnatypingmasterpro.firebasestorage.app",
+  messagingSenderId: "883194213834",
+  appId: "1:883194213834:web:c08808c6e8cae5cc35cb33",
+  measurementId: "G-40KV69X172"
 };
 
 // ═══════════════════════════════════════════════════════════════
